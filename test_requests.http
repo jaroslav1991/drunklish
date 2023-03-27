@@ -1,0 +1,30 @@
+POST 127.0.0.1:8080/sign_up
+Content-Type: application/json
+
+{
+  "email": "jaroslav@gmail.com",
+  "hash_password": "1234"
+}
+
+####
+
+POST 127.0.0.1:8080/words
+Content-Type: application/json
+
+{
+  "word": "test_word",
+  "translate": "test_translate",
+  "user_id": 1
+}
+
+####
+
+POST 127.0.0.1:8080/sign_in
+Content-Type: application/json
+
+{
+  "email": "jaroslav@gmail.com",
+  "hash_password": "1234"
+}
+
+
