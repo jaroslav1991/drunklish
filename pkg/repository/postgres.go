@@ -11,5 +11,7 @@ func NewPostgresDB(dsn string) (*sqlx.DB, error) {
 		return nil, err
 	}
 
+	db.MustBegin()
+
 	return db, nil
 }
