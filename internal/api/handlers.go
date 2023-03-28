@@ -31,16 +31,12 @@ func SignUpHandler(a *auth.Auth) http.HandlerFunc {
 
 			respUser, err := a.SignUp(&user)
 			if err != nil {
+				errorHandler(w, http.StatusUnprocessableEntity, err)
 				log.Println("can't sign up user, lox", err)
 				return
 			}
 
-			result, err := json.Marshal(respUser)
-			if err != nil {
-				log.Println("can't marshal data from user", err)
-				return
-			}
-			fmt.Println(string(result))
+			respondHandler(w, http.StatusOK, respUser)
 		}
 	}
 }
@@ -63,6 +59,7 @@ func SignInHandler(a *auth.Auth) http.HandlerFunc {
 			}
 			respUser, err := a.SignIn(&user)
 			if err != nil {
+				errorHandler(w, http.StatusUnauthorized, err)
 				log.Println("can't sign in user, lox", err)
 				return
 			}
@@ -76,12 +73,7 @@ func SignInHandler(a *auth.Auth) http.HandlerFunc {
 				HttpOnly: true,
 			})
 
-			result, err := json.Marshal(respUser)
-			if err != nil {
-				log.Println("can't marshal data from user", err)
-				return
-			}
-			fmt.Println(string(result))
+			respondHandler(w, http.StatusOK, respUser)
 		}
 	}
 }
@@ -152,5 +144,20 @@ func GetWordsHandler(wd *word.Word) http.HandlerFunc {
 
 			fmt.Println(string(result))
 		}
+	}
+}
+
+func errorHandler(w http.ResponseWriter, code int, err error) {
+	respondHandler(w, code, map[string]string{"error": err.Error()})
+}
+
+func respondHandler(w http.ResponseWriter, code int, data interface{}) {
+	w.WriteHeader(code)
+	if data != nil {
+		response, err := json.Marshal(data)
+		if err != nil {
+			return
+		}
+		fmt.Println(string(response))
 	}
 }
