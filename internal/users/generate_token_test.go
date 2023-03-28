@@ -30,3 +30,17 @@ func TestCheckPasswordHash(t *testing.T) {
 		t.Error("fail with hash")
 	}
 }
+
+func TestGenerateToken(t *testing.T) {
+	generate, err := GenerateToken(1, "test@mail.ru")
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(generate)
+
+	token, err := ParseToken(generate)
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(token)
+}
