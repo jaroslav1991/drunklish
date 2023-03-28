@@ -6,7 +6,7 @@ func ValidateDomain(email string) bool {
 	validEmail := []string{"@yandex.ru", "@mail.ru", "@gmail.com", "@yahoo.com"}
 
 	for _, mail := range validEmail {
-		if strings.HasSuffix(email, mail) {
+		if strings.HasSuffix(email, mail) && len(email) > len(mail) {
 			return true
 		}
 	}

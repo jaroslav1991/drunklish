@@ -92,14 +92,14 @@ func CreateWordHandler(wd *word.Word) http.HandlerFunc {
 		if r.Method == http.MethodPost {
 			data, err := io.ReadAll(r.Body)
 			if err != nil {
-				log.Println("can't read data from word", err)
+				log.Println("can't read data from createWord", err)
 				return
 			}
 
 			defer r.Body.Close()
 
 			if err := json.Unmarshal(data, &userWord); err != nil {
-				log.Println("can't unmarshal data from word", err)
+				log.Println("can't unmarshal data from createWord", err)
 				return
 			}
 
@@ -111,11 +111,46 @@ func CreateWordHandler(wd *word.Word) http.HandlerFunc {
 
 			result, err := json.Marshal(respWord)
 			if err != nil {
-				log.Println("can't marshal data from word", err)
+				log.Println("can't marshal data from createWord", err)
 				return
 			}
 
 			log.Println(string(result))
+		}
+	}
+}
+
+func GetWordsHandler(wd *word.Word) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var userWord model.Word
+
+		if r.Method == http.MethodGet {
+			data, err := io.ReadAll(r.Body)
+			if err != nil {
+				log.Println("can't read data from getWords", err)
+				return
+			}
+
+			defer r.Body.Close()
+
+			if err := json.Unmarshal(data, &userWord); err != nil {
+				log.Println("can't unmarshal data from getWords", err)
+				return
+			}
+
+			words, err := wd.GetWordsByUserId(userWord.UserId)
+			if err != nil {
+				log.Println("can't get words, lox", err)
+				return
+			}
+
+			result, err := json.Marshal(words)
+			if err != nil {
+				log.Println("can't marshal get words, lox", err)
+				return
+			}
+
+			fmt.Println(string(result))
 		}
 	}
 }
