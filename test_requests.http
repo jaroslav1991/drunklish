@@ -1,4 +1,4 @@
-POST 127.0.0.1:8080/sign_up
+POST 127.0.0.1:8080/sign-up
 Content-Type: application/json
 
 {
@@ -8,23 +8,32 @@ Content-Type: application/json
 
 ####
 
-POST 127.0.0.1:8080/words
+POST 127.0.0.1:8080/word
 Content-Type: application/json
 
 {
-  "word": "test_word",
-  "translate": "test_translate",
+  "word": "test_word2",
+  "translate": "test_translate2",
   "user_id": 3
 }
 
 ####
 
-POST 127.0.0.1:8080/sign_in
+POST 127.0.0.1:8080/sign-in
 Content-Type: application/json
 
 {
   "email": "jaroslav2@gmail.com",
   "hash_password": "qwerty"
+}
+
+####
+
+GET 127.0.0.1:8080/get-words
+Content-Type: application/json
+
+{
+  "user_id": 3
 }
 
 

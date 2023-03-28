@@ -27,9 +27,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	http.Handle("/sign_up", api.SignUpHandler(authDB))
-	http.Handle("/sign_in", api.SignInHandler(authDB))
-	http.Handle("/words", api.CreateWordHandler(wordDB))
+	http.Handle("/sign-up", api.SignUpHandler(authDB))
+	http.Handle("/sign-in", api.SignInHandler(authDB))
+	http.Handle("/word", api.CreateWordHandler(wordDB))
+	http.Handle("/get-words", api.GetWordsHandler(wordDB))
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)

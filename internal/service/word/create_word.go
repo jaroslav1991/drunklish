@@ -26,5 +26,6 @@ func (w *Word) CreateWord(word *model.Word) (*model.Word, error) {
 	); err != nil {
 		return nil, err
 	}
+
 	return word, nil
 }

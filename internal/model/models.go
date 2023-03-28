@@ -10,6 +10,7 @@ type (
 	}
 
 	Word struct {
+		Id        int64     `json:"id" db:"id"`
 		Word      string    `json:"word" db:"word"`
 		Translate string    `json:"translate" db:"translate"`
 		CreatedAt time.Time `json:"created_at" db:"created_at"`

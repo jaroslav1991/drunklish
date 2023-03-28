@@ -13,12 +13,32 @@ func TestValidateDomain(t *testing.T) {
 	}{
 		{
 			name: "validEmail",
-			args: args{email: "@gmail.com"},
+			args: args{email: "test@gmail.com"},
 			want: true,
 		},
 		{
-			name: "notValidEmail",
-			args: args{email: "@yandex.com"},
+			name: "validEmail2",
+			args: args{email: "test@yahoo.com"},
+			want: true,
+		},
+		{
+			name: "invalidDomain",
+			args: args{email: "test@yandex.com"},
+			want: false,
+		},
+		{
+			name: "invalidEmail",
+			args: args{email: "@gmail.com"},
+			want: false,
+		},
+		{
+			name: "invalidEmail2",
+			args: args{email: "test@yahoo.ru"},
+			want: false,
+		},
+		{
+			name: "invalidEmail3",
+			args: args{email: "@yandex.ru"},
 			want: false,
 		},
 	}
