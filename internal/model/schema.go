@@ -1,4 +1,8 @@
-package storage
+package model
+
+import (
+	"drunklish/internal/service"
+)
 
 const (
 	createUserTable = `create table if not exists users (
@@ -15,7 +19,7 @@ const (
 );`
 )
 
-func CreateTables(s *Storage) error {
+func CreateTables(s *service.Storage) error {
 	tx := s.DB.MustBegin()
 	tx.MustExec(createUserTable)
 	tx.MustExec(createWordsTable)

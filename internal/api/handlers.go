@@ -1,7 +1,9 @@
 package api
 
 import (
-	"drunklish/internal/storage"
+	"drunklish/internal/model"
+	"drunklish/internal/service/auth"
+	"drunklish/internal/service/word"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -10,8 +12,8 @@ import (
 	"time"
 )
 
-func SignUpHandler(s *storage.Storage) http.HandlerFunc {
-	var user storage.User
+func SignUpHandler(a *auth.Auth) http.HandlerFunc {
+	var user model.User
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
 			data, err := io.ReadAll(r.Body)
@@ -27,7 +29,7 @@ func SignUpHandler(s *storage.Storage) http.HandlerFunc {
 				return
 			}
 
-			respUser, err := s.SignUp(&user)
+			respUser, err := a.SignUp(&user)
 			if err != nil {
 				log.Println("can't sign up user, lox", err)
 				return
@@ -43,8 +45,8 @@ func SignUpHandler(s *storage.Storage) http.HandlerFunc {
 	}
 }
 
-func SignInHandler(s *storage.Storage) http.HandlerFunc {
-	var user storage.User
+func SignInHandler(a *auth.Auth) http.HandlerFunc {
+	var user model.User
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
 			data, err := io.ReadAll(r.Body)
@@ -59,8 +61,7 @@ func SignInHandler(s *storage.Storage) http.HandlerFunc {
 				log.Println("can't unmarshal data from user", err)
 				return
 			}
-
-			respUser, err := s.SignIn(&user)
+			respUser, err := a.SignIn(&user)
 			if err != nil {
 				log.Println("can't sign in user, lox", err)
 				return
@@ -85,9 +86,9 @@ func SignInHandler(s *storage.Storage) http.HandlerFunc {
 	}
 }
 
-func CreateWordHandler(s *storage.Storage) http.HandlerFunc {
+func CreateWordHandler(wd *word.Word) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var word storage.Word
+		var userWord model.Word
 		if r.Method == http.MethodPost {
 			data, err := io.ReadAll(r.Body)
 			if err != nil {
@@ -97,12 +98,12 @@ func CreateWordHandler(s *storage.Storage) http.HandlerFunc {
 
 			defer r.Body.Close()
 
-			if err := json.Unmarshal(data, &word); err != nil {
+			if err := json.Unmarshal(data, &userWord); err != nil {
 				log.Println("can't unmarshal data from word", err)
 				return
 			}
 
-			respWord, err := s.CreateWord(&word)
+			respWord, err := wd.CreateWord(&userWord)
 			if err != nil {
 				log.Println("can't create word, lox", err)
 				return

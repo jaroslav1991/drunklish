@@ -1,7 +1,8 @@
-package storage
+package auth
 
 import (
-	"drunklish/internal/users"
+	"drunklish/internal/model"
+	"drunklish/internal/service/auth/users"
 	"errors"
 )
 
@@ -10,15 +11,15 @@ const (
 )
 
 type ResponseUser struct {
-	user  User
+	user  model.User
 	Token string
 }
 
-func (s *Storage) SignIn(req *User) (*ResponseUser, error) {
+func (a *Auth) SignIn(req *model.User) (*ResponseUser, error) {
 	var passwordHash string
 	var user ResponseUser
 
-	if err := s.DB.QueryRowx(authorizeQuery, req.Email).Scan(&user.user.Id, &user.user.Email, &passwordHash); err != nil {
+	if err := a.db.QueryRowx(authorizeQuery, req.Email).Scan(&user.user.Id, &user.user.Email, &passwordHash); err != nil {
 		return nil, err
 	}
 
