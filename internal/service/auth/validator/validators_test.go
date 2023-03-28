@@ -1,6 +1,8 @@
 package validator
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestValidateDomain(t *testing.T) {
 	type args struct {

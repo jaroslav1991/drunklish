@@ -1,6 +1,8 @@
 package validator
 
-import "strings"
+import (
+	"strings"
+)
 
 func ValidateDomain(email string) bool {
 	validEmail := []string{"@yandex.ru", "@mail.ru", "@gmail.com", "@yahoo.com"}
