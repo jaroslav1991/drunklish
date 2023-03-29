@@ -1,8 +1,21 @@
 package validator
 
 import (
+	"drunklish/internal/service"
 	"strings"
 )
+
+const (
+	getEmail = `select email from users where email=$1`
+)
+
+func ExistEmail(db service.DB, email string) bool {
+	err := db.QueryRowx(getEmail, email).Scan(&email)
+	if err != nil {
+		return true
+	}
+	return false
+}
 
 func ValidateDomain(email string) bool {
 	validEmail := []string{"@yandex.ru", "@mail.ru", "@gmail.com", "@yahoo.com"}

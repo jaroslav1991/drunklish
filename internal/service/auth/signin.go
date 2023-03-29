@@ -3,6 +3,7 @@ package auth
 import (
 	"drunklish/internal/model"
 	"drunklish/internal/service/auth/users"
+	"drunklish/internal/service/auth/validator"
 	"errors"
 	"fmt"
 )
@@ -24,7 +25,7 @@ func (a *Auth) SignIn(req *model.User) (*ResponseUser, error) {
 	var passwordHash string
 	var user ResponseUser
 
-	if errEmail := a.ExistEmail(a.db, req.Email); errEmail != nil {
+	if errEmail := validator.ExistEmail(a.db, req.Email); errEmail != true {
 		return nil, fmt.Errorf("%w", ErrEmailOrPassword)
 	}
 

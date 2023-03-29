@@ -20,7 +20,7 @@ const (
 )
 
 func CreateTables(s *service.Storage) error {
-	tx := s.DB.MustBegin()
+	tx := s.TX.MustBegin()
 	tx.MustExec(createUserTable)
 	tx.MustExec(createWordsTable)
 

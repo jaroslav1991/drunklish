@@ -19,7 +19,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	storageDB := service.NewStorage(db)
+	tx, err := repository.NewPostgresDB(dbConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	storageDB := service.NewStorage(db, tx)
 	authDB := auth.NewAuthService(db)
 	wordDB := word.NewWordService(db)
 
