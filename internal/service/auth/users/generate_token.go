@@ -1,13 +1,17 @@
 package users
 
 import (
+	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
-var secretKey = "qwerty"
+var (
+	secretKey    = "qwerty"
+	InvalidToken = errors.New("invalid token")
+)
 
 type AuthClaims struct {
 	UserId int64
@@ -24,6 +28,10 @@ func GenerateToken(userId int64, email string) (string, error) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	if claims.UserId < 1 {
+		return "", fmt.Errorf("%w", InvalidToken)
+	}
 
 	return token.SignedString([]byte(secretKey))
 }
@@ -53,7 +61,7 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), nil
 }
 
-func CheckPasswordHash(password, hash string) bool {
+func CheckPasswordHash(password, hash string) error {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
+	return err
 }
