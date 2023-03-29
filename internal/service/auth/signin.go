@@ -13,11 +13,13 @@ const (
 )
 
 var (
-	ErrEmailOrPassword = errors.New("invalid email or password")
+	ErrEmail    = errors.New("email is not exists")
+	ErrPassword = errors.New("invalid password")
+	//InvalidToken = errors.New("invalid token")
 )
 
 type ResponseUser struct {
-	user  model.User
+	User  model.User
 	Token string
 }
 
@@ -25,22 +27,21 @@ func (a *Auth) SignIn(req *model.User) (*ResponseUser, error) {
 	var passwordHash string
 	var user ResponseUser
 
-	if errEmail := validator.ExistEmail(a.db, req.Email); errEmail != true {
-		return nil, fmt.Errorf("%w", ErrEmailOrPassword)
+	if existEmail := validator.ExistEmail(a.db, req.Email); existEmail == true {
+		return nil, fmt.Errorf("%w", ErrEmail)
 	}
 
-	if err := a.db.QueryRowx(authorizeQuery, req.Email).Scan(&user.user.Id, &user.user.Email, &passwordHash); err != nil {
+	if err := a.db.QueryRowx(authorizeQuery, req.Email).Scan(&user.User.Id, &user.User.Email, &passwordHash); err != nil {
 		return nil, err
 	}
 
-	checkPassword := users.CheckPasswordHash(req.HashPassword, passwordHash)
-	if !checkPassword {
-		return nil, errors.New("invalid password")
+	if checkPassword := users.CheckPasswordHash(req.HashPassword, passwordHash); checkPassword != nil {
+		return nil, fmt.Errorf("%w", ErrPassword)
 	}
 
-	newToken, err := users.GenerateToken(user.user.Id, user.user.Email)
+	newToken, err := users.GenerateToken(user.User.Id, user.User.Email)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w", users.InvalidToken)
 	}
 	user.Token = newToken
 

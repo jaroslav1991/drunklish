@@ -10,8 +10,8 @@ const (
 )
 
 func ExistEmail(db service.DB, email string) bool {
-	err := db.QueryRowx(getEmail, email).Scan(&email)
-	if err != nil {
+	userEmail := db.QueryRowx(getEmail, email).Scan(&email)
+	if userEmail != nil {
 		return true
 	}
 	return false
