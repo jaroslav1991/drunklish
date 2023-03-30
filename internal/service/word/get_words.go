@@ -2,6 +2,8 @@ package word
 
 import (
 	"drunklish/internal/model"
+	"errors"
+	"fmt"
 	"time"
 )
 
@@ -10,8 +12,17 @@ const (
 	getWordsByCreatedAtQuery = `select word, translate from words where user_id=$1 and created_at=$2`
 )
 
-func (w *Word) GetWordsByUserId(userId int64) ([]*model.Word, error) {
-	var words []*model.Word
+var (
+	ErrUserID = errors.New("not authorized user")
+)
+
+type ResponseWord struct {
+	Word      string `json:"word"`
+	Translate string `json:"translate"`
+}
+
+func (w *Word) GetWordsByUserId(userId int64) ([]*ResponseWord, error) {
+	var words []*ResponseWord
 
 	rows, err := w.db.Query(getWordsQuery, userId)
 	if err != nil {
@@ -21,12 +32,16 @@ func (w *Word) GetWordsByUserId(userId int64) ([]*model.Word, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var word model.Word
+		var word ResponseWord
 		if err := rows.Scan(&word.Word, &word.Translate); err != nil {
 			return nil, err
 		}
 
 		words = append(words, &word)
+	}
+
+	if userId == 0 {
+		return nil, fmt.Errorf("%w", ErrUserID)
 	}
 
 	return words, nil

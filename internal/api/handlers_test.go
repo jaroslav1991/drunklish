@@ -31,21 +31,17 @@ func TestSignUpHandlerPositive(t *testing.T) {
 
 	defer tx.Rollback()
 
-	if _, err := tx.Exec("drop table words"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("drop table users"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
 
 	authDB := auth.NewAuthService(tx)
 
@@ -70,21 +66,17 @@ func TestSignUpHandlerNegative(t *testing.T) {
 
 	defer tx.Rollback()
 
-	if _, err := tx.Exec("drop table words"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("drop table users"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
 
 	authDB := auth.NewAuthService(tx)
 
@@ -128,21 +120,17 @@ func TestSignUpHandlerUnmarshalNegative(t *testing.T) {
 
 	defer tx.Rollback()
 
-	if _, err := tx.Exec("drop table words"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("drop table users"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
 
 	authDB := auth.NewAuthService(tx)
 
@@ -167,21 +155,17 @@ func TestSignUpHandlerErrorDomain(t *testing.T) {
 
 	defer tx.Rollback()
 
-	if _, err := tx.Exec("drop table words"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("drop table users"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
 
 	authDB := auth.NewAuthService(tx)
 
@@ -207,21 +191,17 @@ func TestSignUpHandlerErrorSymbol(t *testing.T) {
 
 	defer tx.Rollback()
 
-	if _, err := tx.Exec("drop table words"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("drop table users"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
 
 	authDB := auth.NewAuthService(tx)
 
@@ -247,21 +227,17 @@ func TestSignUpHandlerErrorLengthPassword(t *testing.T) {
 
 	defer tx.Rollback()
 
-	if _, err := tx.Exec("drop table words"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("drop table users"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
 
 	authDB := auth.NewAuthService(tx)
 
@@ -287,21 +263,17 @@ func TestSignUpHandlerErrorExistEmail(t *testing.T) {
 
 	defer tx.Rollback()
 
-	if _, err := tx.Exec("drop table words"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("drop table users"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
 
-	if _, err := tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))"); err != nil {
-		t.Error(err)
-	}
+	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
 
 	authDB := auth.NewAuthService(tx)
 
@@ -458,10 +430,6 @@ func TestDeleteWordHandlerPositive(t *testing.T) {
 
 	handler := DeleteWordHandler(wordDB)
 	handler(res, req)
-
-	//err = wordDB.DeleteWordByWord("boogaga", 1)
-	//assert.NoError(t, err)
-
 }
 
 func TestDeleteWordHandlerNegativeErrUnmarshal(t *testing.T) {
@@ -533,4 +501,240 @@ func TestDeleteWordHandlerNegativeNotFound(t *testing.T) {
 
 	err = wordDB.DeleteWordByWord("wrong word", 1)
 	assert.ErrorIs(t, err, word.ErrWord)
+}
+
+// TestCreateWordHandler ----------------------------------------------------------------------------------------------
+
+func TestCreateWordHandlerPositive(t *testing.T) {
+	dbConfig := config.GetDBConfig()
+	db, err := repository.NewPostgresDB(dbConfig)
+	assert.NoError(t, err)
+
+	tx, err := db.BeginTxx(context.Background(), nil)
+	assert.NoError(t, err)
+
+	defer tx.Rollback()
+
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "bot@gmail.com", "qwerty")
+	assert.NoError(t, err)
+
+	wordDB := word.NewWordService(tx)
+
+	req := httptest.NewRequest("POST", "/word", bytes.NewBuffer([]byte(`{"word":"boogaga","translate":"смешняшка","user_id":1}`)))
+	res := httptest.NewRecorder()
+
+	handler := CreateWordHandler(wordDB)
+	handler(res, req)
+}
+
+func TestCreateWordHandlerNegativeErrUnmarshal(t *testing.T) {
+	dbConfig := config.GetDBConfig()
+	db, err := repository.NewPostgresDB(dbConfig)
+	assert.NoError(t, err)
+
+	tx, err := db.BeginTxx(context.Background(), nil)
+	assert.NoError(t, err)
+
+	defer tx.Rollback()
+
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "bot@gmail.com", "qwerty")
+	assert.NoError(t, err)
+
+	wordDB := word.NewWordService(tx)
+
+	req := httptest.NewRequest("POST", "/word", nil)
+	res := httptest.NewRecorder()
+
+	handler := CreateWordHandler(wordDB)
+	handler(res, req)
+}
+
+func TestCreateWordHandlerNegativeErrCreate(t *testing.T) {
+	dbConfig := config.GetDBConfig()
+	db, err := repository.NewPostgresDB(dbConfig)
+	assert.NoError(t, err)
+
+	tx, err := db.BeginTxx(context.Background(), nil)
+	assert.NoError(t, err)
+
+	defer tx.Rollback()
+
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "bot@gmail.com", "qwerty")
+	assert.NoError(t, err)
+
+	wordDB := word.NewWordService(tx)
+
+	_, err = wordDB.CreateWord(&model.Word{
+		Word:      "boogaga",
+		Translate: "смешняшка",
+		UserId:    0,
+	})
+	assert.Error(t, err)
+}
+
+// TestGetWordsHandler ------------------------------------------------------------------------------------------
+
+func TestGetWordsHandlerPositive(t *testing.T) {
+	dbConfig := config.GetDBConfig()
+	db, err := repository.NewPostgresDB(dbConfig)
+	assert.NoError(t, err)
+
+	tx, err := db.BeginTxx(context.Background(), nil)
+	assert.NoError(t, err)
+
+	defer tx.Rollback()
+
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "bot@gmail.com", "qwerty")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga", "смешняшка", 1)
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga2", "смешняшка2", 1)
+	assert.NoError(t, err)
+
+	wordDB := word.NewWordService(tx)
+
+	req := httptest.NewRequest("GET", "/get-words", bytes.NewBuffer([]byte(`{"user_id":1}`)))
+	res := httptest.NewRecorder()
+
+	handler := GetWordsHandler(wordDB)
+	handler(res, req)
+
+	_, err = wordDB.GetWordsByUserId(1)
+	assert.NoError(t, err)
+}
+
+func TestGetWordsHandlerErrUnmarshal(t *testing.T) {
+	dbConfig := config.GetDBConfig()
+	db, err := repository.NewPostgresDB(dbConfig)
+	assert.NoError(t, err)
+
+	tx, err := db.BeginTxx(context.Background(), nil)
+	assert.NoError(t, err)
+
+	defer tx.Rollback()
+
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "bot@gmail.com", "qwerty")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga", "смешняшка", 1)
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga2", "смешняшка2", 1)
+	assert.NoError(t, err)
+
+	wordDB := word.NewWordService(tx)
+
+	req := httptest.NewRequest("GET", "/get-words", nil)
+	res := httptest.NewRecorder()
+
+	handler := GetWordsHandler(wordDB)
+	handler(res, req)
+
+	_, err = wordDB.GetWordsByUserId(1)
+	assert.NoError(t, err)
+}
+
+func TestGetWordsHandlerNegativeUserID(t *testing.T) {
+	dbConfig := config.GetDBConfig()
+	db, err := repository.NewPostgresDB(dbConfig)
+	assert.NoError(t, err)
+
+	tx, err := db.BeginTxx(context.Background(), nil)
+	assert.NoError(t, err)
+
+	defer tx.Rollback()
+
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "bot@gmail.com", "qwerty")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga", "смешняшка", 1)
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga2", "смешняшка2", 1)
+	assert.NoError(t, err)
+
+	wordDB := word.NewWordService(tx)
+
+	req := httptest.NewRequest("GET", "/get-words", bytes.NewBuffer([]byte(`{"user_id":0}`)))
+	res := httptest.NewRecorder()
+
+	handler := GetWordsHandler(wordDB)
+	handler(res, req)
+
+	_, err = wordDB.GetWordsByUserId(0)
+	assert.ErrorIs(t, err, word.ErrUserID)
 }
