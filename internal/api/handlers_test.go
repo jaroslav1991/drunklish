@@ -7,6 +7,7 @@ import (
 	"drunklish/internal/model"
 	"drunklish/internal/service/auth"
 	"drunklish/internal/service/auth/users"
+	"drunklish/internal/service/word"
 	"drunklish/pkg/repository"
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
@@ -14,7 +15,7 @@ import (
 	"testing"
 )
 
-// Testing SignUp ------------------------------------
+// Testing SignUp ---------------------------------------------------------------------------------------------------
 
 func TestSignUpHandlerPositive(t *testing.T) {
 	dbConfig := config.GetDBConfig()
@@ -55,7 +56,7 @@ func TestSignUpHandlerPositive(t *testing.T) {
 	handler(res, req)
 }
 
-func TestSignInHandlerNegative(t *testing.T) {
+func TestSignUpHandlerNegative(t *testing.T) {
 	dbConfig := config.GetDBConfig()
 	db, err := repository.NewPostgresDB(dbConfig)
 	if err != nil {
@@ -113,7 +114,7 @@ func TestSignInHandlerNegative(t *testing.T) {
 	handler(res, req)
 }
 
-func TestSignInHandlerUnmarshalNegative(t *testing.T) {
+func TestSignUpHandlerUnmarshalNegative(t *testing.T) {
 	dbConfig := config.GetDBConfig()
 	db, err := repository.NewPostgresDB(dbConfig)
 	if err != nil {
@@ -152,7 +153,7 @@ func TestSignInHandlerUnmarshalNegative(t *testing.T) {
 	handler(res, req)
 }
 
-func TestSignInHandlerErrorDomain(t *testing.T) {
+func TestSignUpHandlerErrorDomain(t *testing.T) {
 	dbConfig := config.GetDBConfig()
 	db, err := repository.NewPostgresDB(dbConfig)
 	if err != nil {
@@ -192,7 +193,7 @@ func TestSignInHandlerErrorDomain(t *testing.T) {
 	assert.ErrorIs(t, err, auth.ErrDomain)
 }
 
-func TestSignInHandlerErrorSymbol(t *testing.T) {
+func TestSignUpHandlerErrorSymbol(t *testing.T) {
 	dbConfig := config.GetDBConfig()
 	db, err := repository.NewPostgresDB(dbConfig)
 	if err != nil {
@@ -232,7 +233,7 @@ func TestSignInHandlerErrorSymbol(t *testing.T) {
 	assert.ErrorIs(t, err, auth.ErrSymbol)
 }
 
-func TestSignInHandlerErrorLengthPassword(t *testing.T) {
+func TestSignUpHandlerErrorLengthPassword(t *testing.T) {
 	dbConfig := config.GetDBConfig()
 	db, err := repository.NewPostgresDB(dbConfig)
 	if err != nil {
@@ -272,7 +273,7 @@ func TestSignInHandlerErrorLengthPassword(t *testing.T) {
 	assert.ErrorIs(t, err, auth.ErrLengthPassword)
 }
 
-func TestSignInHandlerErrorExistEmail(t *testing.T) {
+func TestSignUpHandlerErrorExistEmail(t *testing.T) {
 	dbConfig := config.GetDBConfig()
 	db, err := repository.NewPostgresDB(dbConfig)
 	if err != nil {
@@ -317,7 +318,7 @@ func TestSignInHandlerErrorExistEmail(t *testing.T) {
 	assert.ErrorIs(t, err, auth.ErrExistEmail)
 }
 
-//Testing SignIn ------------------------------------
+//Testing SignIn --------------------------------------------------------------------------------------------------
 
 func TestSignInHandlerPositive(t *testing.T) {
 	dbConfig := config.GetDBConfig()
@@ -418,4 +419,118 @@ func TestSignInHandlerNegativeErrToken(t *testing.T) {
 
 	_, err = users.GenerateToken(user.Id, user.Email)
 	assert.ErrorIs(t, err, users.InvalidToken)
+}
+
+// Testing DeleteWord ----------------------------------------------------------------------------------------------
+
+func TestDeleteWordHandlerPositive(t *testing.T) {
+	dbConfig := config.GetDBConfig()
+	db, err := repository.NewPostgresDB(dbConfig)
+	assert.NoError(t, err)
+
+	tx, err := db.BeginTxx(context.Background(), nil)
+	assert.NoError(t, err)
+
+	defer tx.Rollback()
+
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "bot@gmail.com", "qwerty")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga", "смешняшка", 1)
+	assert.NoError(t, err)
+
+	wordDB := word.NewWordService(tx)
+
+	req := httptest.NewRequest("DELETE", "/delete", bytes.NewBuffer([]byte(`{"word":"boogaga","user_id":1}`)))
+	res := httptest.NewRecorder()
+
+	handler := DeleteWordHandler(wordDB)
+	handler(res, req)
+
+	//err = wordDB.DeleteWordByWord("boogaga", 1)
+	//assert.NoError(t, err)
+
+}
+
+func TestDeleteWordHandlerNegativeErrUnmarshal(t *testing.T) {
+	dbConfig := config.GetDBConfig()
+	db, err := repository.NewPostgresDB(dbConfig)
+	assert.NoError(t, err)
+
+	tx, err := db.BeginTxx(context.Background(), nil)
+	assert.NoError(t, err)
+
+	defer tx.Rollback()
+
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "bot@gmail.com", "qwerty")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga", "смешняшка", 1)
+	assert.NoError(t, err)
+
+	wordDB := word.NewWordService(tx)
+
+	req := httptest.NewRequest("DELETE", "/delete", nil)
+	res := httptest.NewRecorder()
+
+	handler := DeleteWordHandler(wordDB)
+	handler(res, req)
+}
+
+func TestDeleteWordHandlerNegativeNotFound(t *testing.T) {
+	dbConfig := config.GetDBConfig()
+	db, err := repository.NewPostgresDB(dbConfig)
+	assert.NoError(t, err)
+
+	tx, err := db.BeginTxx(context.Background(), nil)
+	assert.NoError(t, err)
+
+	defer tx.Rollback()
+
+	_, err = tx.Exec("drop table words")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("drop table users")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("create table words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "bot@gmail.com", "qwerty")
+	assert.NoError(t, err)
+
+	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga", "смешняшка", 1)
+	assert.NoError(t, err)
+
+	wordDB := word.NewWordService(tx)
+
+	err = wordDB.DeleteWordByWord("wrong word", 1)
+	assert.ErrorIs(t, err, word.ErrWord)
 }
