@@ -9,10 +9,6 @@ import (
 	"fmt"
 )
 
-const (
-	authorizeQuery = `select * from users where email=$1`
-)
-
 var (
 	ErrEmail    = errors.New("email is not exists")
 	ErrPassword = errors.New("invalid password")
@@ -25,7 +21,7 @@ func (a *Auth) SignIn(req model.User) (*dto.ResponseUser, error) {
 
 	checkUser, err := a.repo.CheckUserDB(req)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w", ErrEmail)
 	}
 
 	if checkPassword := users.CheckPasswordHash(checkUser.User.HashPassword, req.HashPassword); checkPassword != nil {

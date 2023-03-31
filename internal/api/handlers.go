@@ -6,6 +6,7 @@ import (
 	"drunklish/internal/service/auth/dto"
 	"drunklish/internal/service/auth/users"
 	"drunklish/internal/service/word"
+	dto2 "drunklish/internal/service/word/dto"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -38,7 +39,7 @@ func SignUpHandler(a *auth.Auth) http.HandlerFunc {
 				return
 			}
 
-			respondHandler(w, http.StatusOK, respUser)
+			respondHandler(w, http.StatusCreated, respUser)
 		}
 	}
 }
@@ -81,7 +82,7 @@ func SignInHandler(a *auth.Auth) http.HandlerFunc {
 }
 
 func CreateWordHandler(wd *word.Word) http.HandlerFunc {
-	var userWord model.Word
+	var userWord dto2.CreateWordRequest
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
 			data, err := io.ReadAll(r.Body)
@@ -108,7 +109,7 @@ func CreateWordHandler(wd *word.Word) http.HandlerFunc {
 			//	userId = authClaims.UserId
 			//}
 
-			respWord, err := wd.CreateWord(&userWord)
+			respWord, err := wd.CreateWord(userWord)
 			if err != nil {
 				errorHandler(w, http.StatusUnauthorized, err)
 				log.Println("can't create word, lox", err)
