@@ -2,14 +2,11 @@ package auth
 
 import (
 	"drunklish/internal/model"
+	"drunklish/internal/service/auth/dto"
 	"drunklish/internal/service/auth/users"
 	"drunklish/internal/service/auth/validator"
 	"errors"
 	"fmt"
-)
-
-const (
-	createUserQuery = `insert into users (email, hash_password) values ($1, $2) returning id, email, hash_password`
 )
 
 var (
@@ -19,31 +16,35 @@ var (
 	ErrExistEmail     = errors.New("email is already exists")
 )
 
-func (a *Auth) SignUp(user *model.User) (*model.User, error) {
-	if errDomain := validator.ValidateDomain(user.Email); errDomain != true {
+func (a *Auth) SignUp(req dto.SignUpRequest) (*model.User, error) {
+	if errDomain := validator.ValidateDomain(req.Email); errDomain != true {
 		return nil, fmt.Errorf("%w", ErrDomain)
 	}
 
-	if errCountSymbol := validator.ValidateSymbol(user.Email); errCountSymbol != true {
+	if errCountSymbol := validator.ValidateSymbol(req.Email); errCountSymbol != true {
 		return nil, fmt.Errorf("%w", ErrSymbol)
 	}
 
-	if errLengthPassword := validator.LengthPassword(user.HashPassword); errLengthPassword != true {
+	if errLengthPassword := validator.LengthPassword(req.Password); errLengthPassword != true {
 		return nil, fmt.Errorf("%w", ErrLengthPassword)
 	}
 
-	if existEmail := validator.ExistEmail(a.db, user.Email); existEmail != true {
+	if existEmail := validator.ExistEmail(a.db, req.Email); existEmail != true {
 		return nil, fmt.Errorf("%w", ErrExistEmail)
 	}
 
-	hashPassword, err := users.HashPassword(user.HashPassword)
+	hashPassword, err := users.HashPassword(req.Password)
 	if err != nil {
 		return nil, err
 	}
-	user.HashPassword = hashPassword
 
-	if err := a.db.QueryRowx(createUserQuery, user.Email, user.HashPassword).Scan(&user.Id, &user.Email, &user.HashPassword); err != nil {
+	createUser, err := a.repo.CreateUser(dto.SignUpRequest{
+		Email:    req.Email,
+		Password: hashPassword,
+	})
+	if err != nil {
 		return nil, err
 	}
-	return user, nil
+
+	return createUser, nil
 }

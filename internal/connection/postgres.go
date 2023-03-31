@@ -1,4 +1,4 @@
-package repository
+package connection
 
 import (
 	"github.com/jmoiron/sqlx"

@@ -3,6 +3,8 @@ package api
 import (
 	"drunklish/internal/model"
 	"drunklish/internal/service/auth"
+	"drunklish/internal/service/auth/dto"
+	"drunklish/internal/service/auth/users"
 	"drunklish/internal/service/word"
 	"encoding/json"
 	"fmt"
@@ -13,7 +15,7 @@ import (
 )
 
 func SignUpHandler(a *auth.Auth) http.HandlerFunc {
-	var user model.User
+	var user dto.SignUpRequest
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
 			data, err := io.ReadAll(r.Body)
@@ -29,7 +31,7 @@ func SignUpHandler(a *auth.Auth) http.HandlerFunc {
 				return
 			}
 
-			respUser, err := a.SignUp(&user)
+			respUser, err := a.SignUp(user)
 			if err != nil {
 				errorHandler(w, http.StatusUnprocessableEntity, err)
 				log.Println("can't sign up user, lox", err)
@@ -57,7 +59,7 @@ func SignInHandler(a *auth.Auth) http.HandlerFunc {
 				log.Println("can't unmarshal data from user", err)
 				return
 			}
-			respUser, err := a.SignIn(&user)
+			respUser, err := a.SignIn(user)
 			if err != nil {
 				errorHandler(w, http.StatusUnauthorized, err)
 				log.Println("can't sign in user, lox", err)
@@ -193,22 +195,28 @@ func DeleteWordHandler(wd *word.Word) http.HandlerFunc {
 				return
 			}
 
-			//var userId int64 ------> when would be implement front
-			//var email string ------> when would be implement front
+			var userId int64
 
-			//jwtCookies, _ := r.Cookie("jwt")
-			//if jwtCookies != nil {
-			//	authClaims, err := users.ParseToken(jwtCookies.Value)
-			//	if err != nil {
-			//		return
-			//	}
-			//	email = authClaims.Email ----------> when would be implement front
-			//	userId = authClaims.UserId
-			//}
+			jwtCookies, err := r.Cookie("jwt")
+			if err != nil {
+				return
+			}
+
+			if jwtCookies == nil {
+				errorHandler(w, http.StatusForbidden, err)
+				return
+			}
+
+			authClaims, err := users.ParseToken(jwtCookies.Value)
+			if err != nil {
+				return
+			}
+			userId = authClaims.UserId
 
 			fmt.Println(userWord.UserId)
 			fmt.Println(userWord.Word)
-			if err := wd.DeleteWordByWord(userWord.Word, userWord.UserId); err != nil {
+
+			if err := wd.DeleteWordByWord(userWord.Word, userId); err != nil {
 				errorHandler(w, http.StatusNotFound, err)
 				return
 			}

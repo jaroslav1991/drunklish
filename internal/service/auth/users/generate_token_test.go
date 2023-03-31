@@ -22,7 +22,7 @@ func TestCheckPasswordHash(t *testing.T) {
 	assert.NoError(t, err)
 
 	t.Log(hash)
-	result := CheckPasswordHash("1234", hash)
+	result := CheckPasswordHash(hash, "1234")
 	assert.NoError(t, result)
 }
 

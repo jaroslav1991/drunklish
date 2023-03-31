@@ -2,8 +2,8 @@ POST 127.0.0.1:8080/sign-up
 Content-Type: application/json
 
 {
-  "email": "test3@yahoo.com",
-  "hash_password": "qwerty"
+  "email": "qwe2@yahoo.com",
+  "password": "qwerty"
 }
 
 ####
@@ -23,7 +23,7 @@ POST 127.0.0.1:8080/sign-in
 Content-Type: application/json
 
 {
-  "email": "test2@yahoo.com",
+  "email": "qwe2@yahoo.com",
   "hash_password": "qwerty"
 }
 
