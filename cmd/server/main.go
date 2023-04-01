@@ -4,12 +4,12 @@ import (
 	"drunklish/internal/config"
 	"drunklish/internal/connection"
 	"drunklish/internal/model"
-	"drunklish/internal/service"
+	pkgdb "drunklish/internal/pkg/db"
 	"drunklish/internal/service/auth"
-	"drunklish/internal/service/auth/handlers"
+	authHandlers "drunklish/internal/service/auth/handlers"
 	authRepo "drunklish/internal/service/auth/repository"
 	"drunklish/internal/service/word"
-	handlers2 "drunklish/internal/service/word/handlers"
+	wordsHandlers "drunklish/internal/service/word/handlers"
 	wordRepo "drunklish/internal/service/word/repository"
 	"log"
 	"net/http"
@@ -27,7 +27,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	storageDB := service.NewStorage(db, tx)
+	storageDB := pkgdb.NewStorage(db, tx)
 	authDB := auth.NewAuthService(authRepo.NewAuthRepository(db))
 	wordDB := word.NewWordService(wordRepo.NewWordRepository(db))
 
@@ -35,11 +35,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	http.Handle("/sign-up", handlers.SignUpHandler(authDB))
-	http.Handle("/sign-in", handlers.SignInHandler(authDB))
-	http.Handle("/word", handlers2.CreateWordHandler(wordDB))
-	http.Handle("/get-words", handlers2.GetWordsHandler(wordDB))
-	http.Handle("/delete", handlers2.DeleteWordHandler(wordDB))
+	http.Handle("/sign-up", authHandlers.SignUpHandler(authDB))
+	http.Handle("/sign-in", authHandlers.SignInHandler(authDB))
+	http.Handle("/word", wordsHandlers.CreateWordHandler(wordDB))
+	http.Handle("/get-words", wordsHandlers.GetWordsHandler(wordDB))
+	http.Handle("/delete", wordsHandlers.DeleteWordHandler(wordDB))
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)

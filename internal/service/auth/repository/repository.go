@@ -3,7 +3,7 @@ package repository
 import (
 	"database/sql"
 	"drunklish/internal/model"
-	"drunklish/internal/service"
+	"drunklish/internal/pkg/db"
 	"drunklish/internal/service/auth/dto"
 )
 
@@ -14,10 +14,10 @@ const (
 )
 
 type AuthRepository struct {
-	db service.DB
+	db db.DB
 }
 
-func NewAuthRepository(db service.DB) *AuthRepository {
+func NewAuthRepository(db db.DB) *AuthRepository {
 	return &AuthRepository{db: db}
 }
 
