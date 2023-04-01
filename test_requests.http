@@ -2,7 +2,7 @@ POST 127.0.0.1:8080/sign-up
 Content-Type: application/json
 
 {
-  "email": "qwe2@yahoo.com",
+  "email": "new3@gmail.com",
   "password": "qwerty"
 }
 
@@ -12,9 +12,8 @@ POST 127.0.0.1:8080/word
 Content-Type: application/json
 
 {
-  "word": "penis2",
-  "translate": "penis_translate",
-  "user_id": 10
+  "word": "new word5",
+  "translate": "new translate5"
 }
 
 ####
@@ -23,7 +22,7 @@ POST 127.0.0.1:8080/sign-in
 Content-Type: application/json
 
 {
-  "email": "qwe2@yahoo.com",
+  "email": "new2@gmail.com",
   "hash_password": "qwerty"
 }
 
@@ -33,7 +32,6 @@ GET 127.0.0.1:8080/get-words
 Content-Type: application/json
 
 {
-  "user_id": 10
 }
 
 ####
@@ -42,6 +40,5 @@ DELETE 127.0.0.1:8080/delete
 Content-Type: application/json
 
 {
-  "word": "penis2",
-  "user_id": 1
+  "word": "penis1"
 }
