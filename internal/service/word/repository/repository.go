@@ -25,7 +25,6 @@ func NewWordRepository(db service.DB) *WordRepository {
 
 func (repo *WordRepository) Create(word dto.CreateWordRequest) (*model.Word, error) {
 	createdAt := time.Now()
-
 	if err := repo.db.QueryRowx(
 		createWordQuery,
 		word.Word,

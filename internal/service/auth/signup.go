@@ -29,8 +29,12 @@ func (a *Auth) SignUp(req dto.SignUpRequest) (*model.User, error) {
 		return nil, fmt.Errorf("%w", ErrLengthPassword)
 	}
 
-	if existEmail := validator.ExistEmail(a.db, req.Email); existEmail != true {
-		return nil, fmt.Errorf("%w", ErrExistEmail)
+	existEmail, err := a.repo.ExistEmail(req.Email)
+	if existEmail {
+		return nil, ErrExistEmail
+	}
+	if err != nil {
+		return nil, err
 	}
 
 	hashPassword, err := users.HashPassword(req.Password)

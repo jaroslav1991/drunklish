@@ -448,7 +448,7 @@ func TestDeleteWordHandlerPositive(t *testing.T) {
 	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga", "смешняшка", 1)
 	assert.NoError(t, err)
 
-	wordDB := word.NewWordService(tx, repository2.NewWordRepository(db))
+	wordDB := word.NewWordService(repository2.NewWordRepository(db))
 
 	req := httptest.NewRequest("DELETE", "/delete", bytes.NewBuffer([]byte(`{"word":"boogaga","user_id":1}`)))
 	res := httptest.NewRecorder()
@@ -485,7 +485,7 @@ func TestDeleteWordHandlerNegativeErrUnmarshal(t *testing.T) {
 	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga", "смешняшка", 1)
 	assert.NoError(t, err)
 
-	wordDB := word.NewWordService(tx, repository2.NewWordRepository(db))
+	wordDB := word.NewWordService(repository2.NewWordRepository(db))
 
 	req := httptest.NewRequest("DELETE", "/delete", nil)
 	res := httptest.NewRecorder()
@@ -522,7 +522,7 @@ func TestDeleteWordHandlerNegativeNotFound(t *testing.T) {
 	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga", "смешняшка", 1)
 	assert.NoError(t, err)
 
-	wordDB := word.NewWordService(tx, repository2.NewWordRepository(tx))
+	wordDB := word.NewWordService(repository2.NewWordRepository(tx))
 
 	err = wordDB.DeleteWordByWord("wrong word", 1)
 	assert.ErrorIs(t, err, word.ErrWord)
@@ -555,7 +555,7 @@ func TestCreateWordHandlerPositive(t *testing.T) {
 	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "bot@gmail.com", "qwerty")
 	assert.NoError(t, err)
 
-	wordDB := word.NewWordService(tx, repository2.NewWordRepository(tx))
+	wordDB := word.NewWordService(repository2.NewWordRepository(tx))
 
 	createdWord, err := wordDB.CreateWord(dto2.CreateWordRequest{
 		Word:      "boogaga",
@@ -597,7 +597,7 @@ func TestCreateWordHandlerNegativeErrUnmarshal(t *testing.T) {
 	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "bot@gmail.com", "qwerty")
 	assert.NoError(t, err)
 
-	wordDB := word.NewWordService(tx, repository2.NewWordRepository(tx))
+	wordDB := word.NewWordService(repository2.NewWordRepository(tx))
 
 	req := httptest.NewRequest("POST", "/word", nil)
 	res := httptest.NewRecorder()
@@ -631,7 +631,7 @@ func TestCreateWordHandlerNegativeErrCreate(t *testing.T) {
 	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "bot@gmail.com", "qwerty")
 	assert.NoError(t, err)
 
-	wordDB := word.NewWordService(tx, repository2.NewWordRepository(tx))
+	wordDB := word.NewWordService(repository2.NewWordRepository(tx))
 
 	_, err = wordDB.CreateWord(dto2.CreateWordRequest{
 		Word:      "boogaga",
@@ -674,7 +674,7 @@ func TestGetWordsHandlerPositive(t *testing.T) {
 	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga2", "смешняшка2", 1)
 	assert.NoError(t, err)
 
-	wordDB := word.NewWordService(tx, repository2.NewWordRepository(tx))
+	wordDB := word.NewWordService(repository2.NewWordRepository(tx))
 
 	req := httptest.NewRequest("GET", "/get-words", bytes.NewBuffer([]byte(`{"user_id":1}`)))
 	res := httptest.NewRecorder()
@@ -717,7 +717,7 @@ func TestGetWordsHandlerErrUnmarshal(t *testing.T) {
 	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga2", "смешняшка2", 1)
 	assert.NoError(t, err)
 
-	wordDB := word.NewWordService(tx, repository2.NewWordRepository(tx))
+	wordDB := word.NewWordService(repository2.NewWordRepository(tx))
 
 	req := httptest.NewRequest("GET", "/get-words", nil)
 	res := httptest.NewRecorder()
@@ -760,7 +760,7 @@ func TestGetWordsHandlerNegativeUserID(t *testing.T) {
 	_, err = tx.Exec("insert into words (word, translate, user_id) values ($1, $2, $3)", "boogaga2", "смешняшка2", 1)
 	assert.NoError(t, err)
 
-	wordDB := word.NewWordService(tx, repository2.NewWordRepository(tx))
+	wordDB := word.NewWordService(repository2.NewWordRepository(tx))
 
 	_, err = wordDB.GetWordsByUserId(0)
 	assert.ErrorIs(t, err, word.ErrUserID)

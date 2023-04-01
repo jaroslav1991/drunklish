@@ -4,7 +4,6 @@ import (
 	"drunklish/internal/model"
 	"drunklish/internal/service/auth/dto"
 	"drunklish/internal/service/auth/users"
-	"drunklish/internal/service/auth/validator"
 	"errors"
 	"fmt"
 )
@@ -15,8 +14,12 @@ var (
 )
 
 func (a *Auth) SignIn(req model.User) (*dto.ResponseUser, error) {
-	if existEmail := validator.ExistEmail(a.db, req.Email); existEmail == true {
-		return nil, fmt.Errorf("%w", ErrEmail)
+	existEmail, err := a.repo.ExistEmail(req.Email)
+	if !existEmail {
+		return nil, ErrEmail
+	}
+	if err != nil {
+		return nil, err
 	}
 
 	checkUser, err := a.repo.CheckUserDB(req)

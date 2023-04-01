@@ -28,7 +28,7 @@ func main() {
 
 	storageDB := service.NewStorage(db, tx)
 	authDB := auth.NewAuthService(db, authRepo.NewAuthRepository(db))
-	wordDB := word.NewWordService(db, wordRepo.NewWordRepository(db))
+	wordDB := word.NewWordService(wordRepo.NewWordRepository(db))
 
 	if err := model.CreateTables(storageDB); err != nil {
 		log.Fatal(err)
