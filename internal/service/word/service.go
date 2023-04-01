@@ -1,11 +1,13 @@
 package word
 
-import "drunklish/internal/service"
+import (
+	"drunklish/internal/service/word/repository"
+)
 
 type Word struct {
-	db service.DB
+	repo *repository.WordRepository
 }
 
-func NewWordService(db service.DB) *Word {
-	return &Word{db: db}
+func NewWordService(repo *repository.WordRepository) *Word {
+	return &Word{repo: repo}
 }

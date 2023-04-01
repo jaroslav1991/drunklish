@@ -12,9 +12,9 @@ POST 127.0.0.1:8080/word
 Content-Type: application/json
 
 {
-  "word": "penis4",
+  "word": "penis2",
   "translate": "penis_translate",
-  "user_id": 7
+  "user_id": 10
 }
 
 ####
@@ -33,7 +33,7 @@ GET 127.0.0.1:8080/get-words
 Content-Type: application/json
 
 {
-  "user_id": 2
+  "user_id": 10
 }
 
 ####

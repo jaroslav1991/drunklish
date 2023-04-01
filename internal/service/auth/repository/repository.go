@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"drunklish/internal/model"
 	"drunklish/internal/service"
 	"drunklish/internal/service/auth/dto"
@@ -9,6 +10,7 @@ import (
 const (
 	createUserQuery = `insert into users (email, hash_password) values ($1, $2) returning id`
 	authorizeQuery  = `select * from users where email=$1`
+	getEmail        = `select email from users where email=$1`
 )
 
 type AuthRepository struct {
@@ -34,4 +36,17 @@ func (repo *AuthRepository) CheckUserDB(user model.User) (*dto.ResponseUser, err
 	}
 
 	return &dto.ResponseUser{User: user}, nil
+}
+
+func (repo *AuthRepository) ExistEmail(email string) (bool, error) {
+	err := repo.db.QueryRowx(getEmail, email).Scan(&email)
+	if err != nil && err == sql.ErrNoRows {
+		return false, nil
+	}
+
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
 }
