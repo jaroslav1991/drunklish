@@ -3,7 +3,7 @@ package auth
 import (
 	"drunklish/internal/model"
 	"drunklish/internal/service/auth/dto"
-	"drunklish/internal/service/auth/users"
+	"drunklish/internal/service/auth/token"
 	"errors"
 	"fmt"
 )
@@ -27,13 +27,13 @@ func (a *Auth) SignIn(req model.User) (*dto.ResponseUser, error) {
 		return nil, fmt.Errorf("%w", ErrEmail)
 	}
 
-	if checkPassword := users.CheckPasswordHash(checkUser.User.HashPassword, req.HashPassword); checkPassword != nil {
+	if checkPassword := token.CheckPasswordHash(checkUser.User.HashPassword, req.HashPassword); checkPassword != nil {
 		return nil, fmt.Errorf("%w", ErrPassword)
 	}
 
-	newToken, err := users.GenerateToken(checkUser.User.Id, checkUser.User.Email)
+	newToken, err := token.GenerateToken(checkUser.User.Id, checkUser.User.Email)
 	if err != nil {
-		return nil, fmt.Errorf("%w", users.InvalidToken)
+		return nil, fmt.Errorf("%w", token.InvalidToken)
 	}
 	checkUser.Token = newToken
 

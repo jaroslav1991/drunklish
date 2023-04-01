@@ -9,7 +9,7 @@ import (
 	"drunklish/internal/service/auth"
 	"drunklish/internal/service/auth/dto"
 	"drunklish/internal/service/auth/repository"
-	"drunklish/internal/service/auth/users"
+	"drunklish/internal/service/auth/token"
 	"drunklish/internal/service/word"
 	dto2 "drunklish/internal/service/word/dto"
 	repository2 "drunklish/internal/service/word/repository"
@@ -316,7 +316,7 @@ func TestSignInHandlerPositive(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
-	hashPassword, err := users.HashPassword(userDB.User.HashPassword)
+	hashPassword, err := token.HashPassword(userDB.User.HashPassword)
 	assert.NoError(t, err)
 	userDB.User.HashPassword = hashPassword
 
@@ -414,8 +414,8 @@ func TestSignInHandlerNegativeErrToken(t *testing.T) {
 
 	var user model.User
 
-	_, err = users.GenerateToken(user.Id, user.Email)
-	assert.ErrorIs(t, err, users.InvalidToken)
+	_, err = token.GenerateToken(user.Id, user.Email)
+	assert.ErrorIs(t, err, token.InvalidToken)
 }
 
 // Testing DeleteWord ----------------------------------------------------------------------------------------------

@@ -3,7 +3,7 @@ package auth
 import (
 	"drunklish/internal/model"
 	"drunklish/internal/service/auth/dto"
-	"drunklish/internal/service/auth/users"
+	"drunklish/internal/service/auth/token"
 	"drunklish/internal/service/auth/validator"
 	"errors"
 	"fmt"
@@ -37,7 +37,7 @@ func (a *Auth) SignUp(req dto.SignUpRequest) (*model.User, error) {
 		return nil, err
 	}
 
-	hashPassword, err := users.HashPassword(req.Password)
+	hashPassword, err := token.HashPassword(req.Password)
 	if err != nil {
 		return nil, err
 	}

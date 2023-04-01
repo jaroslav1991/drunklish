@@ -4,7 +4,7 @@ import (
 	"drunklish/internal/model"
 	"drunklish/internal/service/auth"
 	"drunklish/internal/service/auth/dto"
-	"drunklish/internal/service/auth/users"
+	"drunklish/internal/service/auth/token"
 	"drunklish/internal/service/word"
 	dto2 "drunklish/internal/service/word/dto"
 	"encoding/json"
@@ -208,7 +208,7 @@ func DeleteWordHandler(wd *word.Word) http.HandlerFunc {
 				return
 			}
 
-			authClaims, err := users.ParseToken(jwtCookies.Value)
+			authClaims, err := token.ParseToken(jwtCookies.Value)
 			if err != nil {
 				return
 			}

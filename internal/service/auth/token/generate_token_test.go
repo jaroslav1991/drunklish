@@ -1,4 +1,4 @@
-package users
+package token
 
 import (
 	"github.com/stretchr/testify/assert"
