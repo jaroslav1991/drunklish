@@ -9,8 +9,10 @@ import (
 )
 
 type Auth struct {
-	repo   Repository
-	hashFn func(password string) (string, error)
+	repo            Repository
+	hashFn          func(password string) (string, error)
+	checkPasswordFn func(hash, password string) error
+	generateTokenFn func(userId int64, email string) (string, error)
 }
 
 func NewAuthService(repo Repository) *Auth {

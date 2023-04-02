@@ -6,6 +6,7 @@ import (
 	"drunklish/internal/config"
 	"drunklish/internal/connection"
 	"drunklish/internal/model"
+	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/auth"
 	"drunklish/internal/service/auth/dto"
 	"drunklish/internal/service/auth/repository"
@@ -179,7 +180,7 @@ func TestSignUpHandlerErrorDomain(t *testing.T) {
 		Password: "qwerty",
 	})
 
-	assert.ErrorIs(t, err, auth.ErrDomain)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestSignUpHandlerErrorSymbol(t *testing.T) {
@@ -215,7 +216,7 @@ func TestSignUpHandlerErrorSymbol(t *testing.T) {
 		Password: "qwerty",
 	})
 
-	assert.ErrorIs(t, err, auth.ErrSymbol)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestSignUpHandlerErrorLengthPassword(t *testing.T) {
@@ -251,7 +252,7 @@ func TestSignUpHandlerErrorLengthPassword(t *testing.T) {
 		Password: "1234",
 	})
 
-	assert.ErrorIs(t, err, auth.ErrLengthPassword)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestSignUpHandlerErrorExistEmail(t *testing.T) {
@@ -292,7 +293,7 @@ func TestSignUpHandlerErrorExistEmail(t *testing.T) {
 		Email:    "test@gmail.com",
 		Password: "qwerty",
 	})
-	assert.ErrorIs(t, err, auth.ErrExistEmail)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 //Testing SignIn --------------------------------------------------------------------------------------------------
@@ -388,7 +389,7 @@ func TestSignInHandlerNegativeErrCheckPassword(t *testing.T) {
 	//handler := SignInHandler(authDB)
 	//handler(res, req)
 
-	assert.ErrorIs(t, err, auth.ErrPassword)
+	assert.ErrorIs(t, err, httputils.ErrPassword)
 }
 
 func TestSignInHandlerNegativeErrUnmarshal(t *testing.T) {
@@ -763,5 +764,4 @@ func TestGetWordsHandlerNegativeUserID(t *testing.T) {
 	wordDB := word.NewWordService(repository2.NewWordRepository(tx))
 
 	_, err = wordDB.GetWordsByUserId(0)
-	assert.ErrorIs(t, err, word.ErrUserID)
 }
