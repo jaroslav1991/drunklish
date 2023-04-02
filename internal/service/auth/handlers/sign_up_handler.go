@@ -2,10 +2,11 @@ package handlers
 
 import (
 	"drunklish/internal/model"
+	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/auth/dto"
 	"encoding/json"
+	"fmt"
 	"io"
-	"log"
 	"net/http"
 )
 
@@ -19,41 +20,24 @@ func SignUpHandler(a SignUp) http.HandlerFunc {
 		if r.Method == http.MethodPost {
 			data, err := io.ReadAll(r.Body)
 			if err != nil {
-				log.Println("can't read data from user", err)
+				httputils.WriteErrorResponse(w, fmt.Errorf("%w: %v", httputils.ReadBodyError, err))
 				return
 			}
 
 			defer r.Body.Close()
 
 			if err := json.Unmarshal(data, &user); err != nil {
-				errorHandler(w, http.StatusBadRequest, nil)
-				log.Println(err)
+				httputils.WriteErrorResponse(w, fmt.Errorf("%w: %v", httputils.UnmarshalError, err))
 				return
 			}
 
 			_, err = a.SignUp(user)
 			if err != nil {
-				errorHandler(w, http.StatusUnprocessableEntity, err)
-				log.Println(err)
+				httputils.WriteErrorResponse(w, err)
 				return
 			}
 
-			respondHandler(w, http.StatusCreated, map[string]string{"INFO": "success created"})
+			httputils.WriteSuccessResponse(w, http.StatusOK, map[string]string{"INFO": "success created"})
 		}
-	}
-}
-
-func errorHandler(w http.ResponseWriter, code int, err error) {
-	respondHandler(w, code, map[string]string{"error": err.Error()})
-}
-
-func respondHandler(w http.ResponseWriter, code int, data interface{}) {
-	w.WriteHeader(code)
-	if data != nil {
-		response, err := json.Marshal(data)
-		if err != nil {
-			return
-		}
-		w.Write(response)
 	}
 }

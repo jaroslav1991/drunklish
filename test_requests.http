@@ -2,8 +2,8 @@ POST 127.0.0.1:8080/sign-up
 Content-Type: application/json
 
 {
-  "email": "new3@gmail.com",
-  "password": "qwerty"
+  "email": "test23@gmail.com",
+  "password": "qwe"
 }
 
 ####

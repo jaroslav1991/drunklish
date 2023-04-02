@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"drunklish/internal/model"
+	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/auth/dto"
 	"encoding/json"
 	"io"
@@ -27,14 +28,12 @@ func SignInHandler(a SignIn) http.HandlerFunc {
 			defer r.Body.Close()
 
 			if err := json.Unmarshal(data, &user); err != nil {
-				errorHandler(w, http.StatusBadRequest, nil)
-				log.Println(err)
+				httputils.WriteErrorResponse(w, err)
 				return
 			}
 			respUser, err := a.SignIn(user)
 			if err != nil {
-				errorHandler(w, http.StatusUnauthorized, err)
-				log.Println(err)
+				httputils.WriteErrorResponse(w, err)
 				return
 			}
 
@@ -47,7 +46,7 @@ func SignInHandler(a SignIn) http.HandlerFunc {
 				HttpOnly: true,
 			})
 
-			respondHandler(w, http.StatusOK, respUser)
+			httputils.WriteSuccessResponse(w, http.StatusOK, respUser)
 		}
 	}
 }
