@@ -1,7 +1,7 @@
 package model
 
 import (
-	"drunklish/internal/service"
+	"drunklish/internal/pkg/db"
 )
 
 const (
@@ -19,7 +19,7 @@ const (
 );`
 )
 
-func CreateTables(s *service.Storage) error {
+func CreateTables(s *db.Storage) error {
 	tx := s.TX.MustBegin()
 	tx.MustExec(createUserTable)
 	tx.MustExec(createWordsTable)

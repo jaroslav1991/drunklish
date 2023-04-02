@@ -1,0 +1,52 @@
+package handlers
+
+import (
+	"drunklish/internal/model"
+	"drunklish/internal/pkg/httputils"
+	"drunklish/internal/service/auth/dto"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"time"
+)
+
+type SignIn interface {
+	SignIn(req model.User) (*dto.ResponseUser, error)
+}
+
+func SignInHandler(a SignIn) http.HandlerFunc {
+	var user model.User
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			data, err := io.ReadAll(r.Body)
+			if err != nil {
+				httputils.WriteErrorResponse(w, fmt.Errorf("%w: %v", httputils.ReadBodyError, err))
+				return
+			}
+
+			defer r.Body.Close()
+
+			if err := json.Unmarshal(data, &user); err != nil {
+				httputils.WriteErrorResponse(w, fmt.Errorf("%w: %v", httputils.UnmarshalError, err))
+				return
+			}
+			respUser, err := a.SignIn(user)
+			if err != nil {
+				httputils.WriteErrorResponse(w, err)
+				return
+			}
+
+			http.SetCookie(w, &http.Cookie{
+				Name:     "jwt",
+				Value:    respUser.Token,
+				Path:     "/",
+				Expires:  time.Now().Add(100 * time.Hour),
+				Secure:   true,
+				HttpOnly: true,
+			})
+
+			httputils.WriteSuccessResponse(w, http.StatusOK, respUser)
+		}
+	}
+}

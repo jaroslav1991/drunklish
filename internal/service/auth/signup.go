@@ -2,44 +2,36 @@ package auth
 
 import (
 	"drunklish/internal/model"
+	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/auth/dto"
-	"drunklish/internal/service/auth/token"
 	"drunklish/internal/service/auth/validator"
-	"errors"
 	"fmt"
-)
-
-var (
-	ErrDomain         = errors.New("wrong domain for email")
-	ErrSymbol         = errors.New("must be one '@' symbol in email")
-	ErrLengthPassword = errors.New("password must be more than 5 symbols")
-	ErrExistEmail     = errors.New("email is already exists")
 )
 
 func (a *Auth) SignUp(req dto.SignUpRequest) (*model.User, error) {
 	if errDomain := validator.ValidateDomain(req.Email); errDomain != true {
-		return nil, fmt.Errorf("%w", ErrDomain)
+		return nil, fmt.Errorf("invalid domain fail: %w", httputils.ErrValidation)
 	}
 
 	if errCountSymbol := validator.ValidateSymbol(req.Email); errCountSymbol != true {
-		return nil, fmt.Errorf("%w", ErrSymbol)
+		return nil, fmt.Errorf("invalid symbols: %w", httputils.ErrValidation)
 	}
 
 	if errLengthPassword := validator.LengthPassword(req.Password); errLengthPassword != true {
-		return nil, fmt.Errorf("%w", ErrLengthPassword)
+		return nil, fmt.Errorf("invalid length password: %w", httputils.ErrValidation)
 	}
 
 	existEmail, err := a.repo.ExistEmail(req.Email)
 	if existEmail {
-		return nil, ErrExistEmail
+		return nil, httputils.ErrExistEmail
 	}
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("check exist email: %w", httputils.ErrInternalServer)
 	}
 
-	hashPassword, err := token.HashPassword(req.Password)
+	hashPassword, err := a.hashFn(req.Password)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("fail hash password: %w", httputils.ErrInternalServer)
 	}
 
 	createUser, err := a.repo.CreateUser(dto.SignUpRequest{
@@ -47,7 +39,7 @@ func (a *Auth) SignUp(req dto.SignUpRequest) (*model.User, error) {
 		Password: hashPassword,
 	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %v", httputils.ErrInternalServer, err)
 	}
 
 	return createUser, nil

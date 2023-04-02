@@ -6,6 +6,7 @@ import (
 	"drunklish/internal/config"
 	"drunklish/internal/connection"
 	"drunklish/internal/model"
+	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/auth"
 	"drunklish/internal/service/auth/dto"
 	"drunklish/internal/service/auth/repository"
@@ -46,7 +47,7 @@ func TestSignUpHandlerPositive(t *testing.T) {
 	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
 	assert.NoError(t, err)
 
-	authDB := auth.NewAuthService(tx, repository.NewAuthRepository(tx))
+	authDB := auth.NewAuthService(repository.NewAuthRepository(tx))
 
 	req := httptest.NewRequest("POST", "/sign-up", bytes.NewBuffer([]byte(`{"email":"test@gmail.com","password":"qwerty"}`)))
 	res := httptest.NewRecorder()
@@ -136,7 +137,7 @@ func TestSignUpHandlerUnmarshalNegative(t *testing.T) {
 	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
 	assert.NoError(t, err)
 
-	authDB := auth.NewAuthService(tx, repository.NewAuthRepository(tx))
+	authDB := auth.NewAuthService(repository.NewAuthRepository(tx))
 
 	req := httptest.NewRequest("POST", "/sign-up", nil)
 	res := httptest.NewRecorder()
@@ -172,14 +173,14 @@ func TestSignUpHandlerErrorDomain(t *testing.T) {
 	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
 	assert.NoError(t, err)
 
-	authDB := auth.NewAuthService(tx, repository.NewAuthRepository(tx))
+	authDB := auth.NewAuthService(repository.NewAuthRepository(tx))
 
 	_, err = authDB.SignUp(dto.SignUpRequest{
 		Email:    "test@gmail.ru",
 		Password: "qwerty",
 	})
 
-	assert.ErrorIs(t, err, auth.ErrDomain)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestSignUpHandlerErrorSymbol(t *testing.T) {
@@ -208,14 +209,14 @@ func TestSignUpHandlerErrorSymbol(t *testing.T) {
 	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
 	assert.NoError(t, err)
 
-	authDB := auth.NewAuthService(tx, repository.NewAuthRepository(tx))
+	authDB := auth.NewAuthService(repository.NewAuthRepository(tx))
 
 	_, err = authDB.SignUp(dto.SignUpRequest{
 		Email:    "test@@gmail.com",
 		Password: "qwerty",
 	})
 
-	assert.ErrorIs(t, err, auth.ErrSymbol)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestSignUpHandlerErrorLengthPassword(t *testing.T) {
@@ -244,14 +245,14 @@ func TestSignUpHandlerErrorLengthPassword(t *testing.T) {
 	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
 	assert.NoError(t, err)
 
-	authDB := auth.NewAuthService(tx, repository.NewAuthRepository(tx))
+	authDB := auth.NewAuthService(repository.NewAuthRepository(tx))
 
 	_, err = authDB.SignUp(dto.SignUpRequest{
 		Email:    "test@gmail.com",
 		Password: "1234",
 	})
 
-	assert.ErrorIs(t, err, auth.ErrLengthPassword)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestSignUpHandlerErrorExistEmail(t *testing.T) {
@@ -280,7 +281,7 @@ func TestSignUpHandlerErrorExistEmail(t *testing.T) {
 	_, err = tx.Exec("create table if not exists words (id bigserial primary key,word varchar(55) not null,translate varchar(55) not null,created_at timestamp,user_id bigint references users(id))")
 	assert.NoError(t, err)
 
-	authDB := auth.NewAuthService(tx, repository.NewAuthRepository(tx))
+	authDB := auth.NewAuthService(repository.NewAuthRepository(tx))
 
 	_, err = authDB.SignUp(dto.SignUpRequest{
 		Email:    "test@gmail.com",
@@ -292,7 +293,7 @@ func TestSignUpHandlerErrorExistEmail(t *testing.T) {
 		Email:    "test@gmail.com",
 		Password: "qwerty",
 	})
-	assert.ErrorIs(t, err, auth.ErrExistEmail)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 //Testing SignIn --------------------------------------------------------------------------------------------------
@@ -302,7 +303,7 @@ func TestSignInHandlerPositive(t *testing.T) {
 	db, err := connection.NewPostgresDB(dbConfig)
 	assert.NoError(t, err)
 
-	authDB := auth.NewAuthService(db, repository.NewAuthRepository(db))
+	authDB := auth.NewAuthService(repository.NewAuthRepository(db))
 
 	req := httptest.NewRequest("POST", "/sign-in", bytes.NewBuffer([]byte(`{"email":"test@yahoo.com","hash_password":"qwerty"}`)))
 	res := httptest.NewRecorder()
@@ -335,7 +336,7 @@ func TestSignInHandlerNegativeErrEmail(t *testing.T) {
 	db, err := connection.NewPostgresDB(dbConfig)
 	assert.NoError(t, err)
 
-	authDB := auth.NewAuthService(db, repository.NewAuthRepository(db))
+	authDB := auth.NewAuthService(repository.NewAuthRepository(db))
 
 	//req := httptest.NewRequest("POST", "/sign-in", bytes.NewBuffer([]byte(`{"email":"lox@yahoo.com","hash_password":"qwerty"}`)))
 	//res := httptest.NewRecorder()
@@ -347,7 +348,7 @@ func TestSignInHandlerNegativeErrEmail(t *testing.T) {
 		Email:        "wrong@yahoo.com",
 		HashPassword: "qwerty",
 	})
-	assert.ErrorIs(t, err, auth.ErrEmail)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestSignInHandlerNegativeErrCheckPassword(t *testing.T) {
@@ -375,7 +376,7 @@ func TestSignInHandlerNegativeErrCheckPassword(t *testing.T) {
 	_, err = tx.Exec("insert into users (email, hash_password) values ($1, $2)", "test@yahoo.com", "qwerty")
 	assert.NoError(t, err)
 
-	authDB := auth.NewAuthService(tx, repository.NewAuthRepository(tx))
+	authDB := auth.NewAuthService(repository.NewAuthRepository(tx))
 
 	_, err = authDB.SignIn(model.User{
 		Email:        "test@yahoo.com",
@@ -388,7 +389,7 @@ func TestSignInHandlerNegativeErrCheckPassword(t *testing.T) {
 	//handler := SignInHandler(authDB)
 	//handler(res, req)
 
-	assert.ErrorIs(t, err, auth.ErrPassword)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestSignInHandlerNegativeErrUnmarshal(t *testing.T) {
@@ -396,7 +397,7 @@ func TestSignInHandlerNegativeErrUnmarshal(t *testing.T) {
 	db, err := connection.NewPostgresDB(dbConfig)
 	assert.NoError(t, err)
 
-	authDB := auth.NewAuthService(db, repository.NewAuthRepository(db))
+	authDB := auth.NewAuthService(repository.NewAuthRepository(db))
 
 	req := httptest.NewRequest("POST", "/sign-in", nil)
 	res := httptest.NewRecorder()
@@ -410,7 +411,7 @@ func TestSignInHandlerNegativeErrToken(t *testing.T) {
 	db, err := connection.NewPostgresDB(dbConfig)
 	assert.NoError(t, err)
 
-	auth.NewAuthService(db, repository.NewAuthRepository(db))
+	auth.NewAuthService(repository.NewAuthRepository(db))
 
 	var user model.User
 
@@ -763,5 +764,4 @@ func TestGetWordsHandlerNegativeUserID(t *testing.T) {
 	wordDB := word.NewWordService(repository2.NewWordRepository(tx))
 
 	_, err = wordDB.GetWordsByUserId(0)
-	assert.ErrorIs(t, err, word.ErrUserID)
 }

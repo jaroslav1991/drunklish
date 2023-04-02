@@ -2,7 +2,7 @@ package repository
 
 import (
 	"drunklish/internal/model"
-	"drunklish/internal/service"
+	"drunklish/internal/pkg/db"
 	"drunklish/internal/service/word/dto"
 	"time"
 )
@@ -16,10 +16,10 @@ const (
 )
 
 type WordRepository struct {
-	db service.DB
+	db db.DB
 }
 
-func NewWordRepository(db service.DB) *WordRepository {
+func NewWordRepository(db db.DB) *WordRepository {
 	return &WordRepository{db: db}
 }
 
