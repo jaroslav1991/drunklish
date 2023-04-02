@@ -348,7 +348,7 @@ func TestSignInHandlerNegativeErrEmail(t *testing.T) {
 		Email:        "wrong@yahoo.com",
 		HashPassword: "qwerty",
 	})
-	assert.ErrorIs(t, err, auth.ErrEmail)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestSignInHandlerNegativeErrCheckPassword(t *testing.T) {
@@ -389,7 +389,7 @@ func TestSignInHandlerNegativeErrCheckPassword(t *testing.T) {
 	//handler := SignInHandler(authDB)
 	//handler(res, req)
 
-	assert.ErrorIs(t, err, httputils.ErrPassword)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestSignInHandlerNegativeErrUnmarshal(t *testing.T) {

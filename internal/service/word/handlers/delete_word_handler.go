@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"drunklish/internal/model"
+	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/auth/token"
 	"encoding/json"
 	"fmt"
@@ -20,14 +21,14 @@ func DeleteWordHandler(wd DeleteWord) http.HandlerFunc {
 		if r.Method == http.MethodDelete {
 			data, err := io.ReadAll(r.Body)
 			if err != nil {
-				log.Println("can't read data from delete word", err)
+				httputils.WriteErrorResponse(w, fmt.Errorf("%w: %v", httputils.ReadBodyError, err))
 				return
 			}
 
 			defer r.Body.Close()
 
 			if err := json.Unmarshal(data, &userWord); err != nil {
-				errorHandler(w, http.StatusBadRequest, nil)
+				httputils.WriteErrorResponse(w, fmt.Errorf("%w: %v", httputils.UnmarshalError, err))
 				log.Println(err)
 				return
 			}
@@ -40,8 +41,7 @@ func DeleteWordHandler(wd DeleteWord) http.HandlerFunc {
 			}
 
 			if jwtCookies == nil {
-				respondHandler(w, http.StatusForbidden, map[string]string{"error": "forbidden"})
-				log.Println(err)
+				httputils.WriteErrorResponse(w, fmt.Errorf("%w: %v", httputils.ErrValidation, err))
 				return
 			}
 
@@ -52,12 +52,11 @@ func DeleteWordHandler(wd DeleteWord) http.HandlerFunc {
 			userId = authClaims.UserId
 
 			if err := wd.DeleteWordByWord(userWord.Word, userId); err != nil {
-				errorHandler(w, http.StatusNotFound, err)
-				log.Println(err)
+				httputils.WriteErrorResponse(w, err)
 				return
 			}
 
-			respondHandler(w, http.StatusOK, fmt.Sprintf("deleting word - %s -  success", userWord.Word))
+			httputils.WriteSuccessResponse(w, http.StatusOK, fmt.Sprintf("deleting word - %s -  success", userWord.Word))
 		}
 	}
 }

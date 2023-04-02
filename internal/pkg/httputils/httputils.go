@@ -30,6 +30,11 @@ func WriteErrorResponse(w http.ResponseWriter, err error) {
 		response["error"] = err.Error()
 	}
 
+	if errors.Is(err, ErrWordNotExist) {
+		code = http.StatusForbidden
+		response["error"] = err.Error()
+	}
+
 	log.Println(err)
 	WriteSuccessResponse(w, code, response)
 }

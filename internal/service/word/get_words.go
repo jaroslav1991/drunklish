@@ -2,14 +2,16 @@ package word
 
 import (
 	"drunklish/internal/model"
+	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/word/dto"
+	"fmt"
 	"time"
 )
 
 func (w *Word) GetWordsByUserId(userId int64) ([]*dto.ResponseWord, error) {
 	words, err := w.repo.GetWords(userId)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %v", httputils.ErrInternalServer, err)
 	}
 
 	return words, nil

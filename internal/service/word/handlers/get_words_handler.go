@@ -2,9 +2,11 @@ package handlers
 
 import (
 	"drunklish/internal/model"
+	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/auth/token"
 	"drunklish/internal/service/word/dto"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -26,15 +28,14 @@ func GetWordsHandler(wd GetAllWords) http.HandlerFunc {
 		if r.Method == http.MethodGet {
 			data, err := io.ReadAll(r.Body)
 			if err != nil {
-				log.Println("can't read data from getWords", err)
+				httputils.WriteErrorResponse(w, fmt.Errorf("%w: %v", httputils.ReadBodyError, err))
 				return
 			}
 
 			defer r.Body.Close()
 
 			if err := json.Unmarshal(data, &userWord); err != nil {
-				errorHandler(w, http.StatusBadRequest, nil)
-				log.Println(err)
+				httputils.WriteErrorResponse(w, fmt.Errorf("%w: %v", httputils.UnmarshalError, err))
 				return
 			}
 
@@ -51,11 +52,11 @@ func GetWordsHandler(wd GetAllWords) http.HandlerFunc {
 
 			words, err := wd.GetWordsByUserId(userId)
 			if err != nil {
-				errorHandler(w, http.StatusUnauthorized, err)
+				httputils.WriteErrorResponse(w, err)
 				log.Println(err)
 				return
 			}
-			respondHandler(w, http.StatusOK, words)
+			httputils.WriteSuccessResponse(w, http.StatusOK, words)
 		}
 	}
 }
