@@ -96,7 +96,7 @@ func TestAuth_SignIn_Negative_FailCheckPassword(t *testing.T) {
 	}
 
 	_, err := service.SignIn(userModel)
-	assert.ErrorIs(t, err, httputils.ErrInternalServer)
+	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestAuth_SignIn_Negative_FailCheckUser(t *testing.T) {

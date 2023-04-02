@@ -10,7 +10,7 @@ import (
 func (a *Auth) SignIn(req model.User) (*dto.ResponseUser, error) {
 	existEmail, err := a.repo.ExistEmail(req.Email)
 	if !existEmail {
-		return nil, fmt.Errorf("invalid email: %w", httputils.ErrValidation)
+		return nil, fmt.Errorf("email not exists: %w", httputils.ErrValidation)
 	}
 	if err != nil {
 		return nil, httputils.ErrValidation
@@ -21,8 +21,8 @@ func (a *Auth) SignIn(req model.User) (*dto.ResponseUser, error) {
 		return nil, fmt.Errorf("invalid check user DB: %w", httputils.ErrValidation)
 	}
 
-	if checkPassword := a.checkPasswordFn(checkUser.User.HashPassword, req.HashPassword); checkPassword != nil {
-		return nil, fmt.Errorf("invalid password hash: %w", httputils.ErrInternalServer)
+	if err := a.checkPasswordFn(checkUser.User.HashPassword, req.HashPassword); err != nil {
+		return nil, fmt.Errorf("invalid password hash: %w", httputils.ErrValidation)
 	}
 
 	newToken, err := a.generateTokenFn(checkUser.User.Id, checkUser.User.Email)

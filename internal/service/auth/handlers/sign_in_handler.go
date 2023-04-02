@@ -5,8 +5,8 @@ import (
 	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/auth/dto"
 	"encoding/json"
+	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"time"
 )
@@ -21,14 +21,14 @@ func SignInHandler(a SignIn) http.HandlerFunc {
 		if r.Method == http.MethodPost {
 			data, err := io.ReadAll(r.Body)
 			if err != nil {
-				log.Println("can't read data from user", err)
+				httputils.WriteErrorResponse(w, fmt.Errorf("%w: %v", httputils.ReadBodyError, err))
 				return
 			}
 
 			defer r.Body.Close()
 
 			if err := json.Unmarshal(data, &user); err != nil {
-				httputils.WriteErrorResponse(w, err)
+				httputils.WriteErrorResponse(w, fmt.Errorf("%w: %v", httputils.UnmarshalError, err))
 				return
 			}
 			respUser, err := a.SignIn(user)

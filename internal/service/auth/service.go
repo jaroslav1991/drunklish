@@ -16,7 +16,11 @@ type Auth struct {
 }
 
 func NewAuthService(repo Repository) *Auth {
-	return &Auth{repo: repo, hashFn: token.HashPassword}
+	return &Auth{repo: repo,
+		hashFn:          token.HashPassword,
+		checkPasswordFn: token.CheckPasswordHash,
+		generateTokenFn: token.GenerateToken,
+	}
 }
 
 type Repository interface {
