@@ -1,97 +1,69 @@
 package handlers
 
 import (
-	"bytes"
-	"context"
-	"drunklish/internal/config"
-	"drunklish/internal/connection"
-	"drunklish/internal/pkg/httputils"
-	"drunklish/internal/service/auth"
+	"drunklish/internal/model"
 	"drunklish/internal/service/auth/dto"
-	"drunklish/internal/service/auth/repository"
+	"errors"
 	"github.com/stretchr/testify/assert"
-	"net/http"
-	"net/http/httptest"
 	"testing"
 )
 
-func TestSignUpHandler_Positive(t *testing.T) {
-	dbConfig := config.GetDBConfig()
-	db, err := connection.NewPostgresDB(dbConfig)
-	assert.NoError(t, err)
-
-	tx, err := db.BeginTxx(context.Background(), nil)
-	assert.NoError(t, err)
-
-	defer tx.Rollback()
-
-	_, err = tx.Exec("create table if not exists users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
-	assert.NoError(t, err)
-
-	repo := repository.NewAuthRepository(tx)
-	authDB := auth.NewAuthService(repo)
-
-	req := httptest.NewRequest("POST", "/sign-up", bytes.NewBuffer([]byte(`{"email":"asd@gmail.com","password":"qwerty"}`)))
-	res := httptest.NewRecorder()
-
-	handler := SignUpHandler(authDB)
-	handler(res, req)
-
-	assert.Equal(t, http.StatusOK, res.Code)
+type mockService struct {
+	fnR func(req dto.SignUpRequest) (*model.User, error)
+	fnA func(req model.User) (*dto.ResponseUser, error)
 }
 
-func TestSignUpHandler_NegativeFailSignUp(t *testing.T) {
-	dbConfig := config.GetDBConfig()
-	db, err := connection.NewPostgresDB(dbConfig)
-	assert.NoError(t, err)
+func (m *mockService) SignUp(req dto.SignUpRequest) (*model.User, error) {
+	return m.fnR(req)
+}
 
-	tx, err := db.BeginTxx(context.Background(), nil)
-	assert.NoError(t, err)
+func (m *mockService) SignIn(req model.User) (*dto.ResponseUser, error) {
+	return m.fnA(req)
+}
 
-	defer tx.Rollback()
+func TestSignUpHandler_Positive(t *testing.T) {
+	service := &mockService{fnR: func(req dto.SignUpRequest) (*model.User, error) {
+		assert.Equal(t, "qwerty", req.Email)
+		assert.Equal(t, "123", req.Password)
 
-	_, err = tx.Exec("create table if not exists users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
-	assert.NoError(t, err)
+		return &model.User{
+			Id:           1,
+			Email:        "qwerty",
+			HashPassword: "123",
+		}, nil
+	}}
 
-	repo := repository.NewAuthRepository(tx)
-	authDB := auth.NewAuthService(repo)
+	expectedResponse := &model.User{
+		Id:           1,
+		Email:        "qwerty",
+		HashPassword: "123",
+	}
 
-	req := httptest.NewRequest("POST", "/sign-up", bytes.NewBuffer([]byte(`{"email":"asd@gyandex.com.com","password":"qwerty"}`)))
-	res := httptest.NewRecorder()
+	handler := SignUpHandler(service)
 
-	handler := SignUpHandler(authDB)
-	handler(res, req)
-
-	_, err = authDB.SignUp(dto.SignUpRequest{
-		Email:    "asd@gyandex.com",
-		Password: "qwerty",
+	actualResponse, actualErr := handler(dto.SignUpRequest{
+		Email:    "qwerty",
+		Password: "123",
 	})
 
-	assert.ErrorIs(t, err, httputils.ErrValidation)
-	assert.Equal(t, http.StatusBadRequest, res.Code)
+	assert.NoError(t, actualErr)
+	assert.Equal(t, expectedResponse, actualResponse)
 }
 
-func TestSignUpHandler_NegativeFailUnmarshal(t *testing.T) {
-	dbConfig := config.GetDBConfig()
-	db, err := connection.NewPostgresDB(dbConfig)
-	assert.NoError(t, err)
+func TestSignUpHandler_Negative(t *testing.T) {
+	service := &mockService{fnR: func(req dto.SignUpRequest) (*model.User, error) {
+		assert.Equal(t, "qwerty", req.Email)
+		assert.Equal(t, "123", req.Password)
 
-	tx, err := db.BeginTxx(context.Background(), nil)
-	assert.NoError(t, err)
+		return nil, errors.New("fuck up")
+	}}
 
-	defer tx.Rollback()
+	handler := SignUpHandler(service)
 
-	_, err = tx.Exec("create table if not exists users (id bigserial primary key,email varchar(55) unique not null ,hash_password varchar(255) not null)")
-	assert.NoError(t, err)
+	_, actualErr := handler(dto.SignUpRequest{
+		Email:    "qwerty",
+		Password: "123",
+	})
 
-	repo := repository.NewAuthRepository(tx)
-	authDB := auth.NewAuthService(repo)
-
-	req := httptest.NewRequest("POST", "/sign-up", bytes.NewBuffer([]byte(`{"email":"asd@yandex.ru","password":"qwerty",}`)))
-	res := httptest.NewRecorder()
-
-	handler := SignUpHandler(authDB)
-	handler(res, req)
-
-	assert.Equal(t, http.StatusBadRequest, res.Code)
+	assert.Error(t, actualErr)
 }

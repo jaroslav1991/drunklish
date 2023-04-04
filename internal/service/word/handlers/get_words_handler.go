@@ -41,14 +41,21 @@ func GetWordsHandler(wd GetAllWords) http.HandlerFunc {
 
 			var userId int64
 
-			jwtCookies, _ := r.Cookie("jwt")
-			if jwtCookies != nil {
-				authClaims, err := token.ParseToken(jwtCookies.Value)
-				if err != nil {
-					return
-				}
-				userId = authClaims.UserId
+			jwtCookies, err := r.Cookie("jwt")
+			if err != nil {
+				return
 			}
+
+			if jwtCookies == nil {
+				httputils.WriteErrorResponse(w, fmt.Errorf("%w: %v", httputils.ErrValidation, err))
+				return
+			}
+
+			authClaims, err := token.ParseToken(jwtCookies.Value)
+			if err != nil {
+				return
+			}
+			userId = authClaims.UserId
 
 			words, err := wd.GetWordsByUserId(userId)
 			if err != nil {

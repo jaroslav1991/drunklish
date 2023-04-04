@@ -5,6 +5,7 @@ import (
 	"drunklish/internal/connection"
 	"drunklish/internal/model"
 	pkgdb "drunklish/internal/pkg/db"
+	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/auth"
 	authHandlers "drunklish/internal/service/auth/handlers"
 	authRepo "drunklish/internal/service/auth/repository"
@@ -35,8 +36,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	http.Handle("/sign-up", authHandlers.SignUpHandler(authDB))
-	http.Handle("/sign-in", authHandlers.SignInHandler(authDB))
+	http.Handle("/sign-up", httputils.WrapRpc(authHandlers.SignUpHandler(authDB)))
+	http.Handle("/sign-in", httputils.WrapRpc(authHandlers.SignInHandler(authDB)))
 	http.Handle("/word", wordsHandlers.CreateWordHandler(wordDB))
 	http.Handle("/get-words", wordsHandlers.GetWordsHandler(wordDB))
 	http.Handle("/delete", wordsHandlers.DeleteWordHandler(wordDB))
