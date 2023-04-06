@@ -18,6 +18,10 @@ type ResponseWords struct {
 	Words []ResponseWord
 }
 
+type ResponseFromDeleting struct {
+	Answer string `json:"answer"`
+}
+
 type RequestForGettingWord struct {
 	UserId int64 `json:"user_id"`
 }

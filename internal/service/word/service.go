@@ -20,5 +20,5 @@ type Repository interface {
 	Create(word dto.CreateWordRequest) (*model.Word, error)
 	GetWords(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
 	GetWordsByCreated(userId int64, createdAt time.Time) (*model.Word, error)
-	DeleteWord(word dto.RequestForDeletingWord) error
+	DeleteWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
 }

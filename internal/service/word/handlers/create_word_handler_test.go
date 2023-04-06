@@ -12,7 +12,7 @@ import (
 type mockService struct {
 	fnC func(word dto.CreateWordRequest) (*model.Word, error)
 	fnG func(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
-	fnD func(word dto.RequestForDeletingWord) error
+	fnD func(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
 }
 
 func (m *mockService) CreateWord(word dto.CreateWordRequest) (*model.Word, error) {
@@ -23,7 +23,7 @@ func (m *mockService) GetWordsByUserId(word dto.RequestForGettingWord) (*dto.Res
 	return m.fnG(word)
 }
 
-func (m *mockService) DeleteWordByWord(word dto.RequestForDeletingWord) error {
+func (m *mockService) DeleteWordByWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {
 	return m.fnD(word)
 }
 

@@ -52,11 +52,12 @@ func (mr *MockRepositoryMockRecorder) Create(word interface{}) *gomock.Call {
 }
 
 // DeleteWord mocks base method.
-func (m *MockRepository) DeleteWord(word dto.RequestForDeletingWord) error {
+func (m *MockRepository) DeleteWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteWord", word)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(*dto.ResponseFromDeleting)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // DeleteWord indicates an expected call of DeleteWord.

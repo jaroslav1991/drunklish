@@ -16,10 +16,6 @@ func (w *Word) GetWordsByUserId(word dto.RequestForGettingWord) (*dto.ResponseWo
 		return nil, fmt.Errorf("%w: %v", httputils.ErrInternalServer, err)
 	}
 
-	if word.UserId == 0 {
-		return nil, fmt.Errorf("%w", httputils.ErrValidation)
-	}
-
 	return words, nil
 }
 

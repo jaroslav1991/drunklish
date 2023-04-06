@@ -9,11 +9,11 @@ import (
 
 func TestDeleteWordHandler_Positive(t *testing.T) {
 	service := &mockService{
-		fnD: func(word dto.RequestForDeletingWord) error {
+		fnD: func(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {
 			assert.Equal(t, "qwe", word.Word)
 			assert.Equal(t, int64(1), word.UserId)
 
-			return nil
+			return &dto.ResponseFromDeleting{Answer: "deleting success"}, nil
 		},
 	}
 
@@ -24,17 +24,18 @@ func TestDeleteWordHandler_Positive(t *testing.T) {
 
 	handler := DeleteWordHandler(service)
 
-	actualErr := handler(word)
+	actualAnswer, actualErr := handler(word)
 	assert.NoError(t, actualErr)
+	assert.Equal(t, &dto.ResponseFromDeleting{Answer: "deleting success"}, actualAnswer)
 }
 
 func TestDeleteWordHandler_Negative(t *testing.T) {
 	service := &mockService{
-		fnD: func(word dto.RequestForDeletingWord) error {
+		fnD: func(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {
 			assert.Equal(t, "qwe", word.Word)
 			assert.Equal(t, int64(1), word.UserId)
 
-			return errors.New("fuck up")
+			return nil, errors.New("fuck up")
 		},
 	}
 
@@ -45,6 +46,6 @@ func TestDeleteWordHandler_Negative(t *testing.T) {
 
 	handler := DeleteWordHandler(service)
 
-	actualErr := handler(word)
+	_, actualErr := handler(word)
 	assert.Error(t, actualErr)
 }
