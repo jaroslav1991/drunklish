@@ -11,10 +11,11 @@ var (
 	ErrWord = errors.New("word not exist")
 )
 
-func (w *Word) DeleteWordByWord(word dto.RequestForDeletingWord) error {
-	if err := w.repo.DeleteWord(word); err != nil {
-		return fmt.Errorf("%w", httputils.ErrWordNotExist)
+func (w *Word) DeleteWordByWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {
+	answer, err := w.repo.DeleteWord(word)
+	if err != nil {
+		return nil, fmt.Errorf("%w", httputils.ErrWordNotExist)
 	}
 
-	return nil
+	return answer, nil
 }

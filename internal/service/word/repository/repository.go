@@ -48,8 +48,8 @@ func (repo *WordRepository) Create(word dto.CreateWordRequest) (*model.Word, err
 	}, nil
 }
 
-func (repo *WordRepository) GetWords(wordReq dto.RequestForGettingWord) ([]*dto.ResponseWord, error) {
-	var words []*dto.ResponseWord
+func (repo *WordRepository) GetWords(wordReq dto.RequestForGettingWord) (*dto.ResponseWords, error) {
+	var words dto.ResponseWords
 
 	rows, err := repo.db.Query(getWordsQuery, wordReq.UserId)
 	if err != nil {
@@ -64,9 +64,9 @@ func (repo *WordRepository) GetWords(wordReq dto.RequestForGettingWord) ([]*dto.
 			return nil, err
 		}
 
-		words = append(words, &word)
+		words.Words = append(words.Words, word)
 	}
-	return words, nil
+	return &words, nil
 }
 
 func (repo *WordRepository) GetWordsByCreated(userId int64, createdAt time.Time) (*model.Word, error) {
@@ -79,16 +79,16 @@ func (repo *WordRepository) GetWordsByCreated(userId int64, createdAt time.Time)
 	return &word, nil
 }
 
-func (repo *WordRepository) DeleteWord(word dto.RequestForDeletingWord) error {
+func (repo *WordRepository) DeleteWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {
 	var wd model.Word
 
 	if err := repo.db.QueryRowx(selectWordQuery, word.Word, word.UserId).Scan(&wd.Word, &wd.Translate, &wd.UserId); err != nil {
-		return err
+		return nil, err
 	}
 
 	if _, err := repo.db.Exec(deleteWordQuery, word.Word, word.UserId); err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &dto.ResponseFromDeleting{Answer: "deleting success"}, nil
 }

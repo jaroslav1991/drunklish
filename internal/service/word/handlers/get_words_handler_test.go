@@ -9,22 +9,22 @@ import (
 
 func TestGetWordsHandler_Positive(t *testing.T) {
 	service := &mockService{
-		fnG: func(word dto.RequestForGettingWord) ([]*dto.ResponseWord, error) {
+		fnG: func(word dto.RequestForGettingWord) (*dto.ResponseWords, error) {
 			assert.Equal(t, int64(1), word.UserId)
 
-			return []*dto.ResponseWord{{
+			return &dto.ResponseWords{Words: []dto.ResponseWord{{
 				Word:      "qwe",
 				Translate: "qwe",
-			}}, nil
+			}}}, nil
 		},
 	}
 
 	word := dto.RequestForGettingWord{UserId: int64(1)}
 
-	expectedResponse := []*dto.ResponseWord{{
+	expectedResponse := &dto.ResponseWords{Words: []dto.ResponseWord{{
 		Word:      "qwe",
 		Translate: "qwe",
-	}}
+	}}}
 
 	handler := GetWordsHandler(service)
 
@@ -35,7 +35,7 @@ func TestGetWordsHandler_Positive(t *testing.T) {
 
 func TestGetWordsHandler_Negative(t *testing.T) {
 	service := &mockService{
-		fnG: func(word dto.RequestForGettingWord) ([]*dto.ResponseWord, error) {
+		fnG: func(word dto.RequestForGettingWord) (*dto.ResponseWords, error) {
 			assert.Equal(t, int64(1), word.UserId)
 
 			return nil, errors.New("fuck up")

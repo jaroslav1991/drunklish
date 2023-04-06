@@ -7,6 +7,6 @@ import (
 
 type WordService interface {
 	CreateWord(word dto.CreateWordRequest) (*model.Word, error)
-	GetWordsByUserId(word dto.RequestForGettingWord) ([]*dto.ResponseWord, error)
-	DeleteWordByWord(word dto.RequestForDeletingWord) error
+	GetWordsByUserId(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
+	DeleteWordByWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
 }
