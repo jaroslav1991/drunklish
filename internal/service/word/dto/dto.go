@@ -13,3 +13,12 @@ type ResponseWord struct {
 	Word      string `json:"word"`
 	Translate string `json:"translate"`
 }
+
+type RequestForGettingWord struct {
+	UserId int64 `json:"user_id"`
+}
+
+type RequestForDeletingWord struct {
+	Word   string `json:"word"`
+	UserId int64  `json:"user_id"`
+}

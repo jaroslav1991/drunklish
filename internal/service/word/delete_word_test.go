@@ -2,6 +2,7 @@ package word
 
 import (
 	"drunklish/internal/pkg/httputils"
+	"drunklish/internal/service/word/dto"
 	"errors"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
@@ -12,15 +13,17 @@ func TestWord_DeleteWordByWord_Positive(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	word := "boogaga"
-	userId := int64(1)
+	wordRequest := dto.RequestForDeletingWord{
+		Word:   "boogaga",
+		UserId: int64(1),
+	}
 
 	repository := NewMockRepository(ctrl)
-	repository.EXPECT().DeleteWord(word, userId).Return(nil)
+	repository.EXPECT().DeleteWord(wordRequest).Return(nil)
 
 	service := NewWordService(repository)
 
-	actualErr := service.DeleteWordByWord(word, userId)
+	actualErr := service.DeleteWordByWord(wordRequest)
 	assert.NoError(t, actualErr)
 }
 
@@ -28,15 +31,17 @@ func TestWord_DeleteWordByWord_Negative(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	word := "boogaga"
-	userId := int64(1)
+	wordRequest := dto.RequestForDeletingWord{
+		Word:   "boogaga",
+		UserId: int64(1),
+	}
 
 	repository := NewMockRepository(ctrl)
-	repository.EXPECT().DeleteWord(word, userId).Return(errors.New("fail deleting"))
+	repository.EXPECT().DeleteWord(wordRequest).Return(errors.New("fail deleting"))
 
 	service := NewWordService(repository)
 
-	actualErr := service.DeleteWordByWord(word, userId)
+	actualErr := service.DeleteWordByWord(wordRequest)
 	assert.Error(t, actualErr)
 	assert.ErrorIs(t, actualErr, httputils.ErrWordNotExist)
 }

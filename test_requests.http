@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "email": "qwe@gmail.com",
-  "password": "qweqwe"
+  "password": "qwe"
 }
 
 ####
@@ -12,8 +12,9 @@ POST 127.0.0.1:8080/word
 Content-Type: application/json
 
 {
-  "word": "boo3",
-  "translate": "boo3"
+  "word": "test",
+  "translate": "test",
+  "user_id": 16
 }
 
 ####
@@ -28,17 +29,19 @@ Content-Type: application/json
 
 ####
 
-GET 127.0.0.1:8080/get-words
+POST 127.0.0.1:8080/get-words
 Content-Type: application/json
 
 {
+  "user_id": 6
 }
 
 ####
 
-DELETE 127.0.0.1:8080/delete
+POST 127.0.0.1:8080/delete
 Content-Type: application/json
 
 {
-  "word": "penis1"
+  "word": "test",
+  "user_id": 16
 }

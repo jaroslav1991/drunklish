@@ -48,10 +48,10 @@ func (repo *WordRepository) Create(word dto.CreateWordRequest) (*model.Word, err
 	}, nil
 }
 
-func (repo *WordRepository) GetWords(userId int64) ([]*dto.ResponseWord, error) {
+func (repo *WordRepository) GetWords(wordReq dto.RequestForGettingWord) ([]*dto.ResponseWord, error) {
 	var words []*dto.ResponseWord
 
-	rows, err := repo.db.Query(getWordsQuery, userId)
+	rows, err := repo.db.Query(getWordsQuery, wordReq.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -79,14 +79,14 @@ func (repo *WordRepository) GetWordsByCreated(userId int64, createdAt time.Time)
 	return &word, nil
 }
 
-func (repo *WordRepository) DeleteWord(word string, userId int64) error {
+func (repo *WordRepository) DeleteWord(word dto.RequestForDeletingWord) error {
 	var wd model.Word
 
-	if err := repo.db.QueryRowx(selectWordQuery, word, userId).Scan(&wd.Word, &wd.Translate, &wd.UserId); err != nil {
+	if err := repo.db.QueryRowx(selectWordQuery, word.Word, word.UserId).Scan(&wd.Word, &wd.Translate, &wd.UserId); err != nil {
 		return err
 	}
 
-	if _, err := repo.db.Exec(deleteWordQuery, word, userId); err != nil {
+	if _, err := repo.db.Exec(deleteWordQuery, word.Word, word.UserId); err != nil {
 		return err
 	}
 
