@@ -10,7 +10,7 @@ import (
 
 // todo: implement validator where check user in db for user_id
 
-func (w *Word) GetWordsByUserId(word dto.RequestForGettingWord) ([]*dto.ResponseWord, error) {
+func (w *Word) GetWordsByUserId(word dto.RequestForGettingWord) (*dto.ResponseWords, error) {
 	words, err := w.repo.GetWords(word)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %v", httputils.ErrInternalServer, err)

@@ -39,7 +39,7 @@ func main() {
 	http.Handle("/sign-up", httputils.WrapRpc(authHandlers.SignUpHandler(authDB)))
 	http.Handle("/sign-in", httputils.WrapRpc(authHandlers.SignInHandler(authDB)))
 	http.Handle("/word", httputils.WrapRpc(wordsHandlers.CreateWordHandler(wordDB)))
-	http.Handle("/get-words", httputils.WrapGetWordsRpc(wordsHandlers.GetWordsHandler(wordDB)))
+	http.Handle("/get-words", httputils.WrapRpc(wordsHandlers.GetWordsHandler(wordDB)))
 	http.Handle("/delete", httputils.WrapDeleteWordRpc(wordsHandlers.DeleteWordHandler(wordDB)))
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {

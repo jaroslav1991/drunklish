@@ -15,30 +15,30 @@ func TestWord_GetWordsByUserId_Positive(t *testing.T) {
 
 	word := dto.RequestForGettingWord{UserId: int64(1)}
 
-	wordsFromGet := []*dto.ResponseWord{{
+	wordsFromGet := dto.ResponseWords{Words: []dto.ResponseWord{{
 		Word:      "boogaga1",
 		Translate: "boo1",
 	}, {
 		Word:      "boogaga2",
-		Translate: "boo2",
-	}}
+		Translate: "boo",
+	}}}
 
 	repository := NewMockRepository(ctrl)
 
-	repository.EXPECT().GetWords(word).Return(wordsFromGet, nil)
+	repository.EXPECT().GetWords(word).Return(&wordsFromGet, nil)
 
 	service := NewWordService(repository)
 
 	actualWords, err := service.GetWordsByUserId(word)
 	assert.NoError(t, err)
 
-	assert.Equal(t, []*dto.ResponseWord{{
+	assert.Equal(t, &dto.ResponseWords{Words: []dto.ResponseWord{{
 		Word:      "boogaga1",
 		Translate: "boo1",
 	}, {
 		Word:      "boogaga2",
-		Translate: "boo2",
-	}}, actualWords)
+		Translate: "boo",
+	}}}, actualWords)
 }
 
 func TestWord_GetWordsByUserId_NegativeFailGetWord(t *testing.T) {

@@ -14,6 +14,10 @@ type ResponseWord struct {
 	Translate string `json:"translate"`
 }
 
+type ResponseWords struct {
+	Words []ResponseWord
+}
+
 type RequestForGettingWord struct {
 	UserId int64 `json:"user_id"`
 }

@@ -66,10 +66,10 @@ func (mr *MockRepositoryMockRecorder) DeleteWord(word interface{}) *gomock.Call 
 }
 
 // GetWords mocks base method.
-func (m *MockRepository) GetWords(word dto.RequestForGettingWord) ([]*dto.ResponseWord, error) {
+func (m *MockRepository) GetWords(word dto.RequestForGettingWord) (*dto.ResponseWords, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWords", word)
-	ret0, _ := ret[0].([]*dto.ResponseWord)
+	ret0, _ := ret[0].(*dto.ResponseWords)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

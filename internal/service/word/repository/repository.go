@@ -48,8 +48,8 @@ func (repo *WordRepository) Create(word dto.CreateWordRequest) (*model.Word, err
 	}, nil
 }
 
-func (repo *WordRepository) GetWords(wordReq dto.RequestForGettingWord) ([]*dto.ResponseWord, error) {
-	var words []*dto.ResponseWord
+func (repo *WordRepository) GetWords(wordReq dto.RequestForGettingWord) (*dto.ResponseWords, error) {
+	var words dto.ResponseWords
 
 	rows, err := repo.db.Query(getWordsQuery, wordReq.UserId)
 	if err != nil {
@@ -64,9 +64,9 @@ func (repo *WordRepository) GetWords(wordReq dto.RequestForGettingWord) ([]*dto.
 			return nil, err
 		}
 
-		words = append(words, &word)
+		words.Words = append(words.Words, word)
 	}
-	return words, nil
+	return &words, nil
 }
 
 func (repo *WordRepository) GetWordsByCreated(userId int64, createdAt time.Time) (*model.Word, error) {
