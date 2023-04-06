@@ -34,6 +34,21 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 	return m.recorder
 }
 
+// CheckUserInDB mocks base method.
+func (m *MockRepository) CheckUserInDB(word dto.RequestForGettingWord) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CheckUserInDB", word)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CheckUserInDB indicates an expected call of CheckUserInDB.
+func (mr *MockRepositoryMockRecorder) CheckUserInDB(word interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckUserInDB", reflect.TypeOf((*MockRepository)(nil).CheckUserInDB), word)
+}
+
 // Create mocks base method.
 func (m *MockRepository) Create(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error) {
 	m.ctrl.T.Helper()

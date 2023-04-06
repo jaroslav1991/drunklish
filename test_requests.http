@@ -33,7 +33,7 @@ POST 127.0.0.1:8080/get-words
 Content-Type: application/json
 
 {
-  "user_id": 1121
+  "user_id": 16
 }
 
 ####

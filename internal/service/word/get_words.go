@@ -10,6 +10,14 @@ import (
 // todo: implement validator where check user in db for user_id
 
 func (w *Word) GetWordsByUserId(word dto.RequestForGettingWord) (*dto.ResponseWords, error) {
+	userId, err := w.repo.CheckUserInDB(word)
+	if !userId {
+		return nil, fmt.Errorf("user not exists %w", httputils.ErrValidation)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("%w", httputils.ErrValidation)
+	}
+
 	words, err := w.repo.GetWords(word)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %v", httputils.ErrInternalServer, err)
