@@ -1,7 +1,6 @@
 package word
 
 import (
-	"drunklish/internal/model"
 	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/word/dto"
 	"errors"
@@ -18,7 +17,7 @@ func TestWord_CreateWord_Positive(t *testing.T) {
 		Word:      "boogaga",
 		Translate: "смешняшка",
 	}
-	wordFromCreated := model.Word{
+	wordFromCreated := dto.ResponseFromCreateWor{
 		Word:      "boogaga",
 		Translate: "смешняшка",
 	}
@@ -31,7 +30,7 @@ func TestWord_CreateWord_Positive(t *testing.T) {
 	actualWord, err := service.CreateWord(wordForCreateWord)
 	assert.NoError(t, err)
 
-	assert.Equal(t, &model.Word{
+	assert.Equal(t, &dto.ResponseFromCreateWor{
 		Word:      "boogaga",
 		Translate: "смешняшка",
 	}, actualWord)

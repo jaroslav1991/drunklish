@@ -1,11 +1,10 @@
 package word
 
 import (
-	"drunklish/internal/model"
 	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/word/dto"
+	"drunklish/internal/service/word/validator"
 	"fmt"
-	"time"
 )
 
 // todo: implement validator where check user in db for user_id
@@ -19,10 +18,12 @@ func (w *Word) GetWordsByUserId(word dto.RequestForGettingWord) (*dto.ResponseWo
 	return words, nil
 }
 
-func (w *Word) GetWordsByCreatedAt(userId int64, createdAt time.Time) (*model.Word, error) {
-	words, err := w.repo.GetWordsByCreated(userId, createdAt)
+func (w *Word) GetWordsByCreatedAt(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {
+	periodFromCheck := validator.CheckPlacesFirstOrSecondDate(period)
+
+	words, err := w.repo.GetWordByCreated(periodFromCheck)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %v", httputils.ErrInternalServer, err)
 	}
 
 	return words, nil

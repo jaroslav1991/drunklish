@@ -5,10 +5,8 @@
 package word
 
 import (
-	model "drunklish/internal/model"
 	dto "drunklish/internal/service/word/dto"
 	reflect "reflect"
-	time "time"
 
 	gomock "github.com/golang/mock/gomock"
 )
@@ -37,10 +35,10 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockRepository) Create(word dto.CreateWordRequest) (*model.Word, error) {
+func (m *MockRepository) Create(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", word)
-	ret0, _ := ret[0].(*model.Word)
+	ret0, _ := ret[0].(*dto.ResponseFromCreateWor)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -66,6 +64,21 @@ func (mr *MockRepositoryMockRecorder) DeleteWord(word interface{}) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWord", reflect.TypeOf((*MockRepository)(nil).DeleteWord), word)
 }
 
+// GetWordByCreated mocks base method.
+func (m *MockRepository) GetWordByCreated(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWordByCreated", period)
+	ret0, _ := ret[0].(*dto.ResponseWords)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWordByCreated indicates an expected call of GetWordByCreated.
+func (mr *MockRepositoryMockRecorder) GetWordByCreated(period interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWordByCreated", reflect.TypeOf((*MockRepository)(nil).GetWordByCreated), period)
+}
+
 // GetWords mocks base method.
 func (m *MockRepository) GetWords(word dto.RequestForGettingWord) (*dto.ResponseWords, error) {
 	m.ctrl.T.Helper()
@@ -79,19 +92,4 @@ func (m *MockRepository) GetWords(word dto.RequestForGettingWord) (*dto.Response
 func (mr *MockRepositoryMockRecorder) GetWords(word interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWords", reflect.TypeOf((*MockRepository)(nil).GetWords), word)
-}
-
-// GetWordsByCreated mocks base method.
-func (m *MockRepository) GetWordsByCreated(userId int64, createdAt time.Time) (*model.Word, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetWordsByCreated", userId, createdAt)
-	ret0, _ := ret[0].(*model.Word)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetWordsByCreated indicates an expected call of GetWordsByCreated.
-func (mr *MockRepositoryMockRecorder) GetWordsByCreated(userId, createdAt interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWordsByCreated", reflect.TypeOf((*MockRepository)(nil).GetWordsByCreated), userId, createdAt)
 }

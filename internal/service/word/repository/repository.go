@@ -8,11 +8,11 @@ import (
 )
 
 const (
-	createWordQuery          = `insert into words (word, translate, created_at, user_id) values ($1, $2, $3, $4) returning word, translate, created_at, user_id`
-	getWordsQuery            = `select word, translate from words where user_id=$1`
-	getWordsByCreatedAtQuery = `select word, translate from words where user_id=$1 and created_at=$2`
-	deleteWordQuery          = `delete from words where word=$1 and user_id=$2`
-	selectWordQuery          = `select word, translate, user_id from words where word=$1 and user_id=$2`
+	createWordQuery      = `insert into words (word, translate, created_at, user_id) values ($1, $2, $3, $4) returning word, translate, created_at, user_id`
+	getWordsQuery        = `select word, translate from words where user_id=$1`
+	deleteWordQuery      = `delete from words where word=$1 and user_id=$2`
+	selectWordQuery      = `select word, translate, user_id from words where word=$1 and user_id=$2`
+	getWordByPeriodQuery = `select word, translate from words where user_id=$1 and created_at>$2 and created_at<$3`
 )
 
 type WordRepository struct {
@@ -23,7 +23,7 @@ func NewWordRepository(db db.DB) *WordRepository {
 	return &WordRepository{db: db}
 }
 
-func (repo *WordRepository) Create(word dto.CreateWordRequest) (*model.Word, error) {
+func (repo *WordRepository) Create(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error) {
 	createdAt := time.Now()
 	if err := repo.db.QueryRowx(
 		createWordQuery,
@@ -40,11 +40,9 @@ func (repo *WordRepository) Create(word dto.CreateWordRequest) (*model.Word, err
 		return nil, err
 	}
 
-	return &model.Word{
+	return &dto.ResponseFromCreateWor{
 		Word:      word.Word,
 		Translate: word.Translate,
-		CreatedAt: createdAt,
-		UserId:    word.UserId,
 	}, nil
 }
 
@@ -69,14 +67,25 @@ func (repo *WordRepository) GetWords(wordReq dto.RequestForGettingWord) (*dto.Re
 	return &words, nil
 }
 
-func (repo *WordRepository) GetWordsByCreated(userId int64, createdAt time.Time) (*model.Word, error) {
-	var word model.Word
+func (repo *WordRepository) GetWordByCreated(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {
+	var words dto.ResponseWords
 
-	if err := repo.db.QueryRowx(getWordsByCreatedAtQuery, userId, createdAt).Scan(&word.Word, &word.Translate); err != nil {
+	rows, err := repo.db.Query(getWordByPeriodQuery, period.UserId, period.CreatedAt.FirstDate, period.CreatedAt.SecondDate)
+	if err != nil {
 		return nil, err
 	}
 
-	return &word, nil
+	defer rows.Close()
+
+	for rows.Next() {
+		var word dto.ResponseWord
+		if err := rows.Scan(&word.Word, &word.Translate); err != nil {
+			return nil, err
+		}
+
+		words.Words = append(words.Words, word)
+	}
+	return &words, nil
 }
 
 func (repo *WordRepository) DeleteWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {

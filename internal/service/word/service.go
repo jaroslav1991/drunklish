@@ -3,9 +3,7 @@
 package word
 
 import (
-	"drunklish/internal/model"
 	"drunklish/internal/service/word/dto"
-	"time"
 )
 
 type Word struct {
@@ -17,8 +15,8 @@ func NewWordService(repo Repository) *Word {
 }
 
 type Repository interface {
-	Create(word dto.CreateWordRequest) (*model.Word, error)
+	Create(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error)
 	GetWords(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
-	GetWordsByCreated(userId int64, createdAt time.Time) (*model.Word, error)
+	GetWordByCreated(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error)
 	DeleteWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
 }

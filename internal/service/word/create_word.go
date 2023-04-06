@@ -1,14 +1,13 @@
 package word
 
 import (
-	"drunklish/internal/model"
 	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/word/dto"
 	"drunklish/internal/service/word/validator"
 	"fmt"
 )
 
-func (w *Word) CreateWord(word dto.CreateWordRequest) (*model.Word, error) {
+func (w *Word) CreateWord(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error) {
 	if checkLengthWordAndTranslate := validator.CheckLengthWordAndTranslate(word.Word, word.Translate); !checkLengthWordAndTranslate {
 		return nil, fmt.Errorf("invalid length fail: %w", httputils.ErrValidation)
 	}
