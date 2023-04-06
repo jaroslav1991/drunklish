@@ -52,32 +52,32 @@ func (mr *MockRepositoryMockRecorder) Create(word interface{}) *gomock.Call {
 }
 
 // DeleteWord mocks base method.
-func (m *MockRepository) DeleteWord(word string, userId int64) error {
+func (m *MockRepository) DeleteWord(word dto.RequestForDeletingWord) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteWord", word, userId)
+	ret := m.ctrl.Call(m, "DeleteWord", word)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // DeleteWord indicates an expected call of DeleteWord.
-func (mr *MockRepositoryMockRecorder) DeleteWord(word, userId interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) DeleteWord(word interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWord", reflect.TypeOf((*MockRepository)(nil).DeleteWord), word, userId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWord", reflect.TypeOf((*MockRepository)(nil).DeleteWord), word)
 }
 
 // GetWords mocks base method.
-func (m *MockRepository) GetWords(userId int64) ([]*dto.ResponseWord, error) {
+func (m *MockRepository) GetWords(word dto.RequestForGettingWord) ([]*dto.ResponseWord, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetWords", userId)
+	ret := m.ctrl.Call(m, "GetWords", word)
 	ret0, _ := ret[0].([]*dto.ResponseWord)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetWords indicates an expected call of GetWords.
-func (mr *MockRepositoryMockRecorder) GetWords(userId interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) GetWords(word interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWords", reflect.TypeOf((*MockRepository)(nil).GetWords), userId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWords", reflect.TypeOf((*MockRepository)(nil).GetWords), word)
 }
 
 // GetWordsByCreated mocks base method.

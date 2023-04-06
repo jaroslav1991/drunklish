@@ -13,7 +13,7 @@ func TestWord_GetWordsByUserId_Positive(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	userId := int64(1)
+	word := dto.RequestForGettingWord{UserId: int64(1)}
 
 	wordsFromGet := []*dto.ResponseWord{{
 		Word:      "boogaga1",
@@ -25,11 +25,11 @@ func TestWord_GetWordsByUserId_Positive(t *testing.T) {
 
 	repository := NewMockRepository(ctrl)
 
-	repository.EXPECT().GetWords(userId).Return(wordsFromGet, nil)
+	repository.EXPECT().GetWords(word).Return(wordsFromGet, nil)
 
 	service := NewWordService(repository)
 
-	actualWords, err := service.GetWordsByUserId(userId)
+	actualWords, err := service.GetWordsByUserId(word)
 	assert.NoError(t, err)
 
 	assert.Equal(t, []*dto.ResponseWord{{
@@ -45,15 +45,15 @@ func TestWord_GetWordsByUserId_NegativeFailGetWord(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	userId := int64(1)
+	word := dto.RequestForGettingWord{UserId: int64(1)}
 
 	repository := NewMockRepository(ctrl)
 
-	repository.EXPECT().GetWords(userId).Return(nil, errors.New("fail create word"))
+	repository.EXPECT().GetWords(word).Return(nil, errors.New("fail create word"))
 
 	service := NewWordService(repository)
 
-	_, err := service.GetWordsByUserId(userId)
+	_, err := service.GetWordsByUserId(word)
 	assert.ErrorIs(t, err, httputils.ErrInternalServer)
 
 }

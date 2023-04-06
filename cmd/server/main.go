@@ -5,6 +5,7 @@ import (
 	"drunklish/internal/connection"
 	"drunklish/internal/model"
 	pkgdb "drunklish/internal/pkg/db"
+	"drunklish/internal/pkg/httputils"
 	"drunklish/internal/service/auth"
 	authHandlers "drunklish/internal/service/auth/handlers"
 	authRepo "drunklish/internal/service/auth/repository"
@@ -35,11 +36,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	http.Handle("/sign-up", authHandlers.SignUpHandler(authDB))
-	http.Handle("/sign-in", authHandlers.SignInHandler(authDB))
-	http.Handle("/word", wordsHandlers.CreateWordHandler(wordDB))
-	http.Handle("/get-words", wordsHandlers.GetWordsHandler(wordDB))
-	http.Handle("/delete", wordsHandlers.DeleteWordHandler(wordDB))
+	http.Handle("/sign-up", httputils.WrapRpc(authHandlers.SignUpHandler(authDB)))
+	http.Handle("/sign-in", httputils.WrapRpc(authHandlers.SignInHandler(authDB)))
+	http.Handle("/word", httputils.WrapRpc(wordsHandlers.CreateWordHandler(wordDB)))
+	http.Handle("/get-words", httputils.WrapGetWordsRpc(wordsHandlers.GetWordsHandler(wordDB)))
+	http.Handle("/delete", httputils.WrapDeleteWordRpc(wordsHandlers.DeleteWordHandler(wordDB)))
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)

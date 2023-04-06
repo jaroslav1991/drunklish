@@ -8,6 +8,10 @@ type SignUpRequest struct {
 }
 
 type ResponseUser struct {
-	User  model.User
+	User model.User
+	//Token string
+}
+
+type ResponseFromSignIn struct {
 	Token string
 }
