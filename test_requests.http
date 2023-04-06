@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "email": "qwe@gmail.com",
-  "password": "qweqwe"
+  "password": "qwe"
 }
 
 ####
@@ -12,8 +12,8 @@ POST 127.0.0.1:8080/word
 Content-Type: application/json
 
 {
-  "word": "test2",
-  "translate": "test2",
+  "word": "test",
+  "translate": "test",
   "user_id": 16
 }
 
@@ -33,7 +33,7 @@ POST 127.0.0.1:8080/get-words
 Content-Type: application/json
 
 {
-  "user_id": 16
+  "user_id": 1121
 }
 
 ####
@@ -44,8 +44,8 @@ Content-Type: application/json
 {
   "user_id": 16,
   "created_at": {
-    "first_date": "2023-04-29T00:00:01.000Z",
-    "second_date": "2023-03-06T23:59:59.000Z"
+    "first_date": "2023-03-29T00:00:01.000Z",
+    "second_date": "2023-04-06T23:59:59.000Z"
   }
 }
 

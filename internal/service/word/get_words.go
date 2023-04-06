@@ -18,8 +18,6 @@ func (w *Word) GetWordsByUserId(word dto.RequestForGettingWord) (*dto.ResponseWo
 	return words, nil
 }
 
-// todo: check how to fix  parsing time \"\\\"2023-03-30\\\"\" as \"\\\"2006-01-02T15:04:05Z07:00\\\"\": cannot parse \"\\\"\" as \"T\""}
-
 func (w *Word) GetWordsByCreatedAt(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {
 	periodFromCheck := validator.CheckPlacesFirstOrSecondDate(period)
 

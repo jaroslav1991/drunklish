@@ -8,12 +8,11 @@ import (
 )
 
 const (
-	createWordQuery          = `insert into words (word, translate, created_at, user_id) values ($1, $2, $3, $4) returning word, translate, created_at, user_id`
-	getWordsQuery            = `select word, translate from words where user_id=$1`
-	getWordsByCreatedAtQuery = `select word, translate from words where user_id=$1 and created_at=$2`
-	deleteWordQuery          = `delete from words where word=$1 and user_id=$2`
-	selectWordQuery          = `select word, translate, user_id from words where word=$1 and user_id=$2`
-	getWordByPeriodQuery     = `select word, translate from words where user_id=$1 and created_at>$2 and created_at<$3`
+	createWordQuery      = `insert into words (word, translate, created_at, user_id) values ($1, $2, $3, $4) returning word, translate, created_at, user_id`
+	getWordsQuery        = `select word, translate from words where user_id=$1`
+	deleteWordQuery      = `delete from words where word=$1 and user_id=$2`
+	selectWordQuery      = `select word, translate, user_id from words where word=$1 and user_id=$2`
+	getWordByPeriodQuery = `select word, translate from words where user_id=$1 and created_at>$2 and created_at<$3`
 )
 
 type WordRepository struct {
