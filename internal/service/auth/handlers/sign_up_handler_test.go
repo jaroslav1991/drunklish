@@ -10,14 +10,14 @@ import (
 
 type mockService struct {
 	fnR func(req dto.SignUpRequest) (*model.User, error)
-	fnA func(req model.User) (*dto.ResponseUser, error)
+	fnA func(req model.User) (*dto.ResponseFromSignIn, error)
 }
 
 func (m *mockService) SignUp(req dto.SignUpRequest) (*model.User, error) {
 	return m.fnR(req)
 }
 
-func (m *mockService) SignIn(req model.User) (*dto.ResponseUser, error) {
+func (m *mockService) SignIn(req model.User) (*dto.ResponseFromSignIn, error) {
 	return m.fnA(req)
 }
 

@@ -37,8 +37,6 @@ func WrapRpc[RequestType, ResponseType any](rpcHandler func(req RequestType) (*R
 	}
 }
 
-// TODO: issue: привести к одному формату враппер
-
 func WrapGetWordsRpc[RequestType, ResponseType any](rpcHandler func(req RequestType) ([]*ResponseType, error)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -69,8 +67,6 @@ func WrapGetWordsRpc[RequestType, ResponseType any](rpcHandler func(req RequestT
 		WriteSuccessResponse(w, http.StatusOK, rpcResponse)
 	}
 }
-
-// TODO: issue: привести к одному формату враппер
 
 func WrapDeleteWordRpc[RequestType any](rpcHandler func(req RequestType) error) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {

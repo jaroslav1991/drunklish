@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func (a *Auth) SignIn(req model.User) (*dto.ResponseUser, error) {
+func (a *Auth) SignIn(req model.User) (*dto.ResponseFromSignIn, error) {
 	existEmail, err := a.repo.ExistEmail(req.Email)
 	if !existEmail {
 		return nil, fmt.Errorf("email not exists: %w", httputils.ErrValidation)
@@ -29,7 +29,7 @@ func (a *Auth) SignIn(req model.User) (*dto.ResponseUser, error) {
 	if err != nil {
 		return nil, fmt.Errorf("invalid generate token: %w", httputils.ErrInternalServer)
 	}
-	checkUser.Token = newToken
+	//checkUser.Token = newToken
 
-	return checkUser, nil
+	return &dto.ResponseFromSignIn{Token: newToken}, nil
 }

@@ -7,5 +7,5 @@ import (
 
 type AuthService interface {
 	SignUp(req dto.SignUpRequest) (*model.User, error)
-	SignIn(req model.User) (*dto.ResponseUser, error)
+	SignIn(req model.User) (*dto.ResponseFromSignIn, error)
 }

@@ -9,23 +9,17 @@ import (
 )
 
 func TestSignInHandler_Positive(t *testing.T) {
-	service := &mockService{fnA: func(req model.User) (*dto.ResponseUser, error) {
+	service := &mockService{fnA: func(req model.User) (*dto.ResponseFromSignIn, error) {
 		assert.Equal(t, int64(1), req.Id)
 		assert.Equal(t, "qwerty", req.Email)
 		assert.Equal(t, "123", req.HashPassword)
 
-		return &dto.ResponseUser{
-			User:  req,
+		return &dto.ResponseFromSignIn{
 			Token: "token",
 		}, nil
 	}}
 
-	expectedResponse := &dto.ResponseUser{
-		User: model.User{
-			Id:           1,
-			Email:        "qwerty",
-			HashPassword: "123",
-		},
+	expectedResponse := &dto.ResponseFromSignIn{
 		Token: "token",
 	}
 	handler := SignInHandler(service)
@@ -41,7 +35,7 @@ func TestSignInHandler_Positive(t *testing.T) {
 }
 
 func TestSignInHandler_Negative(t *testing.T) {
-	service := &mockService{fnA: func(req model.User) (*dto.ResponseUser, error) {
+	service := &mockService{fnA: func(req model.User) (*dto.ResponseFromSignIn, error) {
 		assert.Equal(t, int64(1), req.Id)
 		assert.Equal(t, "qwerty", req.Email)
 		assert.Equal(t, "123", req.HashPassword)

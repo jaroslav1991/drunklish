@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "email": "qwe@gmail.com",
-  "password": "qwe"
+  "password": "qweqwe"
 }
 
 ####
@@ -23,8 +23,8 @@ POST 127.0.0.1:8080/sign-in
 Content-Type: application/json
 
 {
-  "email": "qwe@gmail.com",
-  "hash_password": "qweqwe"
+  "email": "zxc@gmail.com",
+  "hash_password": "zxczxc"
 }
 
 ####
@@ -33,7 +33,7 @@ POST 127.0.0.1:8080/get-words
 Content-Type: application/json
 
 {
-  "user_id": 6
+  "user_id": 16
 }
 
 ####
