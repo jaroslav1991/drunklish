@@ -23,7 +23,7 @@ func NewWordRepository(db db.DB) *WordRepository {
 	return &WordRepository{db: db}
 }
 
-func (repo *WordRepository) Create(word dto.CreateWordRequest) (*model.Word, error) {
+func (repo *WordRepository) Create(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error) {
 	createdAt := time.Now()
 	if err := repo.db.QueryRowx(
 		createWordQuery,
@@ -40,11 +40,9 @@ func (repo *WordRepository) Create(word dto.CreateWordRequest) (*model.Word, err
 		return nil, err
 	}
 
-	return &model.Word{
+	return &dto.ResponseFromCreateWor{
 		Word:      word.Word,
 		Translate: word.Translate,
-		CreatedAt: createdAt,
-		UserId:    word.UserId,
 	}, nil
 }
 

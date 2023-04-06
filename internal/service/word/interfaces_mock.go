@@ -37,10 +37,10 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockRepository) Create(word dto.CreateWordRequest) (*model.Word, error) {
+func (m *MockRepository) Create(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", word)
-	ret0, _ := ret[0].(*model.Word)
+	ret0, _ := ret[0].(*dto.ResponseFromCreateWor)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

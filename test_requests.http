@@ -12,8 +12,8 @@ POST 127.0.0.1:8080/word
 Content-Type: application/json
 
 {
-  "word": "test",
-  "translate": "test",
+  "word": "test2",
+  "translate": "test2",
   "user_id": 16
 }
 

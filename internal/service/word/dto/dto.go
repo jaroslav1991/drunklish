@@ -18,8 +18,18 @@ type ResponseWords struct {
 	Words []ResponseWord
 }
 
+type ResponseFromCreateWor struct {
+	Word      string `json:"word"`
+	Translate string `json:"translate"`
+}
+
 type ResponseFromDeleting struct {
 	Answer string `json:"answer"`
+}
+
+type RequestForGetByDay struct {
+	UserId    int64 `json:"user_id"`
+	CreatedAt time.Time
 }
 
 type RequestForGettingWord struct {

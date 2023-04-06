@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"drunklish/internal/model"
 	"drunklish/internal/service/word/dto"
 	"errors"
 	"github.com/stretchr/testify/assert"
@@ -10,12 +9,12 @@ import (
 )
 
 type mockService struct {
-	fnC func(word dto.CreateWordRequest) (*model.Word, error)
+	fnC func(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error)
 	fnG func(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
 	fnD func(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
 }
 
-func (m *mockService) CreateWord(word dto.CreateWordRequest) (*model.Word, error) {
+func (m *mockService) CreateWord(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error) {
 	return m.fnC(word)
 }
 
@@ -29,26 +28,20 @@ func (m *mockService) DeleteWordByWord(word dto.RequestForDeletingWord) (*dto.Re
 
 func TestCreateWordHandler_Positive(t *testing.T) {
 	service := &mockService{
-		fnC: func(word dto.CreateWordRequest) (*model.Word, error) {
+		fnC: func(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error) {
 			assert.Equal(t, "qwe", word.Word)
 			assert.Equal(t, "qwe", word.Translate)
-			assert.Equal(t, time.Now(), word.CreatedAt)
-			assert.Equal(t, int64(1), word.UserId)
 
-			return &model.Word{
+			return &dto.ResponseFromCreateWor{
 				Word:      "qwe",
 				Translate: "qwe",
-				CreatedAt: word.CreatedAt,
-				UserId:    word.UserId,
 			}, nil
 		},
 	}
 
-	expectedResponse := &model.Word{
+	expectedResponse := &dto.ResponseFromCreateWor{
 		Word:      "qwe",
 		Translate: "qwe",
-		CreatedAt: time.Now(),
-		UserId:    int64(1),
 	}
 
 	handler := CreateWordHandler(service)
@@ -65,11 +58,9 @@ func TestCreateWordHandler_Positive(t *testing.T) {
 
 func TestCreateWordHandler_Negative(t *testing.T) {
 	service := &mockService{
-		fnC: func(word dto.CreateWordRequest) (*model.Word, error) {
+		fnC: func(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error) {
 			assert.Equal(t, "qwe", word.Word)
 			assert.Equal(t, "qwe", word.Translate)
-			assert.Equal(t, word.CreatedAt, word.CreatedAt)
-			assert.Equal(t, int64(1), word.UserId)
 
 			return nil, errors.New("fuck up")
 		},

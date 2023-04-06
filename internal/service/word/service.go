@@ -17,7 +17,7 @@ func NewWordService(repo Repository) *Word {
 }
 
 type Repository interface {
-	Create(word dto.CreateWordRequest) (*model.Word, error)
+	Create(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error)
 	GetWords(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
 	GetWordsByCreated(userId int64, createdAt time.Time) (*model.Word, error)
 	DeleteWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
