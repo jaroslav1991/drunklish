@@ -1,8 +1,10 @@
 package validator
 
 import (
+	"drunklish/internal/service/word/dto"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
 func TestCheckLengthWordAndTranslate1(t *testing.T) {
@@ -46,4 +48,38 @@ func TestCheckLengthWordAndTranslate1(t *testing.T) {
 			assert.Equal(t, got, tt.want)
 		})
 	}
+}
+
+func TestCheckPlacesFirstOrSecondDate_PositiveInversion(t *testing.T) {
+	testTime, err := time.Parse(time.RFC3339, "2023-04-29T00:00:01.000Z")
+	assert.NoError(t, err)
+	now := time.Now()
+
+	expectedTime := dto.RequestForGetByPeriod{
+		UserId: 1,
+		CreatedAt: dto.Period{
+			FirstDate:  now,
+			SecondDate: testTime,
+		},
+	}
+
+	actual := CheckPlacesFirstOrSecondDate(expectedTime)
+	assert.Equal(t, expectedTime, actual)
+}
+
+func TestCheckPlacesFirstOrSecondDate_NegativeInversion(t *testing.T) {
+	testTime, err := time.Parse(time.RFC3339, "2023-04-29T00:00:01.000Z")
+	assert.NoError(t, err)
+	now := time.Now()
+
+	expectedTime := dto.RequestForGetByPeriod{
+		UserId: 1,
+		CreatedAt: dto.Period{
+			FirstDate:  testTime,
+			SecondDate: now,
+		},
+	}
+
+	actual := CheckPlacesFirstOrSecondDate(expectedTime)
+	assert.NotEqual(t, expectedTime, actual)
 }

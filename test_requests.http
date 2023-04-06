@@ -44,8 +44,8 @@ Content-Type: application/json
 {
   "user_id": 16,
   "created_at": {
-    "first_date": "2023-03-30",
-    "second_date": "2023-04-06"
+    "first_date": "2023-04-29T00:00:01.000Z",
+    "second_date": "2023-03-06T23:59:59.000Z"
   }
 }
 
