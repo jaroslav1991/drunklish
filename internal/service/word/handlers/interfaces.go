@@ -7,5 +7,6 @@ import (
 type WordService interface {
 	CreateWord(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error)
 	GetWordsByUserId(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
+	GetWordsByCreatedAt(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error)
 	DeleteWordByWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
 }

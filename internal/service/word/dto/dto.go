@@ -27,9 +27,14 @@ type ResponseFromDeleting struct {
 	Answer string `json:"answer"`
 }
 
-type RequestForGetByDay struct {
-	UserId    int64 `json:"user_id"`
-	CreatedAt time.Time
+type RequestForGetByPeriod struct {
+	UserId    int64  `json:"user_id"`
+	CreatedAt Period `json:"created_at"`
+}
+
+type Period struct {
+	FirstDate  time.Time `json:"first_date"`
+	SecondDate time.Time `json:"second_date"`
 }
 
 type RequestForGettingWord struct {

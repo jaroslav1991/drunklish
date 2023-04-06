@@ -13,6 +13,7 @@ const (
 	getWordsByCreatedAtQuery = `select word, translate from words where user_id=$1 and created_at=$2`
 	deleteWordQuery          = `delete from words where word=$1 and user_id=$2`
 	selectWordQuery          = `select word, translate, user_id from words where word=$1 and user_id=$2`
+	getWordByPeriodQuery     = `select word, translate from words where created_at>$1 and created_at<$2`
 )
 
 type WordRepository struct {
@@ -67,14 +68,25 @@ func (repo *WordRepository) GetWords(wordReq dto.RequestForGettingWord) (*dto.Re
 	return &words, nil
 }
 
-func (repo *WordRepository) GetWordsByCreated(userId int64, createdAt time.Time) (*model.Word, error) {
-	var word model.Word
+func (repo *WordRepository) GetWordByCreated(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {
+	var words dto.ResponseWords
 
-	if err := repo.db.QueryRowx(getWordsByCreatedAtQuery, userId, createdAt).Scan(&word.Word, &word.Translate); err != nil {
+	rows, err := repo.db.Query(getWordByPeriodQuery, period.UserId, period.CreatedAt.FirstDate, period.CreatedAt.SecondDate)
+	if err != nil {
 		return nil, err
 	}
 
-	return &word, nil
+	defer rows.Close()
+
+	for rows.Next() {
+		var word dto.ResponseWord
+		if err := rows.Scan(&word.Word, &word.Translate); err != nil {
+			return nil, err
+		}
+
+		words.Words = append(words.Words, word)
+	}
+	return &words, nil
 }
 
 func (repo *WordRepository) DeleteWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {

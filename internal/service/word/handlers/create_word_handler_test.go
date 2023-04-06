@@ -9,9 +9,10 @@ import (
 )
 
 type mockService struct {
-	fnC func(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error)
-	fnG func(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
-	fnD func(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
+	fnC  func(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error)
+	fnG  func(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
+	fnGP func(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error)
+	fnD  func(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
 }
 
 func (m *mockService) CreateWord(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error) {
@@ -24,6 +25,10 @@ func (m *mockService) GetWordsByUserId(word dto.RequestForGettingWord) (*dto.Res
 
 func (m *mockService) DeleteWordByWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {
 	return m.fnD(word)
+}
+
+func (m *mockService) GetWordsByCreatedAt(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {
+	return m.fnGP(period)
 }
 
 func TestCreateWordHandler_Positive(t *testing.T) {

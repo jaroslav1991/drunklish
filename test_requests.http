@@ -38,6 +38,19 @@ Content-Type: application/json
 
 ####
 
+POST 127.0.0.1:8080/get-words-period
+Content-Type: application/json
+
+{
+  "user_id": 16,
+  "created_at": {
+    "first_date": "2023-03-30",
+    "second_date": "2023-04-06"
+  }
+}
+
+####
+
 POST 127.0.0.1:8080/delete
 Content-Type: application/json
 
