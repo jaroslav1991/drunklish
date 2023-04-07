@@ -35,18 +35,18 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 }
 
 // CheckUserInDB mocks base method.
-func (m *MockRepository) CheckUserInDB(word dto.RequestForGettingWord) (bool, error) {
+func (m *MockRepository) CheckUserInDB(userId int64) (bool, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CheckUserInDB", word)
+	ret := m.ctrl.Call(m, "CheckUserInDB", userId)
 	ret0, _ := ret[0].(bool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CheckUserInDB indicates an expected call of CheckUserInDB.
-func (mr *MockRepositoryMockRecorder) CheckUserInDB(word interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) CheckUserInDB(userId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckUserInDB", reflect.TypeOf((*MockRepository)(nil).CheckUserInDB), word)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckUserInDB", reflect.TypeOf((*MockRepository)(nil).CheckUserInDB), userId)
 }
 
 // Create mocks base method.

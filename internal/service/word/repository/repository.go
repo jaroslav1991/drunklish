@@ -69,8 +69,8 @@ func (repo *WordRepository) GetWords(wordReq dto.RequestForGettingWord) (*dto.Re
 	return &words, nil
 }
 
-func (repo *WordRepository) CheckUserInDB(word dto.RequestForGettingWord) (bool, error) {
-	err := repo.db.QueryRowx(getUserQuery, word.UserId).Scan(&word.UserId)
+func (repo *WordRepository) CheckUserInDB(userId int64) (bool, error) {
+	err := repo.db.QueryRowx(getUserQuery, userId).Scan(&userId)
 	if err != nil && err == sql.ErrNoRows {
 		return false, nil
 	}
