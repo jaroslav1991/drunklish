@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"drunklish/internal/model"
 	"drunklish/internal/pkg/db"
 	"drunklish/internal/service/word/dto"
@@ -13,6 +14,7 @@ const (
 	deleteWordQuery      = `delete from words where word=$1 and user_id=$2`
 	selectWordQuery      = `select word, translate, user_id from words where word=$1 and user_id=$2`
 	getWordByPeriodQuery = `select word, translate from words where user_id=$1 and created_at>$2 and created_at<$3`
+	getUserQuery         = `select user_id from words where user_id=$1`
 )
 
 type WordRepository struct {
@@ -65,6 +67,36 @@ func (repo *WordRepository) GetWords(wordReq dto.RequestForGettingWord) (*dto.Re
 		words.Words = append(words.Words, word)
 	}
 	return &words, nil
+}
+
+func (repo *WordRepository) CheckUserInDB(userId int64) (bool, error) {
+	err := repo.db.QueryRowx(getUserQuery, userId).Scan(&userId)
+	if err != nil && err == sql.ErrNoRows {
+		return false, nil
+	}
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func (repo *WordRepository) CheckCorrectDate(period dto.RequestForGetByPeriod) (bool, error) {
+	err := repo.db.QueryRowx(
+		getWordByPeriodQuery,
+		period.CreatedAt.FirstDate,
+		period.CreatedAt.SecondDate).Scan(
+		&period.CreatedAt.FirstDate,
+		&period.CreatedAt.SecondDate,
+	)
+	if err != nil && err == sql.ErrNoRows {
+		return false, nil
+	}
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
 }
 
 func (repo *WordRepository) GetWordByCreated(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {

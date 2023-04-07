@@ -34,6 +34,36 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 	return m.recorder
 }
 
+// CheckCorrectDate mocks base method.
+func (m *MockRepository) CheckCorrectDate(period dto.RequestForGetByPeriod) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CheckCorrectDate", period)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CheckCorrectDate indicates an expected call of CheckCorrectDate.
+func (mr *MockRepositoryMockRecorder) CheckCorrectDate(period interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckCorrectDate", reflect.TypeOf((*MockRepository)(nil).CheckCorrectDate), period)
+}
+
+// CheckUserInDB mocks base method.
+func (m *MockRepository) CheckUserInDB(userId int64) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CheckUserInDB", userId)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CheckUserInDB indicates an expected call of CheckUserInDB.
+func (mr *MockRepositoryMockRecorder) CheckUserInDB(userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckUserInDB", reflect.TypeOf((*MockRepository)(nil).CheckUserInDB), userId)
+}
+
 // Create mocks base method.
 func (m *MockRepository) Create(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error) {
 	m.ctrl.T.Helper()

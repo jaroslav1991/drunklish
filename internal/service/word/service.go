@@ -18,5 +18,7 @@ type Repository interface {
 	Create(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error)
 	GetWords(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
 	GetWordByCreated(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error)
+	CheckUserInDB(userId int64) (bool, error)
+	CheckCorrectDate(period dto.RequestForGetByPeriod) (bool, error)
 	DeleteWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
 }

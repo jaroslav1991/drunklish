@@ -7,9 +7,15 @@ import (
 	"fmt"
 )
 
-// todo: implement validator where check user in db for user_id
-
 func (w *Word) GetWordsByUserId(word dto.RequestForGettingWord) (*dto.ResponseWords, error) {
+	userId, err := w.repo.CheckUserInDB(word.UserId)
+	if !userId {
+		return nil, fmt.Errorf("user not exists: %w", httputils.ErrValidation)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("%w", httputils.ErrValidation)
+	}
+
 	words, err := w.repo.GetWords(word)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %v", httputils.ErrInternalServer, err)
@@ -18,7 +24,25 @@ func (w *Word) GetWordsByUserId(word dto.RequestForGettingWord) (*dto.ResponseWo
 	return words, nil
 }
 
+// todo: добавить проверки на наличие FirstDate и SecondDate
+
 func (w *Word) GetWordsByCreatedAt(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {
+	userId, err := w.repo.CheckUserInDB(period.UserId)
+	if !userId {
+		return nil, fmt.Errorf("user not exists %w", httputils.ErrValidation)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("%w", httputils.ErrValidation)
+	}
+
+	correctDate, err := w.repo.CheckCorrectDate(period)
+	if !correctDate {
+		return nil, fmt.Errorf("choose correct date: %w", httputils.ErrValidation)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("%w", httputils.ErrValidation)
+	}
+
 	periodFromCheck := validator.CheckPlacesFirstOrSecondDate(period)
 
 	words, err := w.repo.GetWordByCreated(periodFromCheck)
