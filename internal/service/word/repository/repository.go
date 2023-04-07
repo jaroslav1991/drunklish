@@ -81,6 +81,24 @@ func (repo *WordRepository) CheckUserInDB(userId int64) (bool, error) {
 	return true, nil
 }
 
+func (repo *WordRepository) CheckCorrectDate(period dto.RequestForGetByPeriod) (bool, error) {
+	err := repo.db.QueryRowx(
+		getWordByPeriodQuery,
+		period.CreatedAt.FirstDate,
+		period.CreatedAt.SecondDate).Scan(
+		&period.CreatedAt.FirstDate,
+		&period.CreatedAt.SecondDate,
+	)
+	if err != nil && err == sql.ErrNoRows {
+		return false, nil
+	}
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
 func (repo *WordRepository) GetWordByCreated(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {
 	var words dto.ResponseWords
 
