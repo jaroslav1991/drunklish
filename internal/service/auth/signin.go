@@ -22,7 +22,7 @@ func (a *Auth) SignIn(req model.User) (*dto.ResponseFromSignIn, error) {
 	}
 
 	if err := a.checkPasswordFn(checkUser.User.HashPassword, req.HashPassword); err != nil {
-		return nil, fmt.Errorf("invalid password hash: %w", httputils.ErrValidation)
+		return nil, fmt.Errorf("invalid password: %w", httputils.ErrValidation)
 	}
 
 	newToken, err := a.generateTokenFn(checkUser.User.Id, checkUser.User.Email)

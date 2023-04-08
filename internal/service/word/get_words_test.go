@@ -118,7 +118,6 @@ func TestWord_GetWordsByCreatedAt_Positive(t *testing.T) {
 	repository := NewMockRepository(ctrl)
 
 	repository.EXPECT().CheckUserInDB(word.UserId).Return(true, nil)
-	repository.EXPECT().CheckCorrectDate(word).Return(true, nil)
 	repository.EXPECT().GetWordByCreated(word).Return(&wordsFromGet, nil)
 
 	service := NewWordService(repository)
@@ -150,7 +149,6 @@ func TestWord_GetWordsByCreatedAt_NegativeFailGetWord(t *testing.T) {
 	repository := NewMockRepository(ctrl)
 
 	repository.EXPECT().CheckUserInDB(word.UserId).Return(true, nil)
-	repository.EXPECT().CheckCorrectDate(word).Return(true, nil)
 	repository.EXPECT().GetWordByCreated(word).Return(nil, errors.New("fuck up"))
 
 	service := NewWordService(repository)
@@ -158,54 +156,6 @@ func TestWord_GetWordsByCreatedAt_NegativeFailGetWord(t *testing.T) {
 	_, err := service.GetWordsByCreatedAt(word)
 	assert.Error(t, err)
 	assert.ErrorIs(t, err, httputils.ErrInternalServer)
-}
-
-func TestWord_GetWordsByCreatedAt_NegativeFailCheckDate(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	word := dto.RequestForGetByPeriod{
-		UserId: 1,
-		CreatedAt: dto.Period{
-			FirstDate:  time.Now(),
-			SecondDate: time.Now(),
-		},
-	}
-
-	repository := NewMockRepository(ctrl)
-
-	repository.EXPECT().CheckUserInDB(word.UserId).Return(true, nil)
-	repository.EXPECT().CheckCorrectDate(word).Return(true, errors.New("fuck up"))
-
-	service := NewWordService(repository)
-
-	_, err := service.GetWordsByCreatedAt(word)
-	assert.Error(t, err)
-	assert.ErrorIs(t, err, httputils.ErrValidation)
-}
-
-func TestWord_GetWordsByCreatedAt_NegativeFailNotCheckDate(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	word := dto.RequestForGetByPeriod{
-		UserId: 1,
-		CreatedAt: dto.Period{
-			FirstDate:  time.Now(),
-			SecondDate: time.Now(),
-		},
-	}
-
-	repository := NewMockRepository(ctrl)
-
-	repository.EXPECT().CheckUserInDB(word.UserId).Return(true, nil)
-	repository.EXPECT().CheckCorrectDate(word).Return(false, errors.New("fuck up"))
-
-	service := NewWordService(repository)
-
-	_, err := service.GetWordsByCreatedAt(word)
-	assert.Error(t, err)
-	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestWord_GetWordsByCreatedAt_NegativeFailCheckUser(t *testing.T) {
