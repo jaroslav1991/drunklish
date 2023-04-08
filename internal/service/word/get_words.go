@@ -35,14 +35,6 @@ func (w *Word) GetWordsByCreatedAt(period dto.RequestForGetByPeriod) (*dto.Respo
 		return nil, fmt.Errorf("%w", httputils.ErrValidation)
 	}
 
-	correctDate, err := w.repo.CheckCorrectDate(period)
-	if !correctDate {
-		return nil, fmt.Errorf("choose correct date: %w", httputils.ErrValidation)
-	}
-	if err != nil {
-		return nil, fmt.Errorf("%w", httputils.ErrValidation)
-	}
-
 	periodFromCheck := validator.CheckPlacesFirstOrSecondDate(period)
 
 	words, err := w.repo.GetWordByCreated(periodFromCheck)

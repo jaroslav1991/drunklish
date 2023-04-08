@@ -12,8 +12,8 @@ POST 127.0.0.1:8080/word
 Content-Type: application/json
 
 {
-  "word": "test",
-  "translate": "test",
+  "word": "test34",
+  "translate": "test34",
   "user_id": 16
 }
 
@@ -23,8 +23,8 @@ POST 127.0.0.1:8080/sign-in
 Content-Type: application/json
 
 {
-  "email": "zxc@gmail.com",
-  "hash_password": "zxczxc"
+  "email": "qwe@gmail.com",
+  "hash_password": "qweqwe"
 }
 
 ####
@@ -45,7 +45,7 @@ Content-Type: application/json
   "user_id": 16,
   "created_at": {
     "first_date": "2023-03-29T00:00:01.000Z",
-    "second_date": "2023-04-06T23:59:59.000Z"
+    "second_date": "2023-04-07T23:59:59.000Z"
   }
 }
 
@@ -55,6 +55,6 @@ POST 127.0.0.1:8080/delete
 Content-Type: application/json
 
 {
-  "word": "test",
-  "user_id": 16
+  "word": "test34",
+  "user_id": 13
 }
