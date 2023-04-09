@@ -9,6 +9,8 @@ import (
 
 func WrapRpc[RequestType, ResponseType any](rpcHandler func(req RequestType) (*ResponseType, error)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+
 		if r.Method != http.MethodPost {
 			http.Error(w, "unexpect method", http.StatusMethodNotAllowed)
 			return

@@ -13,5 +13,5 @@ type ResponseUser struct {
 }
 
 type ResponseFromSignIn struct {
-	Token string
+	Token string `json:"token"`
 }
