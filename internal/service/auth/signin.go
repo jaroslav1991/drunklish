@@ -16,7 +16,7 @@ func (a *Auth) SignIn(req model.User) (*dto.ResponseFromSignIn, error) {
 		return nil, httputils.ErrValidation
 	}
 
-	checkUser, err := a.repo.CheckUserDB(req)
+	checkUser, err := a.repo.CheckUserDB(req.Email)
 	if err != nil {
 		return nil, fmt.Errorf("invalid check user DB: %w", httputils.ErrValidation)
 	}

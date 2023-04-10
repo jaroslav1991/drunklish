@@ -40,6 +40,7 @@ func WriteErrorResponse(w http.ResponseWriter, err error) {
 }
 
 func WriteSuccessResponse(w http.ResponseWriter, code int, data interface{}) {
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	if data != nil {
 		response, err := json.Marshal(data)

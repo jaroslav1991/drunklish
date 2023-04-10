@@ -19,7 +19,7 @@ func CheckPlacesFirstOrSecondDate(period dto.RequestForGetByPeriod) dto.RequestF
 	if durationFromFirst > durationFromSecond {
 
 		return dto.RequestForGetByPeriod{
-			UserId: period.UserId,
+			Token: period.Token,
 			CreatedAt: dto.Period{
 				FirstDate:  period.CreatedAt.FirstDate,
 				SecondDate: period.CreatedAt.SecondDate,
@@ -28,7 +28,7 @@ func CheckPlacesFirstOrSecondDate(period dto.RequestForGetByPeriod) dto.RequestF
 
 	period.CreatedAt.FirstDate, period.CreatedAt.SecondDate = period.CreatedAt.SecondDate, period.CreatedAt.FirstDate
 	return dto.RequestForGetByPeriod{
-		UserId: period.UserId,
+		Token: period.Token,
 		CreatedAt: dto.Period{
 			FirstDate:  period.CreatedAt.FirstDate,
 			SecondDate: period.CreatedAt.SecondDate,

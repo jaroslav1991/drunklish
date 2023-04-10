@@ -2,7 +2,7 @@ POST 127.0.0.1:8080/sign-up
 Content-Type: application/json
 
 {
-  "email": "qwe21@yandex.ru",
+  "email": "jar@gmail.com",
   "password": "qweqwe"
 }
 
@@ -12,9 +12,9 @@ POST 127.0.0.1:8080/word
 Content-Type: application/json
 
 {
-  "word": "test34",
-  "translate": "test34",
-  "user_id": 16
+  "word": "jar1",
+  "translate": "jar1",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjExMCwiRW1haWwiOiJqYXJAZ21haWwuY29tIiwiZXhwIjoxNjgxNDg0NjE3fQ.WoiK-CyxmGDYeNxfYmxxPrl10jUoWt1-oroCPPAX5tI"
 }
 
 ####
@@ -23,7 +23,7 @@ POST 127.0.0.1:8080/sign-in
 Content-Type: application/json
 
 {
-  "email": "qwe@gmail.com",
+  "email": "jar@gmail.com",
   "hash_password": "qweqwe"
 }
 
@@ -33,7 +33,7 @@ POST 127.0.0.1:8080/get-words
 Content-Type: application/json
 
 {
-  "user_id": 16
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjExMCwiRW1haWwiOiJqYXJAZ21haWwuY29tIiwiZXhwIjoxNjgxNDg0NjE3fQ.WoiK-CyxmGDYeNxfYmxxPrl10jUoWt1-oroCPPAX5tI"
 }
 
 ####
@@ -42,10 +42,10 @@ POST 127.0.0.1:8080/get-words-period
 Content-Type: application/json
 
 {
-  "user_id": 16,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjExMCwiRW1haWwiOiJqYXJAZ21haWwuY29tIiwiZXhwIjoxNjgxNDg0NjE3fQ.WoiK-CyxmGDYeNxfYmxxPrl10jUoWt1-oroCPPAX5tI",
   "created_at": {
     "first_date": "2023-03-29T00:00:01.000Z",
-    "second_date": "2023-04-07T23:59:59.000Z"
+    "second_date": "2023-04-10T23:59:59.000Z"
   }
 }
 
@@ -55,6 +55,6 @@ POST 127.0.0.1:8080/delete
 Content-Type: application/json
 
 {
-  "word": "test34",
-  "user_id": 13
+  "word": "jar1",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjExMCwiRW1haWwiOiJqYXJAZ21haWwuY29tIiwiZXhwIjoxNjgxNDg0NjE3fQ.WoiK-CyxmGDYeNxfYmxxPrl10jUoWt1-oroCPPAX5tI"
 }

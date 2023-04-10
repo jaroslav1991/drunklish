@@ -9,6 +9,11 @@ import (
 
 func WrapRpc[RequestType, ResponseType any](rpcHandler func(req RequestType) (*ResponseType, error)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		//setupCORS(w)
+		//if r.Method == "OPTIONS" {
+		//	return
+		//}
+
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 
 		if r.Method != http.MethodPost {
@@ -38,3 +43,9 @@ func WrapRpc[RequestType, ResponseType any](rpcHandler func(req RequestType) (*R
 		WriteSuccessResponse(w, http.StatusOK, rpcResponse)
 	}
 }
+
+//func setupCORS(w http.ResponseWriter) {
+//	(w).Header().Set("Access-Control-Allow-Origin", "*")
+//	(w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+//	(w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+//}

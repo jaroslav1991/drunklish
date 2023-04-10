@@ -21,21 +21,23 @@ func NewAuthRepository(db db.DB) *AuthRepository {
 	return &AuthRepository{db: db}
 }
 
-func (repo *AuthRepository) CreateUser(userDTO dto.SignUpRequest) (*model.User, error) {
+func (repo *AuthRepository) CreateUser(email, password string) (*model.User, error) {
 	var user model.User
-	if err := repo.db.QueryRowx(createUserQuery, userDTO.Email, userDTO.Password).Scan(&user.Id); err != nil {
+	if err := repo.db.QueryRowx(createUserQuery, email, password).Scan(&user.Id); err != nil {
 		return nil, err
 	}
 
 	return &user, nil
 }
 
-func (repo *AuthRepository) CheckUserDB(user model.User) (*dto.ResponseUser, error) {
-	if err := repo.db.QueryRowx(authorizeQuery, user.Email).Scan(&user.Id, &user.Email, &user.HashPassword); err != nil {
+func (repo *AuthRepository) CheckUserDB(email string) (*dto.ResponseUser, error) {
+	var user dto.ResponseUser
+
+	if err := repo.db.QueryRowx(authorizeQuery, email).Scan(&user.User.Id, &user.User.Email, &user.User.HashPassword); err != nil {
 		return nil, err
 	}
 
-	return &dto.ResponseUser{User: user}, nil
+	return &user, nil
 }
 
 func (repo *AuthRepository) ExistEmail(email string) (bool, error) {

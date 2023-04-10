@@ -7,6 +7,7 @@ package word
 import (
 	dto "drunklish/internal/service/word/dto"
 	reflect "reflect"
+	time "time"
 
 	gomock "github.com/golang/mock/gomock"
 )
@@ -50,61 +51,61 @@ func (mr *MockRepositoryMockRecorder) CheckUserInDB(userId interface{}) *gomock.
 }
 
 // Create mocks base method.
-func (m *MockRepository) Create(word dto.CreateWordRequest) (*dto.ResponseFromCreateWor, error) {
+func (m *MockRepository) Create(word, translate string, createdAt time.Time, userId int64) (*dto.ResponseFromCreateWord, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", word)
-	ret0, _ := ret[0].(*dto.ResponseFromCreateWor)
+	ret := m.ctrl.Call(m, "Create", word, translate, createdAt, userId)
+	ret0, _ := ret[0].(*dto.ResponseFromCreateWord)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Create indicates an expected call of Create.
-func (mr *MockRepositoryMockRecorder) Create(word interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) Create(word, translate, createdAt, userId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRepository)(nil).Create), word)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRepository)(nil).Create), word, translate, createdAt, userId)
 }
 
 // DeleteWord mocks base method.
-func (m *MockRepository) DeleteWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {
+func (m *MockRepository) DeleteWord(word string, userId int64) (*dto.ResponseFromDeleting, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteWord", word)
+	ret := m.ctrl.Call(m, "DeleteWord", word, userId)
 	ret0, _ := ret[0].(*dto.ResponseFromDeleting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // DeleteWord indicates an expected call of DeleteWord.
-func (mr *MockRepositoryMockRecorder) DeleteWord(word interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) DeleteWord(word, userId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWord", reflect.TypeOf((*MockRepository)(nil).DeleteWord), word)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWord", reflect.TypeOf((*MockRepository)(nil).DeleteWord), word, userId)
 }
 
 // GetWordByCreated mocks base method.
-func (m *MockRepository) GetWordByCreated(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {
+func (m *MockRepository) GetWordByCreated(userId int64, firstDate, secondDate time.Time) (*dto.ResponseWords, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetWordByCreated", period)
+	ret := m.ctrl.Call(m, "GetWordByCreated", userId, firstDate, secondDate)
 	ret0, _ := ret[0].(*dto.ResponseWords)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetWordByCreated indicates an expected call of GetWordByCreated.
-func (mr *MockRepositoryMockRecorder) GetWordByCreated(period interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) GetWordByCreated(userId, firstDate, secondDate interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWordByCreated", reflect.TypeOf((*MockRepository)(nil).GetWordByCreated), period)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWordByCreated", reflect.TypeOf((*MockRepository)(nil).GetWordByCreated), userId, firstDate, secondDate)
 }
 
 // GetWords mocks base method.
-func (m *MockRepository) GetWords(word dto.RequestForGettingWord) (*dto.ResponseWords, error) {
+func (m *MockRepository) GetWords(userId int64) (*dto.ResponseWords, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetWords", word)
+	ret := m.ctrl.Call(m, "GetWords", userId)
 	ret0, _ := ret[0].(*dto.ResponseWords)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetWords indicates an expected call of GetWords.
-func (mr *MockRepositoryMockRecorder) GetWords(word interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) GetWords(userId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWords", reflect.TypeOf((*MockRepository)(nil).GetWords), word)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWords", reflect.TypeOf((*MockRepository)(nil).GetWords), userId)
 }

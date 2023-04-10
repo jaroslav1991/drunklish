@@ -54,9 +54,10 @@ func TestCheckPlacesFirstOrSecondDate_PositiveInversion(t *testing.T) {
 	testTime, err := time.Parse(time.RFC3339, "2023-04-29T00:00:01.000Z")
 	assert.NoError(t, err)
 	now := time.Now()
+	var period dto.RequestForGetByPeriod
 
 	expectedTime := dto.RequestForGetByPeriod{
-		UserId: 1,
+		Token: period.Token,
 		CreatedAt: dto.Period{
 			FirstDate:  now,
 			SecondDate: testTime,
@@ -71,9 +72,10 @@ func TestCheckPlacesFirstOrSecondDate_NegativeInversion(t *testing.T) {
 	testTime, err := time.Parse(time.RFC3339, "2023-04-29T00:00:01.000Z")
 	assert.NoError(t, err)
 	now := time.Now()
+	var period dto.RequestForGetByPeriod
 
 	expectedTime := dto.RequestForGetByPeriod{
-		UserId: 1,
+		Token: period.Token,
 		CreatedAt: dto.Period{
 			FirstDate:  testTime,
 			SecondDate: now,
