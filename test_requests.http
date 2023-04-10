@@ -33,7 +33,7 @@ POST 127.0.0.1:8080/get-words
 Content-Type: application/json
 
 {
-  "user_id": 16
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjE2LCJFbWFpbCI6InF3ZUBnbWFpbC5jb20iLCJleHAiOjE2ODE0MTQxMzR9.gq-wuyDVK9enmmp9yWXeKM9JM2YYKxJKcsY1LeQuflM"
 }
 
 ####

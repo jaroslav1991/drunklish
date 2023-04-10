@@ -15,7 +15,7 @@ type ResponseWord struct {
 }
 
 type ResponseWords struct {
-	Words []ResponseWord
+	Words []ResponseWord `json:"words"`
 }
 
 type ResponseFromCreateWor struct {
@@ -38,7 +38,8 @@ type Period struct {
 }
 
 type RequestForGettingWord struct {
-	UserId int64 `json:"user_id"`
+	//UserId int64 `json:"user_id"`
+	Token string `json:"token"`
 }
 
 type RequestForDeletingWord struct {

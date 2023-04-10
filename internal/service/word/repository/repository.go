@@ -48,10 +48,10 @@ func (repo *WordRepository) Create(word dto.CreateWordRequest) (*dto.ResponseFro
 	}, nil
 }
 
-func (repo *WordRepository) GetWords(wordReq dto.RequestForGettingWord) (*dto.ResponseWords, error) {
+func (repo *WordRepository) GetWords(userId int64) (*dto.ResponseWords, error) {
 	var words dto.ResponseWords
 
-	rows, err := repo.db.Query(getWordsQuery, wordReq.UserId)
+	rows, err := repo.db.Query(getWordsQuery, userId)
 	if err != nil {
 		return nil, err
 	}
