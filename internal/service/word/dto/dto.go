@@ -6,7 +6,7 @@ type CreateWordRequest struct {
 	Word      string    `json:"word"`
 	Translate string    `json:"translate"`
 	CreatedAt time.Time `json:"created_at"`
-	UserId    int64     `json:"user_id"`
+	Token     string    `json:"token"`
 }
 
 type ResponseWord struct {
@@ -18,7 +18,7 @@ type ResponseWords struct {
 	Words []ResponseWord `json:"words"`
 }
 
-type ResponseFromCreateWor struct {
+type ResponseFromCreateWord struct {
 	Word      string `json:"word"`
 	Translate string `json:"translate"`
 }
@@ -28,7 +28,7 @@ type ResponseFromDeleting struct {
 }
 
 type RequestForGetByPeriod struct {
-	UserId    int64  `json:"user_id"`
+	Token     string `json:"token"`
 	CreatedAt Period `json:"created_at"`
 }
 
@@ -38,11 +38,10 @@ type Period struct {
 }
 
 type RequestForGettingWord struct {
-	//UserId int64 `json:"user_id"`
 	Token string `json:"token"`
 }
 
 type RequestForDeletingWord struct {
-	Word   string `json:"word"`
-	UserId int64  `json:"user_id"`
+	Word  string `json:"word"`
+	Token string `json:"token"`
 }

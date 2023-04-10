@@ -24,7 +24,7 @@ func NewAuthService(repo Repository) *Auth {
 }
 
 type Repository interface {
-	CreateUser(userDTO dto.SignUpRequest) (*model.User, error)
-	CheckUserDB(user model.User) (*dto.ResponseUser, error)
+	CreateUser(email, password string) (*model.User, error)
+	CheckUserDB(email string) (*dto.ResponseUser, error)
 	ExistEmail(email string) (bool, error)
 }

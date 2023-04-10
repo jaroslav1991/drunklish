@@ -34,10 +34,7 @@ func (a *Auth) SignUp(req dto.SignUpRequest) (*model.User, error) {
 		return nil, fmt.Errorf("fail hash password: %w", httputils.ErrInternalServer)
 	}
 
-	createUser, err := a.repo.CreateUser(dto.SignUpRequest{
-		Email:    req.Email,
-		Password: hashPassword,
-	})
+	createUser, err := a.repo.CreateUser(req.Email, hashPassword)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %v", httputils.ErrInternalServer, err)
 	}

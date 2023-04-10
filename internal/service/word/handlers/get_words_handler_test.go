@@ -11,7 +11,7 @@ import (
 func TestGetWordsHandler_Positive(t *testing.T) {
 	service := &mockService{
 		fnG: func(word dto.RequestForGettingWord) (*dto.ResponseWords, error) {
-			assert.Equal(t, int64(1), word.UserId)
+			assert.Equal(t, "qwerty123", word.Token)
 
 			return &dto.ResponseWords{Words: []dto.ResponseWord{{
 				Word:      "qwe",
@@ -20,7 +20,7 @@ func TestGetWordsHandler_Positive(t *testing.T) {
 		},
 	}
 
-	word := dto.RequestForGettingWord{UserId: int64(1)}
+	word := dto.RequestForGettingWord{Token: "qwerty123"}
 
 	expectedResponse := &dto.ResponseWords{Words: []dto.ResponseWord{{
 		Word:      "qwe",
@@ -37,13 +37,13 @@ func TestGetWordsHandler_Positive(t *testing.T) {
 func TestGetWordsHandler_Negative(t *testing.T) {
 	service := &mockService{
 		fnG: func(word dto.RequestForGettingWord) (*dto.ResponseWords, error) {
-			assert.Equal(t, int64(1), word.UserId)
+			assert.Equal(t, "qwerty123", word.Token)
 
 			return nil, errors.New("fuck up")
 		},
 	}
 
-	word := dto.RequestForGettingWord{UserId: int64(1)}
+	word := dto.RequestForGettingWord{Token: "qwerty123"}
 
 	handler := GetWordsHandler(service)
 
@@ -54,9 +54,10 @@ func TestGetWordsHandler_Negative(t *testing.T) {
 func TestGetWordByPeriodHandler_Positive(t *testing.T) {
 	service := &mockService{
 		fnGP: func(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {
-			assert.Equal(t, int64(1), period.UserId)
-			assert.Equal(t, time.Now(), period.CreatedAt.FirstDate)
-			assert.Equal(t, time.Now(), period.CreatedAt.SecondDate)
+			now := time.Now()
+			assert.Equal(t, "", period.Token)
+			assert.Equal(t, now, period.CreatedAt.FirstDate)
+			assert.Equal(t, now, period.CreatedAt.SecondDate)
 
 			return &dto.ResponseWords{Words: []dto.ResponseWord{{
 				Word:      "qwe",
@@ -64,9 +65,10 @@ func TestGetWordByPeriodHandler_Positive(t *testing.T) {
 			}}}, nil
 		},
 	}
+	var period dto.RequestForGetByPeriod
 
 	requestFromPeriod := dto.RequestForGetByPeriod{
-		UserId: 1,
+		Token: period.Token,
 		CreatedAt: dto.Period{
 			FirstDate:  time.Now(),
 			SecondDate: time.Now(),
@@ -88,16 +90,19 @@ func TestGetWordByPeriodHandler_Positive(t *testing.T) {
 func TestGetWordByPeriodHandler_Negative(t *testing.T) {
 	service := &mockService{
 		fnGP: func(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {
-			assert.Equal(t, int64(1), period.UserId)
-			assert.Equal(t, time.Now(), period.CreatedAt.FirstDate)
-			assert.Equal(t, time.Now(), period.CreatedAt.SecondDate)
+			now := time.Now()
+			assert.Equal(t, "", period.Token)
+			assert.Equal(t, now, period.CreatedAt.FirstDate)
+			assert.Equal(t, now, period.CreatedAt.SecondDate)
 
 			return nil, errors.New("fuck up")
 		},
 	}
 
+	var period dto.RequestForGetByPeriod
+
 	requestFromPeriod := dto.RequestForGetByPeriod{
-		UserId: 1,
+		Token: period.Token,
 		CreatedAt: dto.Period{
 			FirstDate:  time.Now(),
 			SecondDate: time.Now(),

@@ -2,6 +2,7 @@ package word
 
 import (
 	"drunklish/internal/pkg/httputils"
+	"drunklish/internal/service/auth/token"
 	"drunklish/internal/service/word/dto"
 	"errors"
 	"github.com/golang/mock/gomock"
@@ -14,16 +15,19 @@ func TestWord_DeleteWordByWord_Positive(t *testing.T) {
 	defer ctrl.Finish()
 
 	wordRequest := dto.RequestForDeletingWord{
-		Word:   "boogaga",
-		UserId: int64(1),
+		Word:  "boogaga",
+		Token: "qwerty123",
 	}
 
 	expected := dto.ResponseFromDeleting{Answer: "deleting success"}
 
 	repository := NewMockRepository(ctrl)
-	repository.EXPECT().DeleteWord(wordRequest).Return(&expected, nil)
+	repository.EXPECT().DeleteWord(wordRequest.Word, int64(1)).Return(&expected, nil)
 
 	service := NewWordService(repository)
+	service.parseTokenFn = func(tokenString string) (*token.AuthClaims, error) {
+		return &token.AuthClaims{UserId: int64(1)}, nil
+	}
 
 	actualAnswer, actualErr := service.DeleteWordByWord(wordRequest)
 	assert.NoError(t, actualErr)
@@ -35,16 +39,40 @@ func TestWord_DeleteWordByWord_Negative(t *testing.T) {
 	defer ctrl.Finish()
 
 	wordRequest := dto.RequestForDeletingWord{
-		Word:   "boogaga",
-		UserId: int64(1),
+		Word:  "boogaga",
+		Token: "qwerty123",
 	}
 
 	repository := NewMockRepository(ctrl)
-	repository.EXPECT().DeleteWord(wordRequest).Return(nil, errors.New("fail deleting"))
+	repository.EXPECT().DeleteWord(wordRequest.Word, int64(1)).Return(nil, errors.New("fail deleting"))
 
 	service := NewWordService(repository)
+	service.parseTokenFn = func(tokenString string) (*token.AuthClaims, error) {
+		return &token.AuthClaims{UserId: int64(1)}, nil
+	}
 
 	_, actualErr := service.DeleteWordByWord(wordRequest)
 	assert.Error(t, actualErr)
 	assert.ErrorIs(t, actualErr, httputils.ErrWordNotExist)
+}
+
+func TestWord_DeleteWordByWord_NegativeFailToken(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	wordRequest := dto.RequestForDeletingWord{
+		Word:  "boogaga",
+		Token: "qwerty123",
+	}
+
+	repository := NewMockRepository(ctrl)
+
+	service := NewWordService(repository)
+	service.parseTokenFn = func(tokenString string) (*token.AuthClaims, error) {
+		return nil, errors.New("fuck up")
+	}
+
+	_, actualErr := service.DeleteWordByWord(wordRequest)
+	assert.Error(t, actualErr)
+	assert.ErrorIs(t, actualErr, httputils.ErrValidation)
 }

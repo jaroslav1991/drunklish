@@ -25,7 +25,7 @@ func TestAuth_SignIn_Positive(t *testing.T) {
 
 	repository := NewMockRepository(ctrl)
 	repository.EXPECT().ExistEmail(userModel.Email).Return(true, nil)
-	repository.EXPECT().CheckUserDB(userModel).Return(&userFromDB, nil)
+	repository.EXPECT().CheckUserDB(userModel.Email).Return(&userFromDB, nil)
 
 	service := NewAuthService(repository)
 	service.checkPasswordFn = func(hash, password string) error {
@@ -56,7 +56,7 @@ func TestAuth_SignIn_Negative_FailGenerateToken(t *testing.T) {
 
 	repository := NewMockRepository(ctrl)
 	repository.EXPECT().ExistEmail(userModel.Email).Return(true, nil)
-	repository.EXPECT().CheckUserDB(userModel).Return(&userFromDB, nil)
+	repository.EXPECT().CheckUserDB(userModel.Email).Return(&userFromDB, nil)
 
 	service := NewAuthService(repository)
 	service.checkPasswordFn = func(hash, password string) error {
@@ -85,7 +85,7 @@ func TestAuth_SignIn_Negative_FailCheckPassword(t *testing.T) {
 
 	repository := NewMockRepository(ctrl)
 	repository.EXPECT().ExistEmail(userModel.Email).Return(true, nil)
-	repository.EXPECT().CheckUserDB(userModel).Return(&userFromDB, nil)
+	repository.EXPECT().CheckUserDB(userModel.Email).Return(&userFromDB, nil)
 
 	service := NewAuthService(repository)
 	service.checkPasswordFn = func(hash, password string) error {
@@ -107,7 +107,7 @@ func TestAuth_SignIn_Negative_FailCheckUser(t *testing.T) {
 
 	repository := NewMockRepository(ctrl)
 	repository.EXPECT().ExistEmail(userModel.Email).Return(true, nil)
-	repository.EXPECT().CheckUserDB(userModel).Return(nil, errors.New("fail check user DB"))
+	repository.EXPECT().CheckUserDB(userModel.Email).Return(nil, errors.New("fail check user DB"))
 
 	service := NewAuthService(repository)
 

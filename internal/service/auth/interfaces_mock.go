@@ -36,33 +36,33 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 }
 
 // CheckUserDB mocks base method.
-func (m *MockRepository) CheckUserDB(user model.User) (*dto.ResponseUser, error) {
+func (m *MockRepository) CheckUserDB(email string) (*dto.ResponseUser, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CheckUserDB", user)
+	ret := m.ctrl.Call(m, "CheckUserDB", email)
 	ret0, _ := ret[0].(*dto.ResponseUser)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CheckUserDB indicates an expected call of CheckUserDB.
-func (mr *MockRepositoryMockRecorder) CheckUserDB(user interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) CheckUserDB(email interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckUserDB", reflect.TypeOf((*MockRepository)(nil).CheckUserDB), user)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckUserDB", reflect.TypeOf((*MockRepository)(nil).CheckUserDB), email)
 }
 
 // CreateUser mocks base method.
-func (m *MockRepository) CreateUser(userDTO dto.SignUpRequest) (*model.User, error) {
+func (m *MockRepository) CreateUser(email, password string) (*model.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateUser", userDTO)
+	ret := m.ctrl.Call(m, "CreateUser", email, password)
 	ret0, _ := ret[0].(*model.User)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateUser indicates an expected call of CreateUser.
-func (mr *MockRepositoryMockRecorder) CreateUser(userDTO interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) CreateUser(email, password interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockRepository)(nil).CreateUser), userDTO)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockRepository)(nil).CreateUser), email, password)
 }
 
 // ExistEmail mocks base method.

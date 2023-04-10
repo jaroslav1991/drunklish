@@ -11,15 +11,15 @@ func TestDeleteWordHandler_Positive(t *testing.T) {
 	service := &mockService{
 		fnD: func(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {
 			assert.Equal(t, "qwe", word.Word)
-			assert.Equal(t, int64(1), word.UserId)
+			assert.Equal(t, "qwerty123", word.Token)
 
 			return &dto.ResponseFromDeleting{Answer: "deleting success"}, nil
 		},
 	}
 
 	word := dto.RequestForDeletingWord{
-		Word:   "qwe",
-		UserId: int64(1),
+		Word:  "qwe",
+		Token: "qwerty123",
 	}
 
 	handler := DeleteWordHandler(service)
@@ -33,15 +33,15 @@ func TestDeleteWordHandler_Negative(t *testing.T) {
 	service := &mockService{
 		fnD: func(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {
 			assert.Equal(t, "qwe", word.Word)
-			assert.Equal(t, int64(1), word.UserId)
+			assert.Equal(t, "qwerty123", word.Token)
 
 			return nil, errors.New("fuck up")
 		},
 	}
 
 	word := dto.RequestForDeletingWord{
-		Word:   "qwe",
-		UserId: int64(1),
+		Word:  "qwe",
+		Token: "qwerty123",
 	}
 
 	handler := DeleteWordHandler(service)

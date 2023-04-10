@@ -33,7 +33,7 @@ func TestAuth_SignUp_Positive(t *testing.T) {
 	repository := NewMockRepository(ctrl)
 
 	repository.EXPECT().ExistEmail("new@gmail.com").Return(false, nil)
-	repository.EXPECT().CreateUser(dtoForCreateUser).Return(&userFromRepository, nil)
+	repository.EXPECT().CreateUser(dtoForCreateUser.Email, dtoForCreateUser.Password).Return(&userFromRepository, nil)
 
 	service := NewAuthService(repository)
 	service.hashFn = func(password string) (string, error) {
@@ -67,7 +67,7 @@ func TestAuth_SignUp_Negative_FailToCreateUser(t *testing.T) {
 	repository := NewMockRepository(ctrl)
 
 	repository.EXPECT().ExistEmail("new@gmail.com").Return(false, nil)
-	repository.EXPECT().CreateUser(dtoForCreateUser).Return(nil, errors.New("fail on create user"))
+	repository.EXPECT().CreateUser(dtoForCreateUser.Email, dtoForCreateUser.Password).Return(nil, errors.New("fail on create user"))
 
 	service := NewAuthService(repository)
 	service.hashFn = func(password string) (string, error) {
