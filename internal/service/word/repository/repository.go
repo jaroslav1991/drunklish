@@ -10,10 +10,10 @@ import (
 
 const (
 	createWordQuery      = `insert into words (word, translate, created_at, user_id) values ($1, $2, $3, $4) returning word, translate`
-	getWordsQuery        = `select word, translate from words where user_id=$1`
+	getWordsQuery        = `select w.word, w.translate from words w join users u on w.user_id = u.id where w.user_id=$1`
 	deleteWordQuery      = `delete from words where word=$1 and user_id=$2`
 	selectWordQuery      = `select word, translate, user_id from words where word=$1 and user_id=$2`
-	getWordByPeriodQuery = `select word, translate from words where user_id=$1 and created_at>$2 and created_at<$3`
+	getWordByPeriodQuery = `select w.word, w.translate from words w join users u on w.user_id = u.id where w.user_id=$1 and w.created_at>$2 and w.created_at<$3`
 	getUserQuery         = `select user_id from words where user_id=$1`
 )
 

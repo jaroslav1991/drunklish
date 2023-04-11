@@ -13,14 +13,6 @@ func (w *Word) GetWordsByUserId(word dto.RequestForGettingWord) (*dto.ResponseWo
 		return nil, fmt.Errorf("invalid token: %w", httputils.ErrValidation)
 	}
 
-	exist, err := w.repo.CheckUserInDB(token.UserId)
-	if !exist {
-		return nil, fmt.Errorf("user not exists: %w", httputils.ErrValidation)
-	}
-	if err != nil {
-		return nil, fmt.Errorf("%w", httputils.ErrValidation)
-	}
-
 	words, err := w.repo.GetWords(token.UserId)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %v", httputils.ErrInternalServer, err)
@@ -35,14 +27,6 @@ func (w *Word) GetWordsByCreatedAt(period dto.RequestForGetByPeriod) (*dto.Respo
 	token, err := w.parseTokenFn(period.Token)
 	if err != nil {
 		return nil, fmt.Errorf("invalid token: %w", httputils.ErrValidation)
-	}
-
-	exist, err := w.repo.CheckUserInDB(token.UserId)
-	if !exist {
-		return nil, fmt.Errorf("user not exists %w", httputils.ErrValidation)
-	}
-	if err != nil {
-		return nil, fmt.Errorf("%w", httputils.ErrValidation)
 	}
 
 	periodFromCheck := validator.CheckPlacesFirstOrSecondDate(period)

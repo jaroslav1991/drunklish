@@ -29,7 +29,7 @@ func TestWord_GetWordsByUserId_Positive(t *testing.T) {
 
 	repository := NewMockRepository(ctrl)
 
-	repository.EXPECT().CheckUserInDB(int64(1)).Return(true, nil)
+	//repository.EXPECT().CheckUserInDB(int64(1)).Return(true, nil)
 	repository.EXPECT().GetWords(int64(1)).Return(&wordsFromGet, nil)
 
 	service := NewWordService(repository)
@@ -58,7 +58,7 @@ func TestWord_GetWordsByUserId_NegativeFailGetWord(t *testing.T) {
 	word := dto.RequestForGettingWord{Token: tkn}
 	repository := NewMockRepository(ctrl)
 
-	repository.EXPECT().CheckUserInDB(int64(1)).Return(true, nil)
+	//repository.EXPECT().CheckUserInDB(int64(1)).Return(true, nil)
 	repository.EXPECT().GetWords(int64(1)).Return(nil, errors.New("fail create word"))
 
 	service := NewWordService(repository)
@@ -68,48 +68,6 @@ func TestWord_GetWordsByUserId_NegativeFailGetWord(t *testing.T) {
 
 	_, err := service.GetWordsByUserId(word)
 	assert.ErrorIs(t, err, httputils.ErrInternalServer)
-
-}
-
-func TestWord_GetWordsByUserId_NegativeFailCheckUser(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	tkn := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjE2LCJFbWFpbCI6InF3ZUBnbWFpbC5jb20iLCJleHAiOjE2ODE0MTQxMzR9.gq-wuyDVK9enmmp9yWXeKM9JM2YYKxJKcsY1LeQuflM"
-
-	word := dto.RequestForGettingWord{Token: tkn}
-	repository := NewMockRepository(ctrl)
-
-	repository.EXPECT().CheckUserInDB(int64(1)).Return(true, errors.New("fuck up"))
-
-	service := NewWordService(repository)
-	service.parseTokenFn = func(tokenString string) (*token.AuthClaims, error) {
-		return &token.AuthClaims{UserId: int64(1)}, nil
-	}
-
-	_, err := service.GetWordsByUserId(word)
-	assert.ErrorIs(t, err, httputils.ErrValidation)
-
-}
-
-func TestWord_GetWordsByUserId_NegativeFailNotCheckUser(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	tkn := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjE2LCJFbWFpbCI6InF3ZUBnbWFpbC5jb20iLCJleHAiOjE2ODE0MTQxMzR9.gq-wuyDVK9enmmp9yWXeKM9JM2YYKxJKcsY1LeQuflM"
-
-	word := dto.RequestForGettingWord{Token: tkn}
-	repository := NewMockRepository(ctrl)
-
-	repository.EXPECT().CheckUserInDB(int64(1)).Return(false, errors.New("fuck up"))
-
-	service := NewWordService(repository)
-	service.parseTokenFn = func(tokenString string) (*token.AuthClaims, error) {
-		return &token.AuthClaims{UserId: int64(1)}, nil
-	}
-
-	_, err := service.GetWordsByUserId(word)
-	assert.ErrorIs(t, err, httputils.ErrValidation)
 
 }
 
@@ -155,7 +113,7 @@ func TestWord_GetWordsByCreatedAt_Positive(t *testing.T) {
 
 	repository := NewMockRepository(ctrl)
 
-	repository.EXPECT().CheckUserInDB(int64(1)).Return(true, nil)
+	//repository.EXPECT().CheckUserInDB(int64(1)).Return(true, nil)
 	repository.EXPECT().GetWordByCreated(int64(1), word.CreatedAt.FirstDate, word.CreatedAt.SecondDate).Return(&wordsFromGet, nil)
 
 	service := NewWordService(repository)
@@ -188,7 +146,7 @@ func TestWord_GetWordsByCreatedAt_NegativeFailGetWord(t *testing.T) {
 
 	repository := NewMockRepository(ctrl)
 
-	repository.EXPECT().CheckUserInDB(int64(1)).Return(true, nil)
+	//repository.EXPECT().CheckUserInDB(int64(1)).Return(true, nil)
 	repository.EXPECT().GetWordByCreated(int64(1), word.CreatedAt.FirstDate, word.CreatedAt.SecondDate).Return(nil, errors.New("fuck up"))
 
 	service := NewWordService(repository)
@@ -199,56 +157,6 @@ func TestWord_GetWordsByCreatedAt_NegativeFailGetWord(t *testing.T) {
 	_, err := service.GetWordsByCreatedAt(word)
 	assert.Error(t, err)
 	assert.ErrorIs(t, err, httputils.ErrInternalServer)
-}
-
-func TestWord_GetWordsByCreatedAt_NegativeFailCheckUser(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	word := dto.RequestForGetByPeriod{
-		Token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjE2LCJFbWFpbCI6InF3ZUBnbWFpbC5jb20iLCJleHAiOjE2ODE0MTQxMzR9.gq-wuyDVK9enmmp9yWXeKM9JM2YYKxJKcsY1LeQuflM", CreatedAt: dto.Period{
-			FirstDate:  time.Now(),
-			SecondDate: time.Now(),
-		},
-	}
-
-	repository := NewMockRepository(ctrl)
-
-	repository.EXPECT().CheckUserInDB(int64(1)).Return(true, errors.New("fuck up"))
-
-	service := NewWordService(repository)
-	service.parseTokenFn = func(tokenString string) (*token.AuthClaims, error) {
-		return &token.AuthClaims{UserId: int64(1)}, nil
-	}
-
-	_, err := service.GetWordsByCreatedAt(word)
-	assert.Error(t, err)
-	assert.ErrorIs(t, err, httputils.ErrValidation)
-}
-
-func TestWord_GetWordsByCreatedAt_NegativeFailNotCheckUser(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	word := dto.RequestForGetByPeriod{
-		Token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjE2LCJFbWFpbCI6InF3ZUBnbWFpbC5jb20iLCJleHAiOjE2ODE0MTQxMzR9.gq-wuyDVK9enmmp9yWXeKM9JM2YYKxJKcsY1LeQuflM", CreatedAt: dto.Period{
-			FirstDate:  time.Now(),
-			SecondDate: time.Now(),
-		},
-	}
-
-	repository := NewMockRepository(ctrl)
-
-	repository.EXPECT().CheckUserInDB(int64(1)).Return(false, errors.New("fuck up"))
-
-	service := NewWordService(repository)
-	service.parseTokenFn = func(tokenString string) (*token.AuthClaims, error) {
-		return &token.AuthClaims{UserId: int64(1)}, nil
-	}
-
-	_, err := service.GetWordsByCreatedAt(word)
-	assert.Error(t, err)
-	assert.ErrorIs(t, err, httputils.ErrValidation)
 }
 
 func TestWord_GetWordsByCreatedAt_NegativeFailToken(t *testing.T) {
