@@ -42,6 +42,7 @@ func main() {
 	http.Handle("/get-words", httputils.WrapRpc(wordsHandlers.GetWordsHandler(wordDB)))
 	http.Handle("/get-words-period", httputils.WrapRpc(wordsHandlers.GetWordByPeriodHandler(wordDB)))
 	http.Handle("/delete", httputils.WrapRpc(wordsHandlers.DeleteWordHandler(wordDB)))
+	http.Handle("/update", httputils.WrapRpc(wordsHandlers.UpdateWordHandler(wordDB)))
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)

@@ -109,3 +109,18 @@ func (mr *MockRepositoryMockRecorder) GetWords(userId interface{}) *gomock.Call 
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWords", reflect.TypeOf((*MockRepository)(nil).GetWords), userId)
 }
+
+// Update mocks base method.
+func (m *MockRepository) Update(word, translate string, id, userId int64) (*dto.ResponseWord, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Update", word, translate, id, userId)
+	ret0, _ := ret[0].(*dto.ResponseWord)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Update indicates an expected call of Update.
+func (mr *MockRepositoryMockRecorder) Update(word, translate, id, userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockRepository)(nil).Update), word, translate, id, userId)
+}

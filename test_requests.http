@@ -12,9 +12,9 @@ POST 127.0.0.1:8080/word
 Content-Type: application/json
 
 {
-  "word": "jar2",
-  "translate": "jar2",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjExMCwiRW1haWwiOiJqYXJAZ21haWwuY29tIiwiZXhwIjoxNjgxNDg0NjE3fQ.WoiK-CyxmGDYeNxfYmxxPrl10jUoWt1-oroCPPAX5tI"
+  "word": "qwe",
+  "translate": "qwe",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTY4ODc0N30.Go-bmnJNLtrBvTwEgz2LAs-M51RJ1MkzZGIN3pBTEpA"
 }
 
 ####
@@ -23,7 +23,7 @@ POST 127.0.0.1:8080/sign-in
 Content-Type: application/json
 
 {
-  "email": "asdasd@gmail.com",
+  "email": "qwe@gmail.com",
   "hash_password": "qweqwe"
 }
 
@@ -33,7 +33,7 @@ POST 127.0.0.1:8080/get-words
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjExMCwiRW1haWwiOiJqYXJAZ21haWwuY29tIiwiZXhwIjoxNjgxNTE3ODg1fQ.tD5W1y5sPAwvKJl7AqEOHB3BDTewOj7hzdNQ2kViGjU"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTgxODUzOX0.LhIT66rTxKG_yGQAVDeRQK4TES9oQ2hFtzZJlIhok34"
 }
 
 ####
@@ -42,10 +42,10 @@ POST 127.0.0.1:8080/get-words-period
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjExMSwiRW1haWwiOiJhc2Rhc2RAZ21haWwuY29tIiwiZXhwIjoxNjgxNTU0Njk1fQ.LugvFlsOK_n8gJ_gkXP_vRQigNUkKkdMNXGbxH_DXnE",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTgxODUzOX0.LhIT66rTxKG_yGQAVDeRQK4TES9oQ2hFtzZJlIhok34",
   "created_at": {
     "first_date": "2023-03-29T00:00:01.000Z",
-    "second_date": "2023-04-11T23:59:59.000Z"
+    "second_date": "2023-04-14T23:59:59.000Z"
   }
 }
 
@@ -55,6 +55,18 @@ POST 127.0.0.1:8080/delete
 Content-Type: application/json
 
 {
-  "word": "jar1",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjExMCwiRW1haWwiOiJqYXJAZ21haWwuY29tIiwiZXhwIjoxNjgxNDg0NjE3fQ.WoiK-CyxmGDYeNxfYmxxPrl10jUoWt1-oroCPPAX5tI"
+  "word": "test",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTY4ODc0N30.Go-bmnJNLtrBvTwEgz2LAs-M51RJ1MkzZGIN3pBTEpA"
+}
+
+####
+
+POST 127.0.0.1:8080/update
+Content-Type: application/json
+
+{
+  "word": "update word 1",
+  "translate": "обновленное слово 1",
+  "id": 1,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTgxODUzOX0.LhIT66rTxKG_yGQAVDeRQK4TES9oQ2hFtzZJlIhok34"
 }
