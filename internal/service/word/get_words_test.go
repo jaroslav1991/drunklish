@@ -20,16 +20,17 @@ func TestWord_GetWordsByUserId_Positive(t *testing.T) {
 	word := dto.RequestForGettingWord{Token: tkn}
 
 	wordsFromGet := dto.ResponseWords{Words: []dto.ResponseWord{{
+		Id:        int64(1),
 		Word:      "boogaga1",
 		Translate: "boo1",
 	}, {
+		Id:        int64(2),
 		Word:      "boogaga2",
 		Translate: "boo",
 	}}}
 
 	repository := NewMockRepository(ctrl)
 
-	//repository.EXPECT().CheckUserInDB(int64(1)).Return(true, nil)
 	repository.EXPECT().GetWords(int64(1)).Return(&wordsFromGet, nil)
 
 	service := NewWordService(repository)
@@ -41,9 +42,11 @@ func TestWord_GetWordsByUserId_Positive(t *testing.T) {
 	assert.NoError(t, err)
 
 	assert.Equal(t, &dto.ResponseWords{Words: []dto.ResponseWord{{
+		Id:        int64(1),
 		Word:      "boogaga1",
 		Translate: "boo1",
 	}, {
+		Id:        int64(2),
 		Word:      "boogaga2",
 		Translate: "boo",
 	}}}, actualWords)
@@ -58,7 +61,6 @@ func TestWord_GetWordsByUserId_NegativeFailGetWord(t *testing.T) {
 	word := dto.RequestForGettingWord{Token: tkn}
 	repository := NewMockRepository(ctrl)
 
-	//repository.EXPECT().CheckUserInDB(int64(1)).Return(true, nil)
 	repository.EXPECT().GetWords(int64(1)).Return(nil, errors.New("fail create word"))
 
 	service := NewWordService(repository)
@@ -104,16 +106,17 @@ func TestWord_GetWordsByCreatedAt_Positive(t *testing.T) {
 	}
 
 	wordsFromGet := dto.ResponseWords{Words: []dto.ResponseWord{{
+		Id:        int64(1),
 		Word:      "boogaga1",
 		Translate: "boo1",
 	}, {
+		Id:        int64(2),
 		Word:      "boogaga2",
 		Translate: "boo",
 	}}}
 
 	repository := NewMockRepository(ctrl)
 
-	//repository.EXPECT().CheckUserInDB(int64(1)).Return(true, nil)
 	repository.EXPECT().GetWordByCreated(int64(1), word.CreatedAt.FirstDate, word.CreatedAt.SecondDate).Return(&wordsFromGet, nil)
 
 	service := NewWordService(repository)
@@ -125,9 +128,11 @@ func TestWord_GetWordsByCreatedAt_Positive(t *testing.T) {
 	assert.NoError(t, err)
 
 	assert.Equal(t, &dto.ResponseWords{Words: []dto.ResponseWord{{
+		Id:        int64(1),
 		Word:      "boogaga1",
 		Translate: "boo1",
 	}, {
+		Id:        int64(2),
 		Word:      "boogaga2",
 		Translate: "boo",
 	}}}, actualWords)
@@ -146,7 +151,6 @@ func TestWord_GetWordsByCreatedAt_NegativeFailGetWord(t *testing.T) {
 
 	repository := NewMockRepository(ctrl)
 
-	//repository.EXPECT().CheckUserInDB(int64(1)).Return(true, nil)
 	repository.EXPECT().GetWordByCreated(int64(1), word.CreatedAt.FirstDate, word.CreatedAt.SecondDate).Return(nil, errors.New("fuck up"))
 
 	service := NewWordService(repository)

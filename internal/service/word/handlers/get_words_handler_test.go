@@ -14,6 +14,7 @@ func TestGetWordsHandler_Positive(t *testing.T) {
 			assert.Equal(t, "qwerty123", word.Token)
 
 			return &dto.ResponseWords{Words: []dto.ResponseWord{{
+				Id:        int64(1),
 				Word:      "qwe",
 				Translate: "qwe",
 			}}}, nil
@@ -23,6 +24,7 @@ func TestGetWordsHandler_Positive(t *testing.T) {
 	word := dto.RequestForGettingWord{Token: "qwerty123"}
 
 	expectedResponse := &dto.ResponseWords{Words: []dto.ResponseWord{{
+		Id:        int64(1),
 		Word:      "qwe",
 		Translate: "qwe",
 	}}}
@@ -60,6 +62,7 @@ func TestGetWordByPeriodHandler_Positive(t *testing.T) {
 			assert.Equal(t, now, period.CreatedAt.SecondDate)
 
 			return &dto.ResponseWords{Words: []dto.ResponseWord{{
+				Id:        int64(1),
 				Word:      "qwe",
 				Translate: "qwe",
 			}}}, nil
@@ -76,6 +79,7 @@ func TestGetWordByPeriodHandler_Positive(t *testing.T) {
 	}
 
 	expectedResponse := &dto.ResponseWords{Words: []dto.ResponseWord{{
+		Id:        int64(1),
 		Word:      "qwe",
 		Translate: "qwe",
 	}}}

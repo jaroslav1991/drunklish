@@ -10,6 +10,7 @@ type CreateWordRequest struct {
 }
 
 type ResponseWord struct {
+	Id        int64  `json:"id"`
 	Word      string `json:"word"`
 	Translate string `json:"translate"`
 }
@@ -44,4 +45,11 @@ type RequestForGettingWord struct {
 type RequestForDeletingWord struct {
 	Word  string `json:"word"`
 	Token string `json:"token"`
+}
+
+type RequestForUpdateWord struct {
+	Word      string `json:"word"`
+	Translate string `json:"translate"`
+	Id        int64  `json:"id"`
+	Token     string `json:"token"`
 }
