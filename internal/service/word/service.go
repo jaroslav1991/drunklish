@@ -21,7 +21,6 @@ type Repository interface {
 	Create(word string, translate string, createdAt time.Time, userId int64) (*dto.ResponseFromCreateWord, error)
 	GetWords(userId int64) (*dto.ResponseWords, error)
 	GetWordByCreated(userId int64, firstDate, secondDate time.Time) (*dto.ResponseWords, error)
-	CheckUserInDB(userId int64) (bool, error)
 	DeleteWord(userId, id int64) (*dto.ResponseFromDeleting, error)
 	Update(word, translate string, id, userId int64) (*dto.ResponseWord, error)
 }

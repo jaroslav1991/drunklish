@@ -15,7 +15,7 @@ const (
     word varchar(55) not null,
     translate varchar(55) not null,
     created_at timestamp,
-    user_id bigint references users(id) 
+    user_id bigint not null references users(id) 
 );`
 )
 

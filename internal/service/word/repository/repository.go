@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"database/sql"
 	"drunklish/internal/pkg/db"
 	"drunklish/internal/service/word/dto"
 	"fmt"
@@ -9,14 +8,11 @@ import (
 )
 
 const (
-	createWordQuery = `insert into words (word, translate, created_at, user_id) values ($1, $2, $3, $4) returning word, translate`
-	getWordsQuery   = `select w.id, w.word, w.translate from words w join users u on w.user_id = u.id where w.user_id=$1 order by created_at`
-	deleteWordQuery = `delete from words w using users u where w.user_id = u.id and  w.user_id=$1 and w.id=$2 returning w.id`
-	//deleteWordQuery      = `delete from words where word=$1 and user_id=$2`
-	//selectWordQuery      = `select word, translate, user_id from words where word=$1 and user_id=$2`
-	getWordByPeriodQuery = `select w.id, w.word, w.translate from words w join users u on w.user_id = u.id where w.user_id=$1 and w.created_at>$2 and w.created_at<$3 order by created_at`
-	getUserQuery         = `select user_id from words where user_id=$1`
-	updateWordQuery      = `update words w set word=$1, translate=$2 from users u where w.id=$3 and w.user_id=$4 and w.user_id=u.id returning w.word, w.translate`
+	createWordQuery      = `insert into words (word, translate, created_at, user_id) values ($1, $2, $3, $4) returning word, translate`
+	getWordsQuery        = `select id, word, translate from words where user_id=$1 order by created_at`
+	deleteWordQuery      = `delete from words where user_id=$1 and id=$2 returning id`
+	getWordByPeriodQuery = `select id, word, translate from words where user_id=$1 and created_at>$2 and created_at<$3 order by created_at`
+	updateWordQuery      = `update words  set word=$1, translate=$2 where id=$3 and user_id=$4 returning word, translate`
 )
 
 type WordRepository struct {
@@ -76,18 +72,6 @@ func (repo *WordRepository) GetWords(userId int64) (*dto.ResponseWords, error) {
 	return &words, nil
 }
 
-func (repo *WordRepository) CheckUserInDB(userId int64) (bool, error) {
-	err := repo.db.QueryRowx(getUserQuery, userId).Scan(&userId)
-	if err != nil && err == sql.ErrNoRows {
-		return false, nil
-	}
-	if err != nil {
-		return false, err
-	}
-
-	return true, nil
-}
-
 func (repo *WordRepository) GetWordByCreated(userId int64, firstDate, secondDate time.Time) (*dto.ResponseWords, error) {
 	var words dto.ResponseWords
 
@@ -110,11 +94,9 @@ func (repo *WordRepository) GetWordByCreated(userId int64, firstDate, secondDate
 }
 
 func (repo *WordRepository) DeleteWord(userId, id int64) (*dto.ResponseFromDeleting, error) {
-	//if _, err := repo.db.Exec(deleteWordQuery, word, userId, id); err != nil {
-	//	return nil, err
-	//}
 	if err := repo.db.QueryRowx(deleteWordQuery, userId, id).Scan(&id); err != nil {
 		return nil, err
 	}
+
 	return &dto.ResponseFromDeleting{Answer: fmt.Sprintf("%d: deleting success", id)}, nil
 }
