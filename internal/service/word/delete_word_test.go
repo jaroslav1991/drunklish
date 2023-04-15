@@ -15,14 +15,14 @@ func TestWord_DeleteWordByWord_Positive(t *testing.T) {
 	defer ctrl.Finish()
 
 	wordRequest := dto.RequestForDeletingWord{
-		Word:  "boogaga",
 		Token: "qwerty123",
+		Id:    int64(1),
 	}
 
 	expected := dto.ResponseFromDeleting{Answer: "deleting success"}
 
 	repository := NewMockRepository(ctrl)
-	repository.EXPECT().DeleteWord(wordRequest.Word, int64(1)).Return(&expected, nil)
+	repository.EXPECT().DeleteWord(int64(1), wordRequest.Id).Return(&expected, nil)
 
 	service := NewWordService(repository)
 	service.parseTokenFn = func(tokenString string) (*token.AuthClaims, error) {
@@ -39,12 +39,12 @@ func TestWord_DeleteWordByWord_Negative(t *testing.T) {
 	defer ctrl.Finish()
 
 	wordRequest := dto.RequestForDeletingWord{
-		Word:  "boogaga",
 		Token: "qwerty123",
+		Id:    int64(1),
 	}
 
 	repository := NewMockRepository(ctrl)
-	repository.EXPECT().DeleteWord(wordRequest.Word, int64(1)).Return(nil, errors.New("fail deleting"))
+	repository.EXPECT().DeleteWord(int64(1), wordRequest.Id).Return(nil, errors.New("fail deleting"))
 
 	service := NewWordService(repository)
 	service.parseTokenFn = func(tokenString string) (*token.AuthClaims, error) {
@@ -61,8 +61,8 @@ func TestWord_DeleteWordByWord_NegativeFailToken(t *testing.T) {
 	defer ctrl.Finish()
 
 	wordRequest := dto.RequestForDeletingWord{
-		Word:  "boogaga",
 		Token: "qwerty123",
+		Id:    int64(1),
 	}
 
 	repository := NewMockRepository(ctrl)

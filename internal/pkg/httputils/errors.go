@@ -8,5 +8,5 @@ var (
 	ErrValidation     = errors.New("validation failed")
 	UnmarshalError    = errors.New("unmarshal error")
 	ReadBodyError     = errors.New("can't read body")
-	ErrWordNotExist   = errors.New("words not exists")
+	ErrWordNotExist   = errors.New("word not exists")
 )

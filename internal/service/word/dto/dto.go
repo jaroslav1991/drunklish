@@ -43,8 +43,8 @@ type RequestForGettingWord struct {
 }
 
 type RequestForDeletingWord struct {
-	Word  string `json:"word"`
 	Token string `json:"token"`
+	Id    int64  `json:"id"`
 }
 
 type RequestForUpdateWord struct {

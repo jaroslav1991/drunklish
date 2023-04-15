@@ -2,17 +2,18 @@ package repository
 
 import (
 	"database/sql"
-	"drunklish/internal/model"
 	"drunklish/internal/pkg/db"
 	"drunklish/internal/service/word/dto"
+	"fmt"
 	"time"
 )
 
 const (
-	createWordQuery      = `insert into words (word, translate, created_at, user_id) values ($1, $2, $3, $4) returning word, translate`
-	getWordsQuery        = `select w.id, w.word, w.translate from words w join users u on w.user_id = u.id where w.user_id=$1 order by created_at`
-	deleteWordQuery      = `delete from words where word=$1 and user_id=$2`
-	selectWordQuery      = `select word, translate, user_id from words where word=$1 and user_id=$2`
+	createWordQuery = `insert into words (word, translate, created_at, user_id) values ($1, $2, $3, $4) returning word, translate`
+	getWordsQuery   = `select w.id, w.word, w.translate from words w join users u on w.user_id = u.id where w.user_id=$1 order by created_at`
+	deleteWordQuery = `delete from words w using users u where w.user_id = u.id and  w.user_id=$1 and w.id=$2 returning w.id`
+	//deleteWordQuery      = `delete from words where word=$1 and user_id=$2`
+	//selectWordQuery      = `select word, translate, user_id from words where word=$1 and user_id=$2`
 	getWordByPeriodQuery = `select w.id, w.word, w.translate from words w join users u on w.user_id = u.id where w.user_id=$1 and w.created_at>$2 and w.created_at<$3 order by created_at`
 	getUserQuery         = `select user_id from words where user_id=$1`
 	updateWordQuery      = `update words w set word=$1, translate=$2 from users u where w.id=$3 and w.user_id=$4 and w.user_id=u.id returning w.word, w.translate`
@@ -108,16 +109,12 @@ func (repo *WordRepository) GetWordByCreated(userId int64, firstDate, secondDate
 	return &words, nil
 }
 
-func (repo *WordRepository) DeleteWord(word string, userId int64) (*dto.ResponseFromDeleting, error) {
-	var wd model.Word
-
-	if err := repo.db.QueryRowx(selectWordQuery, word, userId).Scan(&wd.Word, &wd.Translate, &wd.UserId); err != nil {
+func (repo *WordRepository) DeleteWord(userId, id int64) (*dto.ResponseFromDeleting, error) {
+	//if _, err := repo.db.Exec(deleteWordQuery, word, userId, id); err != nil {
+	//	return nil, err
+	//}
+	if err := repo.db.QueryRowx(deleteWordQuery, userId, id).Scan(&id); err != nil {
 		return nil, err
 	}
-
-	if _, err := repo.db.Exec(deleteWordQuery, word, userId); err != nil {
-		return nil, err
-	}
-
-	return &dto.ResponseFromDeleting{Answer: "deleting success"}, nil
+	return &dto.ResponseFromDeleting{Answer: fmt.Sprintf("%d: deleting success", id)}, nil
 }

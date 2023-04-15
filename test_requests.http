@@ -12,9 +12,9 @@ POST 127.0.0.1:8080/word
 Content-Type: application/json
 
 {
-  "word": "qwe",
-  "translate": "qwe",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTY4ODc0N30.Go-bmnJNLtrBvTwEgz2LAs-M51RJ1MkzZGIN3pBTEpA"
+  "word": "another word",
+  "translate": "другое слово",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTgxODUzOX0.LhIT66rTxKG_yGQAVDeRQK4TES9oQ2hFtzZJlIhok34"
 }
 
 ####
@@ -55,8 +55,8 @@ POST 127.0.0.1:8080/delete
 Content-Type: application/json
 
 {
-  "word": "test",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTY4ODc0N30.Go-bmnJNLtrBvTwEgz2LAs-M51RJ1MkzZGIN3pBTEpA"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTgxODUzOX0.LhIT66rTxKG_yGQAVDeRQK4TES9oQ2hFtzZJlIhok34",
+  "id": 7
 }
 
 ####
