@@ -66,18 +66,18 @@ func (mr *MockRepositoryMockRecorder) Create(word, translate, createdAt, userId 
 }
 
 // DeleteWord mocks base method.
-func (m *MockRepository) DeleteWord(word string, userId int64) (*dto.ResponseFromDeleting, error) {
+func (m *MockRepository) DeleteWord(userId, id int64) (*dto.ResponseFromDeleting, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteWord", word, userId)
+	ret := m.ctrl.Call(m, "DeleteWord", userId, id)
 	ret0, _ := ret[0].(*dto.ResponseFromDeleting)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // DeleteWord indicates an expected call of DeleteWord.
-func (mr *MockRepositoryMockRecorder) DeleteWord(word, userId interface{}) *gomock.Call {
+func (mr *MockRepositoryMockRecorder) DeleteWord(userId, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWord", reflect.TypeOf((*MockRepository)(nil).DeleteWord), word, userId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWord", reflect.TypeOf((*MockRepository)(nil).DeleteWord), userId, id)
 }
 
 // GetWordByCreated mocks base method.

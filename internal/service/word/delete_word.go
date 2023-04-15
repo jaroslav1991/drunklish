@@ -6,19 +6,15 @@ import (
 	"fmt"
 )
 
-//var (
-//	ErrWord = errors.New("word not exist")
-//)
-
 func (w *Word) DeleteWordByWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error) {
 	token, err := w.parseTokenFn(word.Token)
 	if err != nil {
 		return nil, fmt.Errorf("invalid token: %w", httputils.ErrValidation)
 	}
 
-	answer, err := w.repo.DeleteWord(word.Word, token.UserId)
+	answer, err := w.repo.DeleteWord(token.UserId, word.Id)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %v", httputils.ErrWordNotExist, err)
+		return nil, fmt.Errorf("%w", httputils.ErrWordNotExist)
 	}
 
 	return answer, nil
