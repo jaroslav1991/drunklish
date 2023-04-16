@@ -36,13 +36,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	http.Handle("/sign-up", httputils.WrapRpc(authHandlers.SignUpHandler(authDB)))
-	http.Handle("/sign-in", httputils.WrapRpc(authHandlers.SignInHandler(authDB)))
-	http.Handle("/word", httputils.WrapRpc(wordsHandlers.CreateWordHandler(wordDB)))
-	http.Handle("/get-words", httputils.WrapRpc(wordsHandlers.GetWordsHandler(wordDB)))
-	http.Handle("/get-words-period", httputils.WrapRpc(wordsHandlers.GetWordByPeriodHandler(wordDB)))
-	http.Handle("/delete", httputils.WrapRpc(wordsHandlers.DeleteWordHandler(wordDB)))
-	http.Handle("/update", httputils.WrapRpc(wordsHandlers.UpdateWordHandler(wordDB)))
+	http.Handle("/api/sign-up", httputils.WrapRpc(authHandlers.SignUpHandler(authDB)))
+	http.Handle("/api/sign-in", httputils.WrapRpc(authHandlers.SignInHandler(authDB)))
+	http.Handle("/api/word", httputils.WrapRpc(wordsHandlers.CreateWordHandler(wordDB)))
+	http.Handle("/api/get-words", httputils.WrapRpc(wordsHandlers.GetWordsHandler(wordDB)))
+	http.Handle("/api/get-words-period", httputils.WrapRpc(wordsHandlers.GetWordByPeriodHandler(wordDB)))
+	http.Handle("/api/delete", httputils.WrapRpc(wordsHandlers.DeleteWordHandler(wordDB)))
+	http.Handle("/api/update", httputils.WrapRpc(wordsHandlers.UpdateWordHandler(wordDB)))
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
