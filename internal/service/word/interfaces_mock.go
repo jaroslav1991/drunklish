@@ -35,21 +35,6 @@ func (m *MockRepository) EXPECT() *MockRepositoryMockRecorder {
 	return m.recorder
 }
 
-// CheckUserInDB mocks base method.
-func (m *MockRepository) CheckUserInDB(userId int64) (bool, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CheckUserInDB", userId)
-	ret0, _ := ret[0].(bool)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CheckUserInDB indicates an expected call of CheckUserInDB.
-func (mr *MockRepositoryMockRecorder) CheckUserInDB(userId interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckUserInDB", reflect.TypeOf((*MockRepository)(nil).CheckUserInDB), userId)
-}
-
 // Create mocks base method.
 func (m *MockRepository) Create(word, translate string, createdAt time.Time, userId int64) (*dto.ResponseFromCreateWord, error) {
 	m.ctrl.T.Helper()
@@ -65,6 +50,36 @@ func (mr *MockRepositoryMockRecorder) Create(word, translate, createdAt, userId 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRepository)(nil).Create), word, translate, createdAt, userId)
 }
 
+// CreateStatisticByTrainingId mocks base method.
+func (m *MockRepository) CreateStatisticByTrainingId(trainingId int64, correctAnswers, wrongAnswers dto.ResponseWordList, userId int64) (*dto.ResponseCreateStatistic, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateStatisticByTrainingId", trainingId, correctAnswers, wrongAnswers, userId)
+	ret0, _ := ret[0].(*dto.ResponseCreateStatistic)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateStatisticByTrainingId indicates an expected call of CreateStatisticByTrainingId.
+func (mr *MockRepositoryMockRecorder) CreateStatisticByTrainingId(trainingId, correctAnswers, wrongAnswers, userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateStatisticByTrainingId", reflect.TypeOf((*MockRepository)(nil).CreateStatisticByTrainingId), trainingId, correctAnswers, wrongAnswers, userId)
+}
+
+// CreateTraining mocks base method.
+func (m *MockRepository) CreateTraining(words, answers dto.ResponseWordList, wordsTotal, userId int64) (*dto.ResponseForTraining, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateTraining", words, answers, wordsTotal, userId)
+	ret0, _ := ret[0].(*dto.ResponseForTraining)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateTraining indicates an expected call of CreateTraining.
+func (mr *MockRepositoryMockRecorder) CreateTraining(words, answers, wordsTotal, userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTraining", reflect.TypeOf((*MockRepository)(nil).CreateTraining), words, answers, wordsTotal, userId)
+}
+
 // DeleteWord mocks base method.
 func (m *MockRepository) DeleteWord(userId, id int64) (*dto.ResponseFromDeleting, error) {
 	m.ctrl.T.Helper()
@@ -78,6 +93,36 @@ func (m *MockRepository) DeleteWord(userId, id int64) (*dto.ResponseFromDeleting
 func (mr *MockRepositoryMockRecorder) DeleteWord(userId, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWord", reflect.TypeOf((*MockRepository)(nil).DeleteWord), userId, id)
+}
+
+// GetStatisticByTrainingId mocks base method.
+func (m *MockRepository) GetStatisticByTrainingId(trainingId, userId int64) (*dto.ResponseStatistic, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetStatisticByTrainingId", trainingId, userId)
+	ret0, _ := ret[0].(*dto.ResponseStatistic)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetStatisticByTrainingId indicates an expected call of GetStatisticByTrainingId.
+func (mr *MockRepositoryMockRecorder) GetStatisticByTrainingId(trainingId, userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStatisticByTrainingId", reflect.TypeOf((*MockRepository)(nil).GetStatisticByTrainingId), trainingId, userId)
+}
+
+// GetTrainingInfoById mocks base method.
+func (m *MockRepository) GetTrainingInfoById(trainingId, userId int64) (*dto.ResponseTrainingInfo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTrainingInfoById", trainingId, userId)
+	ret0, _ := ret[0].(*dto.ResponseTrainingInfo)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTrainingInfoById indicates an expected call of GetTrainingInfoById.
+func (mr *MockRepositoryMockRecorder) GetTrainingInfoById(trainingId, userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTrainingInfoById", reflect.TypeOf((*MockRepository)(nil).GetTrainingInfoById), trainingId, userId)
 }
 
 // GetWordByCreated mocks base method.

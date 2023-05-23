@@ -1,6 +1,11 @@
 package dto
 
-import "time"
+import (
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
+	"time"
+)
 
 type CreateWordRequest struct {
 	Word      string    `json:"word"`
@@ -16,7 +21,22 @@ type ResponseWord struct {
 }
 
 type ResponseWords struct {
-	Words []ResponseWord `json:"words"`
+	Words ResponseWordList `json:"words"`
+}
+
+type ResponseWordList []ResponseWord
+
+func (w ResponseWordList) Value() (driver.Value, error) {
+	return json.Marshal(w)
+}
+
+func (w *ResponseWordList) Scan(value interface{}) error {
+	data, ok := value.([]byte)
+	if !ok {
+		return errors.New("type assertion to []byte failed")
+	}
+
+	return json.Unmarshal(data, &w)
 }
 
 type ResponseFromCreateWord struct {
@@ -52,4 +72,47 @@ type RequestForUpdateWord struct {
 	Translate string `json:"translate"`
 	Id        int64  `json:"id"`
 	Token     string `json:"token"`
+}
+
+type RequestForTraining struct {
+	Words      ResponseWords `json:"words"`
+	Answers    ResponseWords `json:"answers"`
+	WordsTotal int64         `json:"words_total"`
+	Token      string        `json:"token"`
+}
+
+type ResponseForTraining struct {
+	Id int64 `json:"id"`
+}
+
+type RequestTrainingInfo struct {
+	TrainingId int64  `json:"training_id"`
+	Token      string `json:"token"`
+}
+
+type ResponseTrainingInfo struct {
+	Words   ResponseWordList `json:"words"`
+	Answers ResponseWordList `json:"answers"`
+}
+
+type ResponseStatistic struct {
+	CorrectAnswers ResponseWords `json:"correct_answers"`
+	WrongAnswers   ResponseWords `json:"wrong_answers"`
+}
+
+type RequestStatistic struct {
+	TrainingId int64  `json:"training_id"`
+	Token      string `json:"token"`
+}
+
+type RequestCreateStatistic struct {
+	//Id             int64         `json:"id"`
+	TrainingId     int64         `json:"training_id"`
+	CorrectAnswers ResponseWords `json:"correct_answers"`
+	WrongAnswers   ResponseWords `json:"wrong_answers"`
+	Token          string        `json:"token"`
+}
+
+type ResponseCreateStatistic struct {
+	Id int64 `json:"id"`
 }

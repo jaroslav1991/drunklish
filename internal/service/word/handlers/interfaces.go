@@ -10,4 +10,7 @@ type WordService interface {
 	GetWordsByCreatedAt(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error)
 	DeleteWordByWord(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
 	UpdateWord(word dto.RequestForUpdateWord) (*dto.ResponseWord, error)
+	CreateTrainingWords(training dto.RequestForTraining) (*dto.ResponseForTraining, error)
+	GetStatistic(statistic dto.RequestStatistic) (*dto.ResponseStatistic, error)
+	CreateStatistic(statistic dto.RequestCreateStatistic) (*dto.ResponseCreateStatistic, error)
 }

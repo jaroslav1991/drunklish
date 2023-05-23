@@ -23,4 +23,8 @@ type Repository interface {
 	GetWordByCreated(userId int64, firstDate, secondDate time.Time) (*dto.ResponseWords, error)
 	DeleteWord(userId, id int64) (*dto.ResponseFromDeleting, error)
 	Update(word, translate string, id, userId int64) (*dto.ResponseWord, error)
+	CreateTraining(words, answers dto.ResponseWordList, wordsTotal, userId int64) (*dto.ResponseForTraining, error)
+	GetTrainingInfoById(trainingId, userId int64) (*dto.ResponseTrainingInfo, error)
+	GetStatisticByTrainingId(trainingId, userId int64) (*dto.ResponseStatistic, error)
+	CreateStatisticByTrainingId(trainingId int64, correctAnswers, wrongAnswers dto.ResponseWordList, userId int64) (*dto.ResponseCreateStatistic, error)
 }

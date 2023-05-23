@@ -9,6 +9,7 @@ type DB interface {
 	Exec(query string, args ...interface{}) (sql.Result, error)
 	Query(query string, args ...interface{}) (*sql.Rows, error)
 	QueryRowx(query string, args ...interface{}) *sqlx.Row
+	NamedExec(query string, arg interface{}) (sql.Result, error)
 }
 
 type TX interface {
