@@ -1,4 +1,4 @@
-POST 127.0.0.1:8080/sign-up
+POST 127.0.0.1:8080/api/sign-up
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 
 ####
 
-POST 127.0.0.1:8080/word
+POST 127.0.0.1:8080/api/word
 Content-Type: application/json
 
 {
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 ####
 
-POST 127.0.0.1:8080/sign-in
+POST 127.0.0.1:8080/api/sign-in
 Content-Type: application/json
 
 {
@@ -29,29 +29,29 @@ Content-Type: application/json
 
 ####
 
-POST 127.0.0.1:8080/get-words
+POST 127.0.0.1:8080/api/get-words
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTgxODUzOX0.LhIT66rTxKG_yGQAVDeRQK4TES9oQ2hFtzZJlIhok34"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTA5MjYxNX0.QuNQ5rMD_gTlKiRCHRb7MS3e9aRPWFbereAouNH-I00"
 }
 
 ####
 
-POST 127.0.0.1:8080/get-words-period
+POST 127.0.0.1:8080/api/get-words-period
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTgxODUzOX0.LhIT66rTxKG_yGQAVDeRQK4TES9oQ2hFtzZJlIhok34",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NDg3MTMyNH0.s9YE0uqef01hKPzBY30FS8cjyUghTQT0gYqEQUCy844",
   "created_at": {
-    "first_date": "2023-03-29T00:00:01.000Z",
-    "second_date": "2023-04-14T23:59:59.000Z"
+    "first_date": "2023-05-08T00:00:01.000Z",
+    "second_date": "2023-05-12T23:59:59.000Z"
   }
 }
 
 ####
 
-POST 127.0.0.1:8080/delete
+POST 127.0.0.1:8080/api/delete
 Content-Type: application/json
 
 {
@@ -61,7 +61,7 @@ Content-Type: application/json
 
 ####
 
-POST 127.0.0.1:8080/update
+POST 127.0.0.1:8080/api/update
 Content-Type: application/json
 
 {
@@ -69,4 +69,109 @@ Content-Type: application/json
   "translate": "обновленное слово 1",
   "id": 1,
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTgxODUzOX0.LhIT66rTxKG_yGQAVDeRQK4TES9oQ2hFtzZJlIhok34"
+}
+
+####
+
+POST 127.0.0.1:8080/api/training
+Content-Type: application/json
+
+{
+  "words": {
+    "words": [
+      {
+        "id": 215,
+        "word": "test1",
+        "translate": "тест1"
+      },
+      {
+        "id": 216,
+        "word": "test2",
+        "translate": "тест2"
+      }
+    ]
+  },
+  "answers": {
+    "words": [
+      {
+        "id": 215,
+        "word": "test1",
+        "translate": "qwe1"
+      },
+      {
+        "id": 216,
+        "word": "test2",
+        "translate": "qwe2"
+      }
+    ]
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTEwNDg2Nn0.elooFcgiIRmiqlUxFrH4zslqEhgYqNcTJznAtFhx-9o"
+}
+
+####
+
+POST 127.0.0.1:8080/api/get-statistic
+Content-Type: application/json
+
+{
+  "training_id": 46,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTEwNDg2Nn0.elooFcgiIRmiqlUxFrH4zslqEhgYqNcTJznAtFhx-9o"
+}
+
+####
+
+POST 127.0.0.1:8080/api/get-training
+Content-Type: application/json
+
+{
+  "training_id": 35,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTEwNDg2Nn0.elooFcgiIRmiqlUxFrH4zslqEhgYqNcTJznAtFhx-9o"
+}
+
+####
+
+POST 127.0.0.1:8080/api/statistic
+Content-Type: application/json
+
+{
+  "training_id": 60,
+  "correct_answers": {
+    "words": [
+      {
+        "id": 196,
+        "word": "22",
+        "translate": "22"
+      },
+      {
+        "id": 195,
+        "word": "21",
+        "translate": "21"
+      },
+      {
+        "id": 190,
+        "word": "20",
+        "translate": "20"
+      },
+      {
+        "id": 189,
+        "word": "19",
+        "translate": "19"
+      },
+      {
+        "id": 188,
+        "word": "18",
+        "translate": "18"
+      }
+    ]
+  },
+  "wrong_answers": {
+    "words": [
+      {
+        "id": 144,
+        "word": "test2",
+        "translate": "test"
+      }
+    ]
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTE5NzkzNX0.aw-HyCxwjN8P3j7RuDJk05pzw9CC91e128yRXj3Yk4M"
 }

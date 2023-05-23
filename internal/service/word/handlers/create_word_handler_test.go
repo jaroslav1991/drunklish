@@ -9,11 +9,14 @@ import (
 )
 
 type mockService struct {
-	fnC  func(word dto.CreateWordRequest) (*dto.ResponseFromCreateWord, error)
-	fnG  func(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
-	fnGP func(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error)
-	fnD  func(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
-	fnU  func(word dto.RequestForUpdateWord) (*dto.ResponseWord, error)
+	fnC    func(word dto.CreateWordRequest) (*dto.ResponseFromCreateWord, error)
+	fnG    func(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
+	fnGP   func(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error)
+	fnD    func(word dto.RequestForDeletingWord) (*dto.ResponseFromDeleting, error)
+	fnU    func(word dto.RequestForUpdateWord) (*dto.ResponseWord, error)
+	fnTr   func(training dto.RequestForTraining) (*dto.ResponseForTraining, error)
+	fnSt   func(statistic dto.RequestStatistic) (*dto.ResponseStatistic, error)
+	fnCrSt func(statistic dto.RequestCreateStatistic) (*dto.ResponseCreateStatistic, error)
 }
 
 func (m *mockService) CreateWord(word dto.CreateWordRequest) (*dto.ResponseFromCreateWord, error) {
@@ -34,6 +37,18 @@ func (m *mockService) GetWordsByCreatedAt(period dto.RequestForGetByPeriod) (*dt
 
 func (m *mockService) UpdateWord(word dto.RequestForUpdateWord) (*dto.ResponseWord, error) {
 	return m.fnU(word)
+}
+
+func (m *mockService) CreateTrainingWords(training dto.RequestForTraining) (*dto.ResponseForTraining, error) {
+	return m.fnTr(training)
+}
+
+func (m *mockService) GetStatistic(statistic dto.RequestStatistic) (*dto.ResponseStatistic, error) {
+	return m.fnSt(statistic)
+}
+
+func (m *mockService) CreateStatistic(statistic dto.RequestCreateStatistic) (*dto.ResponseCreateStatistic, error) {
+	return m.fnCrSt(statistic)
 }
 
 func TestCreateWordHandler_Positive(t *testing.T) {
