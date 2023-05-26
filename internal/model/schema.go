@@ -42,5 +42,3 @@ func CreateTables(s *db.Storage) error {
 
 	return tx.Commit()
 }
-
-// TODO: implement creating training and statistic schemas
