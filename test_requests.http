@@ -114,8 +114,8 @@ POST 127.0.0.1:8080/api/get-statistic
 Content-Type: application/json
 
 {
-  "training_id": 46,
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTEwNDg2Nn0.elooFcgiIRmiqlUxFrH4zslqEhgYqNcTJznAtFhx-9o"
+  "training_id": 71,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTgwMzg1OX0.uLMGLrqZf9WXUJoSvSMnePVPJLPbNT_qDuOs8xN-28M"
 }
 
 ####
@@ -124,8 +124,8 @@ POST 127.0.0.1:8080/api/get-training
 Content-Type: application/json
 
 {
-  "training_id": 35,
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTEwNDg2Nn0.elooFcgiIRmiqlUxFrH4zslqEhgYqNcTJznAtFhx-9o"
+  "training_id": 71,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTgwMzg1OX0.uLMGLrqZf9WXUJoSvSMnePVPJLPbNT_qDuOs8xN-28M"
 }
 
 ####
@@ -134,7 +134,7 @@ POST 127.0.0.1:8080/api/statistic
 Content-Type: application/json
 
 {
-  "training_id": 60,
+  "training_id": 71,
   "correct_answers": {
     "words": [
       {
@@ -173,5 +173,5 @@ Content-Type: application/json
       }
     ]
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTE5NzkzNX0.aw-HyCxwjN8P3j7RuDJk05pzw9CC91e128yRXj3Yk4M"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTgwMzg1OX0.uLMGLrqZf9WXUJoSvSMnePVPJLPbNT_qDuOs8xN-28M"
 }

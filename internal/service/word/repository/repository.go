@@ -13,7 +13,7 @@ const (
 	deleteWordQuery      = `delete from words where user_id=$1 and id=$2 returning id`
 	getWordByPeriodQuery = `select id, word, translate from words where user_id=$1 and created_at>$2 and created_at<$3 order by created_at desc`
 	updateWordQuery      = `update words  set word=$1, translate=$2 where id=$3 and user_id=$4 returning word, translate`
-	createTrainingQuery  = `insert into training (words, answers, words_total, user_id) values ($1, $2, $3, $4) returning id`
+	createTrainingQuery  = `insert into training (words, answers, words_total, user_id) values ($1, $2, $3, $4) returning id, words`
 	getTrainingInfoQuery = `select words, answers from training where id=$1 and user_id=$2`
 	getStatisticQuery    = `select correct_answers, wrong_answers from statistic where training_id=$1 and user_id=$2`
 	createStatisticQuery = `insert into statistic (training_id, correct_answers, wrong_answers, user_id) values ($1, $2, $3, $4) returning id`
@@ -116,7 +116,7 @@ func (repo *WordRepository) CreateTraining(words, answers dto.ResponseWordList, 
 	defer rows.Close()
 
 	for rows.Next() {
-		if err := rows.Scan(&responseTraining.Id); err != nil {
+		if err := rows.Scan(&responseTraining.Id, &responseTraining.Words); err != nil {
 			return nil, err
 		}
 	}

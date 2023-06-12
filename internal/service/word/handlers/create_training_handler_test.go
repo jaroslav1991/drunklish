@@ -15,12 +15,21 @@ func TestCreateTrainingHandler_Positive(t *testing.T) {
 			assert.Equal(t, int64(1), training.WordsTotal)
 			assert.Equal(t, "token", training.Token)
 
-			return &dto.ResponseForTraining{Id: int64(1)}, nil
+			return &dto.ResponseForTraining{Id: int64(1), Words: []dto.ResponseWord{{
+				Id:        1,
+				Word:      "test",
+				Translate: "test",
+			}}}, nil
 		},
 	}
 
 	expectedResponse := &dto.ResponseForTraining{
 		Id: int64(1),
+		Words: []dto.ResponseWord{{
+			Id:        1,
+			Word:      "test",
+			Translate: "test",
+		}},
 	}
 
 	handler := CreateTrainingHandler(service)

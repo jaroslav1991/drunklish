@@ -82,7 +82,8 @@ type RequestForTraining struct {
 }
 
 type ResponseForTraining struct {
-	Id int64 `json:"id"`
+	Id    int64            `json:"id"`
+	Words ResponseWordList `json:"words"`
 }
 
 type RequestTrainingInfo struct {
