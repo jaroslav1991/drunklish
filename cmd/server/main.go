@@ -12,6 +12,8 @@ import (
 	"drunklish/internal/service/word"
 	wordsHandlers "drunklish/internal/service/word/handlers"
 	wordRepo "drunklish/internal/service/word/repository"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net/http"
 )
@@ -36,18 +38,23 @@ func main() {
 		log.Fatal(err)
 	}
 
-	http.Handle("/api/sign-up", httputils.WrapRpc(authHandlers.SignUpHandler(authDB)))
-	http.Handle("/api/sign-in", httputils.WrapRpc(authHandlers.SignInHandler(authDB)))
-	http.Handle("/api/word", httputils.WrapRpc(wordsHandlers.CreateWordHandler(wordDB)))
-	http.Handle("/api/get-words", httputils.WrapRpc(wordsHandlers.GetWordsHandler(wordDB)))
-	http.Handle("/api/get-words-period", httputils.WrapRpc(wordsHandlers.GetWordByPeriodHandler(wordDB)))
-	http.Handle("/api/delete", httputils.WrapRpc(wordsHandlers.DeleteWordHandler(wordDB)))
-	http.Handle("/api/update", httputils.WrapRpc(wordsHandlers.UpdateWordHandler(wordDB)))
-	http.Handle("/api/training", httputils.WrapRpc(wordsHandlers.CreateTrainingHandler(wordDB)))
-	http.Handle("/api/get-statistic", httputils.WrapRpc(wordsHandlers.GetStatisticHandler(wordDB)))
-	http.Handle("/api/statistic", httputils.WrapRpc(wordsHandlers.CreateStatisticHandler(wordDB)))
+	reg := prometheus.NewRegistry()
 
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	metrics := httputils.NewMetrics(reg)
+
+	http.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
+	http.Handle("/api/sign-in", metrics.Middleware(metrics, httputils.WrapRpc(metrics, authHandlers.SignInHandler(authDB))))
+	http.Handle("/api/sign-up", metrics.Middleware(metrics, httputils.WrapRpc(metrics, authHandlers.SignUpHandler(authDB))))
+	http.Handle("/api/word", metrics.Middleware(metrics, httputils.WrapRpc(metrics, wordsHandlers.CreateWordHandler(wordDB))))
+	http.Handle("/api/get-words", metrics.Middleware(metrics, httputils.WrapRpc(metrics, wordsHandlers.GetWordsHandler(wordDB))))
+	http.Handle("/api/get-words-period", metrics.Middleware(metrics, httputils.WrapRpc(metrics, wordsHandlers.GetWordByPeriodHandler(wordDB))))
+	http.Handle("/api/delete", metrics.Middleware(metrics, httputils.WrapRpc(metrics, wordsHandlers.DeleteWordHandler(wordDB))))
+	http.Handle("/api/update", metrics.Middleware(metrics, httputils.WrapRpc(metrics, wordsHandlers.UpdateWordHandler(wordDB))))
+	http.Handle("/api/training", metrics.Middleware(metrics, httputils.WrapRpc(metrics, wordsHandlers.CreateTrainingHandler(wordDB))))
+	http.Handle("/api/get-statistic", metrics.Middleware(metrics, httputils.WrapRpc(metrics, wordsHandlers.GetStatisticHandler(wordDB))))
+	http.Handle("/api/statistic", metrics.Middleware(metrics, httputils.WrapRpc(metrics, wordsHandlers.CreateStatisticHandler(wordDB))))
+
+	if err := http.ListenAndServe(":8585", nil); err != nil {
 		log.Fatal(err)
 	}
 

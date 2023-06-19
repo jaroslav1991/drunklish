@@ -1,25 +1,25 @@
-POST 127.0.0.1:8080/api/sign-up
+POST 127.0.0.1:8585/api/sign-up
 Content-Type: application/json
 
 {
-  "email": "jar@gmail.com",
+  "email": "jar28@gmail.com",
   "password": "qweqwe"
 }
 
 ####
 
-POST 127.0.0.1:8080/api/word
+POST 127.0.0.1:8585/api/word
 Content-Type: application/json
 
 {
   "word": "another word",
   "translate": "другое слово",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4MTgxODUzOX0.LhIT66rTxKG_yGQAVDeRQK4TES9oQ2hFtzZJlIhok34"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzA0NTI4NH0.8w6lnfTbOv8ysy_0SLw7r10pXX9LYzy2zc4uh-3-0Ig"
 }
 
 ####
 
-POST 127.0.0.1:8080/api/sign-in
+POST 127.0.0.1:8585/api/sign-in
 Content-Type: application/json
 
 {
@@ -29,20 +29,20 @@ Content-Type: application/json
 
 ####
 
-POST 127.0.0.1:8080/api/get-words
+POST 127.0.0.1:8585/api/get-words
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTA5MjYxNX0.QuNQ5rMD_gTlKiRCHRb7MS3e9aRPWFbereAouNH-I00"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzUxNTkyMn0.SzOSYYzA2zMql-8Uq1vymfcfmCvvKJujXLafF_ccF0o"
 }
 
 ####
 
-POST 127.0.0.1:8080/api/get-words-period
+POST 127.0.0.1:8585/api/get-words-period
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NDg3MTMyNH0.s9YE0uqef01hKPzBY30FS8cjyUghTQT0gYqEQUCy844",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzUxNTkyMn0.SzOSYYzA2zMql-8Uq1vymfcfmCvvKJujXLafF_ccF0o",
   "created_at": {
     "first_date": "2023-05-08T00:00:01.000Z",
     "second_date": "2023-05-12T23:59:59.000Z"
@@ -51,7 +51,7 @@ Content-Type: application/json
 
 ####
 
-POST 127.0.0.1:8080/api/delete
+POST 127.0.0.1:8585/api/delete
 Content-Type: application/json
 
 {
@@ -61,7 +61,7 @@ Content-Type: application/json
 
 ####
 
-POST 127.0.0.1:8080/api/update
+POST 127.0.0.1:8585/api/update
 Content-Type: application/json
 
 {
@@ -73,7 +73,7 @@ Content-Type: application/json
 
 ####
 
-POST 127.0.0.1:8080/api/training
+POST 127.0.0.1:8585/api/training
 Content-Type: application/json
 
 {

@@ -3,17 +3,14 @@ package httputils
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/prometheus/client_golang/prometheus"
 	"io"
 	"net/http"
+	"runtime"
 )
 
-func WrapRpc[RequestType, ResponseType any](rpcHandler func(req RequestType) (*ResponseType, error)) http.HandlerFunc {
+func WrapRpc[RequestType, ResponseType any](mtr *CustomMetrics, rpcHandler func(req RequestType) (*ResponseType, error)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		//setupCORS(w)
-		//if r.Method == "OPTIONS" {
-		//	return
-		//}
-
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 
 		if r.Method != http.MethodPost {
@@ -40,12 +37,18 @@ func WrapRpc[RequestType, ResponseType any](rpcHandler func(req RequestType) (*R
 			return
 		}
 
+		responseByte, err := json.Marshal(rpcResponse)
+		if err != nil {
+			fmt.Println()
+			return
+		}
+
+		mtr.requestSize.With(prometheus.Labels{"request_url": r.URL.Path}).Add(float64(len(data)))
+		mtr.responseSize.With(prometheus.Labels{"response_url": r.URL.Path}).Add(float64(len(responseByte)))
+		goroutines := runtime.NumGoroutine()
+		mtr.goroutines.Add(float64(goroutines))
+		mtr.goroutinesCount.Inc()
+
 		WriteSuccessResponse(w, http.StatusOK, rpcResponse)
 	}
 }
-
-//func setupCORS(w http.ResponseWriter) {
-//	(w).Header().Set("Access-Control-Allow-Origin", "*")
-//	(w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-//	(w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-//}

@@ -1,6 +1,8 @@
 package handlers
 
-import "drunklish/internal/service/word/dto"
+import (
+	"drunklish/internal/service/word/dto"
+)
 
 type GetAllFn func(word dto.RequestForGettingWord) (*dto.ResponseWords, error)
 
