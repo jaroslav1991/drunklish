@@ -19,7 +19,7 @@ func WrapRpc[RequestType, ResponseType any](mtr *CustomMetrics, rpcHandler func(
 		}
 		data, err := io.ReadAll(r.Body)
 		if err != nil {
-			WriteErrorResponse(w, fmt.Errorf("%w: %v", ReadBodyError, err))
+			WriteErrorResponse(w, r, fmt.Errorf("%w: %v", ReadBodyError, err))
 			return
 		}
 
@@ -27,13 +27,13 @@ func WrapRpc[RequestType, ResponseType any](mtr *CustomMetrics, rpcHandler func(
 
 		var rpcRequest RequestType
 		if err := json.Unmarshal(data, &rpcRequest); err != nil {
-			WriteErrorResponse(w, fmt.Errorf("%w: %v", UnmarshalError, err))
+			WriteErrorResponse(w, r, fmt.Errorf("%w: %v", UnmarshalError, err))
 			return
 		}
 
 		rpcResponse, err := rpcHandler(rpcRequest)
 		if err != nil {
-			WriteErrorResponse(w, err)
+			WriteErrorResponse(w, r, err)
 			return
 		}
 
@@ -49,6 +49,6 @@ func WrapRpc[RequestType, ResponseType any](mtr *CustomMetrics, rpcHandler func(
 		mtr.goroutines.Add(float64(goroutines))
 		mtr.goroutinesCount.Inc()
 
-		WriteSuccessResponse(w, http.StatusOK, rpcResponse)
+		WriteSuccessResponse(w, r, http.StatusOK, rpcResponse)
 	}
 }
