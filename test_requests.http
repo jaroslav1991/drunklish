@@ -12,9 +12,9 @@ POST 127.0.0.1:8585/api/word
 Content-Type: application/json
 
 {
-  "word": "another word",
-  "translate": "другое слово",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzA0NTI4NH0.8w6lnfTbOv8ysy_0SLw7r10pXX9LYzy2zc4uh-3-0Ig"
+  "word": "another word3",
+  "translate": "другое слово3",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzYzODIwM30.dp_0L6f4hje-FG9Y3wFMpVxx7Byw88RmDJ51CbMy_uQ"
 }
 
 ####
@@ -33,7 +33,7 @@ POST 127.0.0.1:8585/api/get-words
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzUxNTkyMn0.SzOSYYzA2zMql-8Uq1vymfcfmCvvKJujXLafF_ccF0o"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzYzODIwM30.dp_0L6f4hje-FG9Y3wFMpVxx7Byw88RmDJ51CbMy_uQ"
 }
 
 ####
@@ -42,10 +42,10 @@ POST 127.0.0.1:8585/api/get-words-period
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzUxNTkyMn0.SzOSYYzA2zMql-8Uq1vymfcfmCvvKJujXLafF_ccF0o",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzYzODIwM30.dp_0L6f4hje-FG9Y3wFMpVxx7Byw88RmDJ51CbMy_uQ",
   "created_at": {
     "first_date": "2023-05-08T00:00:01.000Z",
-    "second_date": "2023-05-12T23:59:59.000Z"
+    "second_date": "2023-06-20T23:59:59.000Z"
   }
 }
 
@@ -105,28 +105,28 @@ Content-Type: application/json
       }
     ]
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTEwNDg2Nn0.elooFcgiIRmiqlUxFrH4zslqEhgYqNcTJznAtFhx-9o"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzYzODIwM30.dp_0L6f4hje-FG9Y3wFMpVxx7Byw88RmDJ51CbMy_uQ"
 }
 
 ####
 
-POST 127.0.0.1:8080/api/get-statistic
+POST 127.0.0.1:8585/api/get-statistic
 Content-Type: application/json
 
 {
-  "training_id": 71,
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTgwMzg1OX0.uLMGLrqZf9WXUJoSvSMnePVPJLPbNT_qDuOs8xN-28M"
+  "training_id": 129,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzYzODIwM30.dp_0L6f4hje-FG9Y3wFMpVxx7Byw88RmDJ51CbMy_uQ"
 }
 
 ####
 
-POST 127.0.0.1:8080/api/get-training
-Content-Type: application/json
-
-{
-  "training_id": 71,
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTgwMzg1OX0.uLMGLrqZf9WXUJoSvSMnePVPJLPbNT_qDuOs8xN-28M"
-}
+#POST 127.0.0.1:8585/api/get-training
+#Content-Type: application/json
+#
+#{
+#  "training_id": 129,
+#  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzYzODIwM30.dp_0L6f4hje-FG9Y3wFMpVxx7Byw88RmDJ51CbMy_uQ"
+#}
 
 ####
 
@@ -173,5 +173,5 @@ Content-Type: application/json
       }
     ]
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NTgwMzg1OX0.uLMGLrqZf9WXUJoSvSMnePVPJLPbNT_qDuOs8xN-28M"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzYzODIwM30.dp_0L6f4hje-FG9Y3wFMpVxx7Byw88RmDJ51CbMy_uQ"
 }
