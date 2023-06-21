@@ -7,8 +7,8 @@ import (
 	"net/http"
 )
 
-func WriteErrorResponse(w http.ResponseWriter, err error) {
-	response := map[string]any{"error": "internal server error"}
+func WriteErrorResponse(w http.ResponseWriter, r *http.Request, err error) {
+	response := map[string]any{"error": "internal server error", "path": r.URL.Path}
 	code := http.StatusInternalServerError
 
 	if errors.Is(err, ErrValidation) {
@@ -35,11 +35,11 @@ func WriteErrorResponse(w http.ResponseWriter, err error) {
 		response["error"] = err.Error()
 	}
 
-	log.Println(err)
-	WriteSuccessResponse(w, code, response)
+	log.Println(err, r.URL, code)
+	WriteSuccessResponse(w, r, code, response)
 }
 
-func WriteSuccessResponse(w http.ResponseWriter, code int, data interface{}) {
+func WriteSuccessResponse(w http.ResponseWriter, r *http.Request, code int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	if data != nil {

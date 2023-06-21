@@ -16,7 +16,18 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net/http"
+	"os"
 )
+
+func init() {
+	fileInfo, err := os.OpenFile("drunklish-logger", os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModePerm)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	log.SetOutput(fileInfo)
+
+}
 
 func main() {
 	dbConfig := config.GetDBConfig()
