@@ -154,7 +154,7 @@ func (repo *WordRepository) GetStatisticByTrainingId(trainingId, userId int64) (
 	defer rows.Close()
 
 	for rows.Next() {
-		if err := rows.Scan(&responseStatistic.CorrectAnswers, &responseStatistic.WrongAnswers); err != nil {
+		if err := rows.Scan(&responseStatistic.CorrectAnswers.Words, &responseStatistic.WrongAnswers.Words); err != nil {
 			return nil, err
 		}
 	}
