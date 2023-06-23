@@ -41,7 +41,6 @@ func WriteErrorResponse(logger *zap.Logger, w http.ResponseWriter, r *http.Reque
 func WriteSuccessResponse(logger *zap.Logger, w http.ResponseWriter, r *http.Request, code int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
-	//logger := FileLogger("drunklish-log")
 
 	if data != nil {
 		response, err := json.Marshal(data)
@@ -51,7 +50,7 @@ func WriteSuccessResponse(logger *zap.Logger, w http.ResponseWriter, r *http.Req
 		w.Write(response)
 
 		if code > 199 && code <= 299 {
-			logger.Info("success fetch", zap.String("path", r.URL.Path), zap.Int("code", code))
+			logger.Debug("success fetch", zap.String("path", r.URL.Path), zap.Int("code", code))
 		} else {
 			logger.Error("failed fetch", zap.String("path", r.URL.Path), zap.Int("code", code), zap.String("error", string(response)))
 		}

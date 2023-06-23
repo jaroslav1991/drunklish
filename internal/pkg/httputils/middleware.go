@@ -78,15 +78,15 @@ func NewMetrics(reg prometheus.Registerer) *CustomMetrics {
 	return m
 }
 
-func (m *CustomMetrics) Middleware(mtr *CustomMetrics, wrapper http.HandlerFunc) http.HandlerFunc {
+func (m *CustomMetrics) Wrap(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ww := &responseWriter{ResponseWriter: w}
 
 		start := time.Now()
 
-		wrapper.ServeHTTP(ww, r)
+		handler.ServeHTTP(ww, r)
 
-		mtr.httpRequestDuration.With(prometheus.Labels{"path": r.URL.Path, "status": strconv.Itoa(ww.statusCode)}).Observe(float64(time.Since(start).Milliseconds()))
-		mtr.httpRequestTotal.With(prometheus.Labels{"path": r.URL.Path, "status": strconv.Itoa(ww.statusCode)}).Inc()
+		m.httpRequestDuration.With(prometheus.Labels{"path": r.URL.Path, "status": strconv.Itoa(ww.statusCode)}).Observe(float64(time.Since(start).Milliseconds()))
+		m.httpRequestTotal.With(prometheus.Labels{"path": r.URL.Path, "status": strconv.Itoa(ww.statusCode)}).Inc()
 	}
 }
