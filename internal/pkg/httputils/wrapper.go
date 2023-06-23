@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/prometheus/client_golang/prometheus"
+	"go.uber.org/zap"
 	"io"
 	"net/http"
 	"runtime"
 )
 
-func WrapRpc[RequestType, ResponseType any](mtr *CustomMetrics, rpcHandler func(req RequestType) (*ResponseType, error)) http.HandlerFunc {
+func WrapRpc[RequestType, ResponseType any](logger *zap.Logger, mtr *CustomMetrics, rpcHandler func(req RequestType) (*ResponseType, error)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 
@@ -19,7 +20,7 @@ func WrapRpc[RequestType, ResponseType any](mtr *CustomMetrics, rpcHandler func(
 		}
 		data, err := io.ReadAll(r.Body)
 		if err != nil {
-			WriteErrorResponse(w, r, fmt.Errorf("%w: %v", ReadBodyError, err))
+			WriteErrorResponse(logger, w, r, fmt.Errorf("%w: %v", ReadBodyError, err))
 			return
 		}
 
@@ -27,19 +28,18 @@ func WrapRpc[RequestType, ResponseType any](mtr *CustomMetrics, rpcHandler func(
 
 		var rpcRequest RequestType
 		if err := json.Unmarshal(data, &rpcRequest); err != nil {
-			WriteErrorResponse(w, r, fmt.Errorf("%w: %v", UnmarshalError, err))
+			WriteErrorResponse(logger, w, r, fmt.Errorf("%w: %v", UnmarshalError, err))
 			return
 		}
 
 		rpcResponse, err := rpcHandler(rpcRequest)
 		if err != nil {
-			WriteErrorResponse(w, r, err)
+			WriteErrorResponse(logger, w, r, err)
 			return
 		}
 
 		responseByte, err := json.Marshal(rpcResponse)
 		if err != nil {
-			fmt.Println()
 			return
 		}
 
@@ -49,6 +49,6 @@ func WrapRpc[RequestType, ResponseType any](mtr *CustomMetrics, rpcHandler func(
 		mtr.goroutines.Add(float64(goroutines))
 		mtr.goroutinesCount.Inc()
 
-		WriteSuccessResponse(w, r, http.StatusOK, rpcResponse)
+		WriteSuccessResponse(logger, w, r, http.StatusOK, rpcResponse)
 	}
 }

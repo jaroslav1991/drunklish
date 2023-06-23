@@ -21,8 +21,6 @@ func (w *Word) GetWordsByUserId(word dto.RequestForGettingWord) (*dto.ResponseWo
 	return words, nil
 }
 
-// todo: добавить проверки на наличие FirstDate и SecondDate
-
 func (w *Word) GetWordsByCreatedAt(period dto.RequestForGetByPeriod) (*dto.ResponseWords, error) {
 	token, err := w.parseTokenFn(period.Token)
 	if err != nil {

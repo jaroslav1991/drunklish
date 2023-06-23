@@ -3,11 +3,11 @@ package httputils
 import (
 	"encoding/json"
 	"errors"
-	"log"
+	"go.uber.org/zap"
 	"net/http"
 )
 
-func WriteErrorResponse(w http.ResponseWriter, r *http.Request, err error) {
+func WriteErrorResponse(logger *zap.Logger, w http.ResponseWriter, r *http.Request, err error) {
 	response := map[string]any{"error": "internal server error"}
 	code := http.StatusInternalServerError
 
@@ -35,12 +35,13 @@ func WriteErrorResponse(w http.ResponseWriter, r *http.Request, err error) {
 		response["error"] = err.Error()
 	}
 
-	WriteSuccessResponse(w, r, code, response)
+	WriteSuccessResponse(logger, w, r, code, response)
 }
 
-func WriteSuccessResponse(w http.ResponseWriter, r *http.Request, code int, data interface{}) {
+func WriteSuccessResponse(logger *zap.Logger, w http.ResponseWriter, r *http.Request, code int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
+	//logger := FileLogger("drunklish-log")
 
 	if data != nil {
 		response, err := json.Marshal(data)
@@ -50,9 +51,9 @@ func WriteSuccessResponse(w http.ResponseWriter, r *http.Request, code int, data
 		w.Write(response)
 
 		if code > 199 && code <= 299 {
-			log.Println(r.URL.Path, code)
+			logger.Info("success fetch", zap.String("path", r.URL.Path), zap.Int("code", code))
 		} else {
-			log.Println(r.URL.Path, code, string(response))
+			logger.Error("failed fetch", zap.String("path", r.URL.Path), zap.Int("code", code), zap.String("error", string(response)))
 		}
 	}
 }
