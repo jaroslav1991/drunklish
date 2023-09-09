@@ -27,4 +27,5 @@ type Repository interface {
 	GetTrainingInfoById(trainingId, userId int64) (*dto.ResponseTrainingInfo, error)
 	GetStatisticByTrainingId(trainingId, userId int64) (*dto.ResponseStatistic, error)
 	CreateStatisticByTrainingId(trainingId int64, correctAnswers, wrongAnswers dto.ResponseWordList, userId int64) (*dto.ResponseCreateStatistic, error)
+	CreateFromUpload(words, translates string, createdAt time.Time, userId int64) (*dto.ResponseFromCreateWord, error)
 }

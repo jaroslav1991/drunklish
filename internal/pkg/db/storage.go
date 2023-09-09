@@ -14,6 +14,7 @@ type DB interface {
 
 type TX interface {
 	MustBegin() *sqlx.Tx
+	Beginx() (*sqlx.Tx, error)
 }
 
 type Storage struct {

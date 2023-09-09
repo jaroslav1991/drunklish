@@ -33,7 +33,7 @@ POST 127.0.0.1:8585/api/get-words
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzYzODIwM30.dp_0L6f4hje-FG9Y3wFMpVxx7Byw88RmDJ51CbMy_uQ"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4OTMzNjEyMH0.wdi8RB1ufiN67sA-QYl5Wd9BmbLVMsDlVVqmamnIw9k"
 }
 
 ####
@@ -42,7 +42,7 @@ POST 127.0.0.1:8585/api/get-words-period
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzYzODIwM30.dp_0L6f4hje-FG9Y3wFMpVxx7Byw88RmDJ51CbMy_uQ",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4ODI4ODIyNH0.faI5Q8F07_tUwaKJqzvyYU5hglL8F9VOsXqWTtmpi8k",
   "created_at": {
     "first_date": "2023-05-08T00:00:01.000Z",
     "second_date": "2023-06-20T23:59:59.000Z"
@@ -130,7 +130,7 @@ Content-Type: application/json
 
 ####
 
-POST 127.0.0.1:8080/api/statistic
+POST 127.0.0.1:8585/api/statistic
 Content-Type: application/json
 
 {
@@ -175,3 +175,42 @@ Content-Type: application/json
   },
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4NzYzODIwM30.dp_0L6f4hje-FG9Y3wFMpVxx7Byw88RmDJ51CbMy_uQ"
 }
+
+###
+
+POST 127.0.0.1:8585/api/upload
+Content-Type: application/json
+
+{
+  "words": {
+    "words": [
+      {
+        "word": "upload",
+        "translate": "загрузка"
+      },
+      {
+        "word": "upload2",
+        "translate": "загрузка2"
+      }
+    ]
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4OTI3MzQ0NX0.98evxBEvPoPLLvxDHjGBFo6wmPuUAavyx84Y-qa50_8"
+}
+
+###
+
+POST 127.0.0.1:8585/api/upload
+Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkVtYWlsIjoicXdlQGdtYWlsLmNvbSIsImV4cCI6MTY4OTMzNjEyMH0.wdi8RB1ufiN67sA-QYl5Wd9BmbLVMsDlVVqmamnIw9k
+Content-Type: multipart/form-data; boundary=FileToRead
+
+--FileToRead
+Content-Disposition: form-data; name="fileToRead"; filename="testing.csv"
+Content-Type: text/csv
+
+test,тест
+tree,дерево
+collector,коллекционер
+text,текст
+
+--FileToRead--
+

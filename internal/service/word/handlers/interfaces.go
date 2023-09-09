@@ -13,4 +13,5 @@ type WordService interface {
 	CreateTrainingWords(training dto.RequestForTraining) (*dto.ResponseForTraining, error)
 	GetStatistic(statistic dto.RequestStatistic) (*dto.ResponseStatistic, error)
 	CreateStatistic(statistic dto.RequestCreateStatistic) (*dto.ResponseCreateStatistic, error)
+	CreateListFromUpload(upload dto.RequestFromUpload, tkn string) (*[]dto.ResponseFromCreateWord, error)
 }

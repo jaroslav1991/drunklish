@@ -50,6 +50,36 @@ func (mr *MockRepositoryMockRecorder) Create(word, translate, createdAt, userId 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockRepository)(nil).Create), word, translate, createdAt, userId)
 }
 
+// CreateBatchUpload mocks base method.
+func (m *MockRepository) CreateBatchUpload(words, translates []string, createdAt time.Time, userId int64) (*[]dto.ResponseFromCreateWord, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateBatchUpload", words, translates, createdAt, userId)
+	ret0, _ := ret[0].(*[]dto.ResponseFromCreateWord)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateBatchUpload indicates an expected call of CreateBatchUpload.
+func (mr *MockRepositoryMockRecorder) CreateBatchUpload(words, translates, createdAt, userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateBatchUpload", reflect.TypeOf((*MockRepository)(nil).CreateBatchUpload), words, translates, createdAt, userId)
+}
+
+// CreateFromUpload mocks base method.
+func (m *MockRepository) CreateFromUpload(words, translates string, createdAt time.Time, userId int64) (*dto.ResponseFromCreateWord, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateFromUpload", words, translates, createdAt, userId)
+	ret0, _ := ret[0].(*dto.ResponseFromCreateWord)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateFromUpload indicates an expected call of CreateFromUpload.
+func (mr *MockRepositoryMockRecorder) CreateFromUpload(words, translates, createdAt, userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateFromUpload", reflect.TypeOf((*MockRepository)(nil).CreateFromUpload), words, translates, createdAt, userId)
+}
+
 // CreateStatisticByTrainingId mocks base method.
 func (m *MockRepository) CreateStatisticByTrainingId(trainingId int64, correctAnswers, wrongAnswers dto.ResponseWordList, userId int64) (*dto.ResponseCreateStatistic, error) {
 	m.ctrl.T.Helper()

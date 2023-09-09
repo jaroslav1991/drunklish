@@ -117,3 +117,8 @@ type RequestCreateStatistic struct {
 type ResponseCreateStatistic struct {
 	Id int64 `json:"id"`
 }
+
+type RequestFromUpload struct {
+	Words ResponseWords `json:"words"`
+	//Token string        `json:"token"`
+}

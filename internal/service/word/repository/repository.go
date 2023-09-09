@@ -176,3 +176,14 @@ func (repo *WordRepository) CreateStatisticByTrainingId(
 
 	return &statistic, nil
 }
+
+func (repo *WordRepository) CreateFromUpload(words, translates string, createdAt time.Time, userId int64) (*dto.ResponseFromCreateWord, error) {
+	var response dto.ResponseFromCreateWord
+	createdAt = time.Now()
+
+	if err := repo.db.QueryRowx(createWordQuery, words, translates, createdAt, userId).Scan(&response.Word, &response.Translate); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}

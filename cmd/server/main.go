@@ -62,6 +62,7 @@ func main() {
 	http.Handle("/api/training", metrics.Wrap(httputils.WrapRpc(logger, metrics, wordsHandlers.CreateTrainingHandler(wordDB))))
 	http.Handle("/api/get-statistic", metrics.Wrap(httputils.WrapRpc(logger, metrics, wordsHandlers.GetStatisticHandler(wordDB))))
 	http.Handle("/api/statistic", metrics.Wrap(httputils.WrapRpc(logger, metrics, wordsHandlers.CreateStatisticHandler(wordDB))))
+	http.Handle("/api/upload", wordsHandlers.CreateUploadHandler(logger, wordDB))
 
 	if err := http.ListenAndServe(":8585", nil); err != nil {
 		logger.Fatal("failed with listen and serve", zap.Error(err))
